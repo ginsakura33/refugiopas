@@ -115,9 +115,6 @@
   .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 14%, transparent); }
 
   /* ── VISTA 1: Inicio (M0) ── */
-  /* Detalle botánico sutil — inspirado en el "Jardín Interior" del ebook, siempre minimal */
-  .encabezado-flor { position: relative; }
-  .rama-decorativa { position: absolute; top: -14px; right: -16px; opacity: 0.22; pointer-events: none; }
   .saludo { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); }
   h3.titulo {
     font-family: var(--font-display); font-size: 25px; font-weight: 600;
@@ -242,8 +239,7 @@
   }
 
   /* ── VISTA 4: Mecanismo — SOS en acción ── */
-  .sos-activo { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; position: relative; }
-  .sos-activo .rama-jardin { position: absolute; bottom: -6px; left: -22px; opacity: 0.16; pointer-events: none; }
+  .sos-activo { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
   .sos-eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); }
   .anillo-sos { position: relative; width: 190px; height: 190px; margin-top: 18px; }
   .anillo-sos .centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -282,17 +278,8 @@
     <div class="telefono">
       <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
       <div class="pantalla">
-        <div class="encabezado-flor">
-          <svg class="rama-decorativa" width="120" height="120" viewBox="0 0 120 120" aria-hidden="true">
-            <path d="M112 8 C 86 16, 76 42, 50 60 C 32 73, 16 78, 8 96" stroke="#C2921F" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <ellipse cx="82" cy="24" rx="9" ry="4.5" transform="rotate(-28 82 24)" fill="#C2921F"/>
-            <ellipse cx="60" cy="46" rx="8" ry="4" transform="rotate(-45 60 46)" fill="#F0C9CD"/>
-            <ellipse cx="38" cy="66" rx="7.5" ry="3.5" transform="rotate(-58 38 66)" fill="#C2921F"/>
-            <ellipse cx="18" cy="84" rx="6.5" ry="3.2" transform="rotate(-68 18 84)" fill="#F0C9CD"/>
-          </svg>
-          <p class="saludo">Buenos días</p>
-          <h3 class="titulo">Hola, Valeria</h3>
-        </div>
+        <p class="saludo">Buenos días</p>
+        <h3 class="titulo">Hola, Valeria</h3>
         <div class="heroe">
           <p class="label">Tu SOS de hoy</p>
           <div class="sos-btn"><span>2 min</span></div>
@@ -405,13 +392,6 @@
       <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
       <div class="pantalla">
         <div class="sos-activo">
-          <svg class="rama-jardin" width="150" height="150" viewBox="0 0 150 150" aria-hidden="true">
-            <path d="M6 148 C 40 130, 50 100, 70 80 C 90 60, 110 46, 144 20" stroke="#C2921F" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-            <ellipse cx="28" cy="132" rx="9" ry="4.5" transform="rotate(35 28 132)" fill="#F0C9CD"/>
-            <ellipse cx="55" cy="102" rx="8" ry="4" transform="rotate(45 55 102)" fill="#C2921F"/>
-            <ellipse cx="82" cy="72" rx="7.5" ry="3.5" transform="rotate(55 82 72)" fill="#F0C9CD"/>
-            <ellipse cx="112" cy="42" rx="7" ry="3.3" transform="rotate(65 112 42)" fill="#C2921F"/>
-          </svg>
           <p class="sos-eyebrow">Reset Emocional</p>
           <div class="anillo-sos">
             <svg width="190" height="190" viewBox="0 0 190 190" role="img" aria-label="Sesión al 40 por ciento">
