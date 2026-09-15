@@ -24,10 +24,12 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
 ## Sesión 2 en curso — Identidad visual
-- Dirección ELEGIDA (2026-09-15): combinación de B "Respiración Central" + C "Nota del Día" — el orbe que respira (héroe) + la tarjeta "Nota del Día" debajo. Tipografía Cormorant (itálica) + Karla · dorado #CFA05C · rosa #F3D6D9 · fondo #FFFBF8
-- Descartadas definitivamente: ronda 1 completa (Refugio Cálido + Anillo de Calma, Ritual en Tres Actos) y de la ronda 2, A "Tarjetas en Cascada" (Domine/Work Sans) — no re-proponer estos pares tipográficos ni composiciones
-- FICHA-ARTE.md actualizada con el brand kit final de la combinación elegida
-- Tour reconstruido en `vista-previa-app.html` con las 4 vistas en este estilo — presentado al usuario, esperando su OK final
+- El usuario vio la combinación B+C de la ronda 2 (orbe + nota del día) y pidió una RONDA 3 completa — esa combinación también queda descartada
+- Ronda 3 vigente en `direcciones-abc.html`: A "Semana en Calma" (Spectral/Mulish) · B "Conversación Gentil" (Lora/Manrope) · C "Carta Sellada" (Bitter/Sora) — todas dentro de la paleta rosa/dorado/blanco pedida
+- `vista-previa-app.html` (tour) quedó desactualizado — corresponde a la ronda 2; se reconstruye cuando el usuario elija entre A/B/C de la ronda 3
+- Descartado acumulado (NO repetir tipografía ni composición): Fraunces+Albert Sans, Instrument Serif+Onest, Marcellus+Figtree, Domine+Work Sans, Cormorant+Karla, Petrona+Nunito Sans — 6 pares ya usados
+- Nota técnica guardada en FICHA-ARTE.md: Spectral requiere pesos estáticos en la URL de Google Fonts, no rango variable (si no, cae al fallback-trampa)
+- Pendiente: elección del usuario entre las 3 nuevas opciones de la ronda 3
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)

@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Direcciones de arte A/B/C — Refugio PAS (ronda 2)</title>
+<title>Direcciones de arte A/B/C — Refugio PAS (ronda 3)</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Domine:wght@400..700&family=Work+Sans:wght@400..700&family=Cormorant:ital,wght@0,400..700;1,400..700&family=Karla:wght@400..700&family=Petrona:ital,wght@0,400..700;1,400..700&family=Nunito+Sans:wght@400..800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Mulish:wght@400..800&family=Lora:ital,wght@0,400..700;1,400..700&family=Manrope:wght@400..800&family=Bitter:ital,wght@0,400..700;1,400..700&family=Sora:wght@400..700&display=swap" rel="stylesheet">
 
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -33,13 +33,10 @@
     background: #f7f7f8;
   }
   .salidas b { color: #1c1c1f; }
-  .aviso-fuentes {
-    max-width: 1180px; margin: 10px auto 28px; font-size: 12.5px; color: #6a6a72;
-  }
+  .aviso-fuentes { max-width: 1180px; margin: 10px auto 28px; font-size: 12.5px; color: #6a6a72; }
 
   .opciones { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px;
               grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
-
   .opcion { display: flex; flex-direction: column; gap: 18px; }
 
   .meta { background: #f7f7f8; border: 1px solid #d9d9de; border-radius: 14px; padding: 18px; }
@@ -51,9 +48,7 @@
   .meta h2 { display: flex; align-items: center; font-size: 17px; font-weight: 700; }
   .meta .direccion { margin-top: 4px; font-size: 13px; color: #55555c; }
   .hipotesis { margin-top: 10px; font-size: 13px; line-height: 1.5; color: #3a3a40; }
-  .hipotesis .slot {
-    background: #fff3c7; border-radius: 4px; padding: 1px 4px; font-style: italic;
-  }
+  .hipotesis .slot { background: #fff3c7; border-radius: 4px; padding: 1px 4px; font-style: italic; }
   .meta ul.tokens { margin-top: 10px; list-style: none; font-size: 12px; color: #6a6a72;
                     font-family: ui-monospace, monospace; line-height: 1.7; }
 
@@ -62,14 +57,10 @@
   .especimen .esp-body { margin-top: 4px; font-size: 13.5px; color: #3a3a40; }
 
   .telefono {
-    width: 310px; margin: 0 auto;
-    aspect-ratio: 9 / 19.5;
-    border: 10px solid #101014;
-    border-radius: 46px;
+    width: 310px; margin: 0 auto; aspect-ratio: 9 / 19.5;
+    border: 10px solid #101014; border-radius: 46px;
     box-shadow: 0 24px 60px rgb(20 18 24 / 0.28);
-    overflow: hidden;
-    position: relative;
-    display: flex; flex-direction: column;
+    overflow: hidden; position: relative; display: flex; flex-direction: column;
   }
   .statusbar {
     display: flex; align-items: center; justify-content: space-between;
@@ -77,28 +68,13 @@
     font-variant-numeric: tabular-nums;
   }
   .statusbar .der { display: flex; align-items: center; gap: 5px; }
-  .statusbar svg { display: block; }
   .home-indicator {
     position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
     width: 116px; height: 5px; border-radius: 999px; opacity: 0.85;
   }
   .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-
-  .chip-icono {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 40px; height: 40px; flex-shrink: 0;
-  }
-  .cta {
-    display: flex; align-items: center; justify-content: center;
-    height: 48px; font-size: 15px; font-weight: 600;
-    letter-spacing: 0.01em;
-  }
-  .cta-fantasma {
-    display: flex; align-items: center; justify-content: center;
-    height: 42px; font-size: 13px; font-weight: 600; margin-top: 8px;
-    border-radius: var(--radius-btn); border: 1.5px solid color-mix(in oklab, var(--text-2) 30%, transparent);
-    color: var(--text-2);
-  }
+  .chip-icono { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; flex-shrink: 0; }
+  .cta { display: flex; align-items: center; justify-content: center; height: 48px; font-size: 15px; font-weight: 600; letter-spacing: 0.01em; }
 
   .tabbar {
     display: flex; align-items: stretch; justify-content: space-around;
@@ -106,74 +82,46 @@
     border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
     background: color-mix(in oklab, var(--surface) 88%, transparent);
   }
-  .tabbar a {
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-    font-size: 9.5px; font-weight: 600; color: var(--text-2); text-decoration: none;
-  }
-  .tabbar .tab-chip {
-    display: flex; align-items: center; justify-content: center;
-    width: 36px; height: 26px; border-radius: 9px;
-  }
+  .tabbar a { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 9.5px; font-weight: 600; color: var(--text-2); text-decoration: none; }
+  .tabbar .tab-chip { display: flex; align-items: center; justify-content: center; width: 36px; height: 26px; border-radius: 9px; }
   .tabbar a.activa { color: var(--accent); }
   .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 14%, transparent); }
 
   .paleta { display: flex; gap: 8px; margin-top: 10px; }
-  .paleta span {
-    width: 26px; height: 26px; border-radius: 999px;
-    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.10), 0 1px 3px rgb(0 0 0 / 0.12);
-  }
+  .paleta span { width: 26px; height: 26px; border-radius: 999px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.10), 0 1px 3px rgb(0 0 0 / 0.12); }
 
-  .rotulo-frame {
-    text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; color: #85858e; margin-top: 2px;
-  }
+  .rotulo-frame { text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #85858e; margin-top: 2px; }
   .hero-landing {
     width: 310px; margin: 6px auto 0; border-radius: 18px; overflow: hidden;
-    border: 1px solid rgb(0 0 0 / 0.10);
-    box-shadow: 0 16px 40px rgb(20 18 24 / 0.16);
-    background: var(--bg); color: var(--text-1);
-    font-family: var(--font-body); padding: 22px 18px 18px;
+    border: 1px solid rgb(0 0 0 / 0.10); box-shadow: 0 16px 40px rgb(20 18 24 / 0.16);
+    background: var(--bg); color: var(--text-1); font-family: var(--font-body); padding: 22px 18px 18px;
   }
   .hero-landing .hl-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    color: var(--accent);
+    display: inline-flex; align-items: center; gap: 6px; font-size: 10.5px; font-weight: 700;
+    letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent);
     background: color-mix(in oklab, var(--accent) 10%, transparent);
     border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent);
     border-radius: 999px; padding: 4px 10px;
   }
-  .hero-landing h4 {
-    font-family: var(--font-display); font-size: 24px; font-weight: 700;
-    line-height: 1.14; letter-spacing: -0.01em; margin-top: 10px;
-  }
+  .hero-landing h4 { font-family: var(--font-display); font-size: 24px; font-weight: 700; line-height: 1.14; letter-spacing: -0.01em; margin-top: 10px; }
   .hero-landing h4 em { font-style: normal; color: var(--accent); }
   .hero-landing .hl-sub { margin-top: 8px; font-size: 13px; color: var(--text-2); line-height: 1.5; }
   .hero-landing .hl-sub b { color: var(--text-1); font-weight: 600; }
   .hero-landing .hl-cta {
-    margin-top: 14px; display: flex; align-items: center; justify-content: center;
-    height: 46px; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 700;
-    color: var(--bg);
+    margin-top: 14px; display: flex; align-items: center; justify-content: center; height: 46px;
+    border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 700; color: var(--bg);
     background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 86%, white), var(--accent));
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35),
-                0 10px 24px -6px color-mix(in oklab, var(--accent) 45%, transparent);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35), 0 10px 24px -6px color-mix(in oklab, var(--accent) 45%, transparent);
   }
   .hero-landing .hl-prueba { margin-top: 10px; font-size: 11.5px; color: var(--text-2); text-align: center; }
 
   /* ==========================================================================
-     OPCIÓN A — "Tarjetas en Cascada": pila de tarjetas + resumen en chips
+     OPCIÓN A — "Semana en Calma": franja de 7 días + SOS secundario
      ========================================================================== */
   .op-a {
-    --bg: #FDF7F3;
-    --surface: #FFFFFF;
-    --text-1: #453540;
-    --text-2: #96828C;
-    --accent: #C08A3E;
-    --rosa: #EED2D5;
-    --radius-card: 18px;
-    --radius-btn: 13px;
-    --font-display: 'Domine', monospace;
-    --font-body: 'Work Sans', monospace;
-    --shadow-tinta: 192 138 62;
+    --bg: #FEF8F5; --surface: #FFFFFF; --text-1: #46333B; --text-2: #9C8790;
+    --accent: #C79355; --rosa: #EFCDD2; --radius-card: 18px; --radius-btn: 13px;
+    --font-display: 'Spectral', monospace; --font-body: 'Mulish', monospace; --shadow-tinta: 199 147 85;
   }
   .op-a .especimen .esp-display { font-family: var(--font-display); }
   .op-a .especimen .esp-body { font-family: var(--font-body); }
@@ -181,184 +129,117 @@
   .op-a .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
   .op-a .statusbar { color: var(--text-1); }
   .op-a .home-indicator { background: var(--text-1); }
-
   .op-a .saludo { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); }
-  .op-a h3.titulo-a {
-    font-family: var(--font-display); font-size: 23px; font-weight: 700;
-    line-height: 1.2; margin-top: 2px;
-  }
-  .op-a .pila { position: relative; margin-top: 18px; height: 168px; }
-  .op-a .pila .naipe {
-    position: absolute; inset: 0; border-radius: var(--radius-card);
-    background: var(--surface); border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+  .op-a h3.titulo-a { font-family: var(--font-display); font-size: 23px; font-weight: 600; line-height: 1.2; margin-top: 2px; }
+  .op-a .semana {
+    margin-top: 16px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
     padding: 14px; box-shadow: 0 10px 24px -14px rgb(var(--shadow-tinta) / 0.3);
   }
-  .op-a .pila .naipe.atras-2 { transform: translateY(16px) scale(0.93) rotate(3deg); opacity: 0.5; z-index: 1; }
-  .op-a .pila .naipe.atras-1 { transform: translateY(9px) scale(0.965) rotate(-2deg); opacity: 0.75; z-index: 2; }
-  .op-a .pila .naipe.frente {
-    z-index: 3; display: flex; align-items: center; gap: 12px;
-    border: 1.5px solid transparent;
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--rosa) 55%, transparent) 60%) border-box;
+  .op-a .semana .resumen { font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+  .op-a .semana .resumen b { color: var(--accent); }
+  .op-a .franja { display: flex; justify-content: space-between; margin-top: 12px; }
+  .op-a .dia { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+  .op-a .dia .punto { width: 26px; height: 26px; border-radius: 999px; background: color-mix(in oklab, var(--rosa) 55%, transparent); }
+  .op-a .dia .punto.lleno { background: var(--accent); }
+  .op-a .dia .punto.hoy { box-shadow: 0 0 0 3px color-mix(in oklab, var(--accent) 30%, transparent); }
+  .op-a .dia span.letra-dia { font-size: 9.5px; font-weight: 700; color: var(--text-2); }
+  .op-a .card {
+    margin-top: 12px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+    padding: 12px 14px; display: flex; gap: 12px; align-items: center;
   }
-  .op-a .pila .naipe.frente .sos-mini {
-    width: 62px; height: 62px; border-radius: 999px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent) 92%, white), var(--accent));
-    box-shadow: 0 8px 18px -4px rgb(var(--shadow-tinta) / 0.5);
-  }
-  .op-a .pila .naipe.frente .sos-mini span { font-family: var(--font-display); font-size: 12px; font-weight: 700; color: #fff; }
-  .op-a .pila .naipe.frente h4 { font-size: 14.5px; font-weight: 700; }
-  .op-a .pila .naipe.frente p { margin-top: 3px; font-size: 12px; color: var(--text-2); line-height: 1.4; }
-  .op-a .chips-rapidos { display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap; }
-  .op-a .chip-dato {
-    display: flex; align-items: center; gap: 6px;
-    background: var(--surface); border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    border-radius: 999px; padding: 7px 12px; font-size: 11.5px; font-weight: 600; color: var(--text-1);
-  }
-  .op-a .chip-dato b { color: var(--accent); }
-  .op-a .cta {
-    margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn);
-    background: var(--accent); color: #fff;
-    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent);
-  }
+  .op-a .chip-icono { border-radius: var(--radius-btn); background: color-mix(in oklab, var(--rosa) 45%, transparent); border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent); }
+  .op-a .card h4 { font-size: 14px; font-weight: 700; }
+  .op-a .card p { margin-top: 2px; font-size: 12px; color: var(--text-2); }
+  .op-a .cta { margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn); background: var(--accent); color: #fff; box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent); }
 
   /* ==========================================================================
-     OPCIÓN B — "Respiración Central": orbe que respira, muy aireada
+     OPCIÓN B — "Conversación Gentil": check-in tipo chat, respuestas rápidas
      ========================================================================== */
   .op-b {
-    --bg: #FFFBF8;
-    --surface: #FFFFFF;
-    --text-1: #4B3A3E;
-    --text-2: #A08D91;
-    --accent: #CFA05C;
-    --rosa: #F3D6D9;
-    --radius-card: 20px;
-    --radius-btn: 999px;
-    --font-display: 'Cormorant', monospace;
-    --font-body: 'Karla', monospace;
-    --shadow-tinta: 207 160 92;
+    --bg: #FFFFFF; --surface: #FBEFF1; --text-1: #4A3540; --text-2: #9C8790;
+    --accent: #B98254; --rosa: #F1D3D8; --radius-card: 18px; --radius-btn: 999px;
+    --font-display: 'Lora', monospace; --font-body: 'Manrope', monospace; --shadow-tinta: 185 130 84;
   }
   .op-b .especimen .esp-display { font-family: var(--font-display); }
   .op-b .especimen .esp-body { font-family: var(--font-body); }
   .op-b .telefono { background: var(--bg); }
-  .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 20px; align-items: center; }
-  .op-b .statusbar { color: var(--text-1); width: 100%; }
+  .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
+  .op-b .statusbar { color: var(--text-1); }
   .op-b .home-indicator { background: var(--text-1); }
-
-  .op-b .saludo-b { margin-top: 6px; font-size: 12px; font-weight: 600; color: var(--text-2); text-align: center; }
-  .op-b .orbe-wrap {
-    margin: 14px auto 0; width: 140px; height: 140px; border-radius: 999px;
-    display: flex; align-items: center; justify-content: center; text-align: center;
-    background: radial-gradient(circle at 32% 28%, color-mix(in oklab, var(--accent) 38%, white), color-mix(in oklab, var(--rosa) 55%, white) 75%);
-    box-shadow: 0 0 0 12px color-mix(in oklab, var(--accent) 8%, transparent),
-                0 20px 40px -18px rgb(var(--shadow-tinta) / 0.45);
+  .op-b .burbuja {
+    margin-top: 16px; background: var(--surface); border-radius: 4px 18px 18px 18px;
+    padding: 14px 16px; max-width: 88%;
   }
-  .op-b .orbe-wrap .fase { font-family: var(--font-display); font-style: italic; font-size: 21px; font-weight: 600; color: var(--text-1); }
-  .op-b .orbe-wrap .sub { margin-top: 3px; font-size: 10px; color: var(--text-2); font-weight: 600; }
-  .op-b .cta { width: 100%; margin-top: 14px; border-radius: var(--radius-btn); background: var(--accent); color: #fff;
-    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent); }
-  .op-b .pills-b { display: flex; gap: 8px; margin-top: 12px; justify-content: center; }
-  .op-b .pill {
-    background: var(--surface); border: 1px solid color-mix(in oklab, var(--rosa) 70%, transparent);
-    border-radius: 999px; padding: 6px 12px; font-size: 11px; font-weight: 600; color: var(--text-2);
+  .op-b .burbuja p { font-family: var(--font-display); font-style: italic; font-size: 16.5px; line-height: 1.4; }
+  .op-b .respuestas { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .op-b .pill-resp {
+    background: var(--surface); border: 1.5px solid transparent; border-radius: var(--radius-btn);
+    padding: 10px 16px; font-size: 13px; font-weight: 600; max-width: 80%;
   }
-  .op-b .pill b { color: var(--accent); }
-  .op-b .tabbar { width: calc(100% + 40px); }
-
-  /* Módulo tomado de la Opción C: la Nota del Día, con los tokens/radios de B */
-  .op-b .nota-card {
-    width: 100%; margin-top: 12px; text-align: left; background: var(--surface);
-    border-radius: 4px 4px var(--radius-card) var(--radius-card);
-    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    border-top: 3px solid var(--accent);
-    padding: 14px; position: relative;
-    box-shadow: 0 10px 22px -14px rgb(var(--shadow-tinta) / 0.3);
+  .op-b .pill-resp.principal {
+    background: var(--accent); color: #fff; box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 35%, transparent);
   }
-  .op-b .nota-card .sello {
-    position: absolute; top: -11px; right: 12px; width: 26px; height: 26px; border-radius: 999px;
-    background: var(--accent); display: flex; align-items: center; justify-content: center;
-    transform: rotate(-8deg); box-shadow: 0 4px 10px rgb(var(--shadow-tinta) / 0.4);
+  .op-b .burbuja-respuesta {
+    margin-top: 14px; align-self: flex-end; background: var(--surface); border-radius: 18px 4px 18px 18px;
+    padding: 12px 14px; max-width: 82%; margin-left: auto;
   }
-  .op-b .nota-card h4 {
-    font-family: var(--font-display); font-style: italic; font-size: 16px; font-weight: 600; line-height: 1.3;
-  }
-  .op-b .nota-card .linea {
-    margin-top: 12px; height: 1px; background: color-mix(in oklab, var(--text-2) 22%, transparent);
-  }
+  .op-b .burbuja-respuesta p { font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+  .op-b .burbuja-respuesta p b { color: var(--text-1); }
+  .op-b .cta { margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn); background: var(--accent); color: #fff; box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent); }
 
   /* ==========================================================================
-     OPCIÓN C — "Nota del Día": diario como protagonista, SOS secundario
+     OPCIÓN C — "Carta Sellada": un sobre que se abre, casi sin interfaz
      ========================================================================== */
   .op-c {
-    --bg: #FAF5F1;
-    --surface: #FFFFFF;
-    --text-1: #423035;
-    --text-2: #927E83;
-    --accent: #B98A3F;
-    --rosa: #EACBCE;
-    --radius-card: 6px;
-    --radius-btn: 10px;
-    --font-display: 'Petrona', monospace;
-    --font-body: 'Nunito Sans', monospace;
-    --shadow-tinta: 185 138 63;
+    --bg: #FAF3EE; --surface: #FFFFFF; --text-1: #423229; --text-2: #93807A;
+    --accent: #AD7C3E; --rosa: #E8C6C9; --radius-card: 16px; --radius-btn: 999px;
+    --font-display: 'Bitter', monospace; --font-body: 'Sora', monospace; --shadow-tinta: 173 124 62;
   }
   .op-c .especimen .esp-display { font-family: var(--font-display); }
   .op-c .especimen .esp-body { font-family: var(--font-body); }
   .op-c .telefono { background: var(--bg); }
-  .op-c .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
-  .op-c .statusbar { color: var(--text-1); }
+  .op-c .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 20px; align-items: center; }
+  .op-c .statusbar { color: var(--text-1); width: 100%; }
   .op-c .home-indicator { background: var(--text-1); }
+  .op-c .saludo-c { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); text-align: center; }
+  .op-c .sobre-wrap { margin: 26px auto 0; width: 192px; }
+  .op-c .sobre {
+    width: 100%; aspect-ratio: 3/2; position: relative; border-radius: 10px;
+    background: var(--surface); border: 1px solid color-mix(in oklab, var(--rosa) 70%, transparent);
+    box-shadow: 0 20px 40px -16px rgb(var(--shadow-tinta) / 0.4);
+  }
+  .op-c .sobre::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 60%;
+    background: linear-gradient(135deg, color-mix(in oklab, var(--rosa) 55%, transparent) 50%, transparent 50%),
+                linear-gradient(225deg, color-mix(in oklab, var(--rosa) 55%, transparent) 50%, transparent 50%);
+    background-size: 50% 100%; background-position: left, right; background-repeat: no-repeat;
+  }
+  .op-c .sobre .sello-c {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+    width: 40px; height: 40px; border-radius: 999px; background: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 6px 14px rgb(var(--shadow-tinta) / 0.5);
+  }
+  .op-c .titulo-sobre { margin-top: 18px; text-align: center; font-family: var(--font-display); font-size: 20px; font-weight: 600; }
+  .op-c .sub-sobre { margin-top: 6px; text-align: center; font-size: 12px; color: var(--text-2); }
+  .op-c .cta { width: 100%; margin-top: 22px; border-radius: var(--radius-btn); background: var(--accent); color: #fff; box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent); }
+  .op-c .pills-c { display: flex; gap: 8px; margin-top: 14px; justify-content: center; }
+  .op-c .pill { background: var(--surface); border: 1px solid color-mix(in oklab, var(--rosa) 70%, transparent); border-radius: 999px; padding: 6px 12px; font-size: 11px; font-weight: 600; color: var(--text-2); }
+  .op-c .pill b { color: var(--accent); }
+  .op-c .tabbar { width: calc(100% + 40px); }
 
-  .op-c .saludo-c { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); }
-  .op-c .nota-card {
-    margin-top: 12px; background: var(--surface); border-radius: 4px 4px var(--radius-card) var(--radius-card);
-    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    border-top: 3px solid var(--accent);
-    padding: 16px; position: relative;
-    box-shadow: 0 10px 24px -14px rgb(var(--shadow-tinta) / 0.3);
-  }
-  .op-c .nota-card .sello {
-    position: absolute; top: -12px; right: 14px; width: 30px; height: 30px; border-radius: 999px;
-    background: var(--accent); display: flex; align-items: center; justify-content: center;
-    transform: rotate(-8deg); box-shadow: 0 4px 10px rgb(var(--shadow-tinta) / 0.4);
-  }
-  .op-c .nota-card h4 {
-    font-family: var(--font-display); font-size: 19px; font-weight: 600; line-height: 1.3;
-  }
-  .op-c .nota-card .linea {
-    margin-top: 14px; height: 1px; background: color-mix(in oklab, var(--text-2) 22%, transparent);
-  }
-  .op-c .nota-card .linea:first-of-type { margin-top: 18px; }
-  .op-c .cta { margin-top: 12px; border-radius: var(--radius-btn); background: var(--accent); color: #fff;
-    box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 32%, transparent); }
-  .op-c .sos-secundario {
-    margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-size: 12.5px; font-weight: 600; color: var(--accent);
-  }
-  .op-c .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: auto; margin-bottom: 12px; }
-  .op-c .tile {
-    background: var(--surface); border-radius: var(--radius-card);
-    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    padding: 10px 12px;
-  }
-  .op-c .tile .t-label { font-size: 10px; font-weight: 600; color: var(--text-2); }
-  .op-c .tile .t-dato { margin-top: 3px; font-family: var(--font-display); font-size: 16px; font-weight: 700; }
-
-  .pie {
-    max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #6a6a72;
-    border-top: 1px solid #d0d0d6; padding-top: 14px; line-height: 1.6;
-  }
+  .pie { max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #6a6a72; border-top: 1px solid #d0d0d6; padding-top: 14px; line-height: 1.6; }
 </style>
 </head>
 <body>
 
 <header class="cabecera">
-  <h1>Dirección de arte — ronda 2, para Refugio PAS</h1>
+  <h1>Dirección de arte — ronda 3, para Refugio PAS</h1>
   <p class="sub">
-    3 direcciones nuevas, ninguna repite lo anterior. Siguen tu paleta (rosa pastel + dorado +
-    blanco) y siguen siendo minimalistas, pero cambian la FORMA de organizar la pantalla principal.
+    3 direcciones más, otra vez sin repetir nada de lo anterior (ni las tipografías, ni las
+    composiciones). Siguen tu paleta rosa pastel + dorado + blanco, minimalistas.
   </p>
   <div class="salidas" role="list">
     <span role="listitem"><b>1 · Elegir</b> A, B o C</span>
@@ -374,26 +255,26 @@
 
 <div class="opciones">
 
-  <!-- ═══════════════════════ OPCIÓN A — Tarjetas en Cascada ═══════════════════════ -->
+  <!-- ═══════════════════════ OPCIÓN A — Semana en Calma ═══════════════════════ -->
   <section class="opcion op-a" aria-label="Opción A">
     <div class="meta">
-      <h2><span class="letra">A</span> Tarjetas en Cascada</h2>
-      <p class="direccion">Tu SOS de hoy al frente, con la biblioteca y el diario asomando detrás como una pila de tarjetas — como si abrieras un mazo de cartas de calma.</p>
+      <h2><span class="letra">A</span> Semana en Calma</h2>
+      <p class="direccion">Una franja con tus 7 días de la semana arriba — ves de un vistazo cuáles ya tuvieron un momento de calma. El SOS queda cerca, pero no es lo primero que ves.</p>
       <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
-        <span class="slot">sentir que hay "más detrás" invita a explorar sin abrumar — solo ves 1 cosa clara a la vez, con el resto esperando su turno</span>
+        <span class="slot">ver la semana completa (no solo "hoy") ayuda a notar el patrón: "los martes siempre me cuesta más" — información que ella puede usar</span>
       </p>
       <ul class="tokens">
-        <li>--bg #FDF7F3 · --accent #C08A3E · --rosa #EED2D5</li>
-        <li>radius 18/13 · pila de tarjetas con profundidad</li>
+        <li>--bg #FEF8F5 · --accent #C79355 · --rosa #EFCDD2</li>
+        <li>radius 18/13 · franja de 7 días con puntos llenos</li>
       </ul>
       <div class="paleta" aria-hidden="true">
-        <span style="background:#fdf7f3"></span><span style="background:#ffffff"></span>
-        <span style="background:#453540"></span><span style="background:#eed2d5"></span>
-        <span style="background:#c08a3e"></span>
+        <span style="background:#fef8f5"></span><span style="background:#ffffff"></span>
+        <span style="background:#46333b"></span><span style="background:#efcdd2"></span>
+        <span style="background:#c79355"></span>
       </div>
       <div class="especimen">
-        <p class="esp-display">Domine — AaBbÑñ 0123</p>
-        <p class="esp-body">Work Sans — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+        <p class="esp-display">Spectral — AaBbÑñ 0123</p>
+        <p class="esp-body">Mulish — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
       </div>
     </div>
 
@@ -410,25 +291,34 @@
         <p class="saludo">Buenos días</p>
         <h3 class="titulo-a">Hola, Valeria</h3>
 
-        <div class="pila">
-          <div class="naipe atras-2"></div>
-          <div class="naipe atras-1"></div>
-          <div class="naipe frente">
-            <div class="sos-mini"><span>2 min</span></div>
-            <div>
-              <h4>Tu SOS de hoy</h4>
-              <p>Respira — vamos a bajar la sobrecarga juntas</p>
-            </div>
+        <div class="semana">
+          <p class="resumen">Llevas <b>5 de 7 días</b> esta semana</p>
+          <div class="franja">
+            <div class="dia"><span class="punto lleno"></span><span class="letra-dia">L</span></div>
+            <div class="dia"><span class="punto lleno"></span><span class="letra-dia">M</span></div>
+            <div class="dia"><span class="punto lleno"></span><span class="letra-dia">M</span></div>
+            <div class="dia"><span class="punto lleno"></span><span class="letra-dia">J</span></div>
+            <div class="dia"><span class="punto lleno"></span><span class="letra-dia">V</span></div>
+            <div class="dia"><span class="punto hoy"></span><span class="letra-dia">S</span></div>
+            <div class="dia"><span class="punto"></span><span class="letra-dia">D</span></div>
           </div>
         </div>
 
-        <div class="chips-rapidos">
-          <span class="chip-dato">Arquetipo: <b>Empática</b></span>
-          <span class="chip-dato">Racha: <b>7 días</b></span>
-          <span class="chip-dato">Hoy: <b>Limpieza</b></span>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C79355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/></svg>
+          </span>
+          <div><h4>Tu SOS de hoy</h4><p>2 min · si lo necesitas ahora</p></div>
         </div>
 
-        <div class="cta">Activar mi SOS ahora</div>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C79355" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+          </span>
+          <div><h4>Arquetipo: Empática</h4><p>Racha de 7 días</p></div>
+        </div>
+
+        <div class="cta">Ver mi semana completa</div>
 
         <nav class="tabbar" aria-label="Navegación">
           <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
@@ -443,33 +333,33 @@
     <p class="rotulo-frame">Así se vería la página que vende tu app</p>
     <div class="hero-landing">
       <span class="hl-badge">Refugio PAS</span>
-      <h4>Un <em>refugio</em> para cada momento de tu día</h4>
-      <p class="hl-sub"><b>SOS, audios y tu diario</b>, siempre a una tarjeta de distancia.</p>
-      <div class="hl-cta">Quiero mi refugio</div>
+      <h4>Ve tu <em>semana</em>, no solo tu crisis</h4>
+      <p class="hl-sub"><b>Un vistazo a tus 7 días.</b> Descubre tus patrones y cuídate antes de saturarte.</p>
+      <div class="hl-cta">Quiero ver mi semana</div>
       <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
     </div>
   </section>
 
-  <!-- ═══════════════════════ OPCIÓN B — Respiración Central ═══════════════════════ -->
+  <!-- ═══════════════════════ OPCIÓN B — Conversación Gentil ═══════════════════════ -->
   <section class="opcion op-b" aria-label="Opción B">
     <div class="meta">
-      <h2><span class="letra">B</span> Respiración Central <span style="font-size:11px;font-weight:700;color:#a08d91;margin-left:6px;">· combinada con C</span></h2>
-      <p class="direccion">El orbe que respira (de la B) sigue siendo lo primero que ves, y debajo aparece tu nota del día (de la C) como una pequeña invitación a escribir, sin competir con el orbe.</p>
+      <h2><span class="letra">B</span> Conversación Gentil</h2>
+      <p class="direccion">La app te pregunta cómo estás, como lo haría una amiga — y tú respondes tocando una opción. Se siente como un chequeo cálido, no como un dashboard.</p>
       <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
-        <span class="slot">primero te ayuda a calmarte (el orbe), y solo DESPUÉS te invita a reflexionar (la nota) — respeta el orden en que alguien saturada puede procesar algo</span>
+        <span class="slot">sentirse "preguntada" en vez de "medida" reduce la culpa — encaja con alguien que ya se exige demasiado</span>
       </p>
       <ul class="tokens">
-        <li>--bg #FFFBF8 · --accent #CFA05C · --rosa #F3D6D9</li>
-        <li>radius 20/999 · orbe que respira, muy aireado</li>
+        <li>--bg #FFFFFF · --accent #B98254 · --rosa #F1D3D8</li>
+        <li>radius 18/999 · burbujas de conversación</li>
       </ul>
       <div class="paleta" aria-hidden="true">
-        <span style="background:#fffbf8"></span><span style="background:#ffffff"></span>
-        <span style="background:#4b3a3e"></span><span style="background:#f3d6d9"></span>
-        <span style="background:#cfa05c"></span>
+        <span style="background:#ffffff"></span><span style="background:#fbeff1"></span>
+        <span style="background:#4a3540"></span><span style="background:#f1d3d8"></span>
+        <span style="background:#b98254"></span>
       </div>
       <div class="especimen">
-        <p class="esp-display">Cormorant — AaBbÑñ 0123</p>
-        <p class="esp-body">Karla — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+        <p class="esp-display">Lora — AaBbÑñ 0123</p>
+        <p class="esp-body">Manrope — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
       </div>
     </div>
 
@@ -483,26 +373,91 @@
         </span>
       </div>
       <div class="pantalla">
-        <p class="saludo-b">Hola, Valeria — respira un momento</p>
+        <div class="burbuja">
+          <p>Hola Valeria 🤍 ¿cómo te sientes ahora?</p>
+        </div>
 
-        <div class="orbe-wrap">
-          <div>
-            <p class="fase">Inhala</p>
-            <p class="sub">TOCA PARA COMENZAR</p>
+        <div class="respuestas">
+          <span class="pill-resp principal">Necesito mi SOS ya</span>
+          <span class="pill-resp">Un poco abrumada</span>
+          <span class="pill-resp">Tranquila, gracias</span>
+        </div>
+
+        <div class="burbuja-respuesta">
+          <p><b>Ayer</b> escuchaste Reset Emocional y escribiste en tu diario. Vas muy bien.</p>
+        </div>
+
+        <div class="cta">Abrir mi Refugio</div>
+
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/></svg></span>Biblioteca</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <p class="rotulo-frame">Así se vería la página que vende tu app</p>
+    <div class="hero-landing">
+      <span class="hl-badge">Refugio PAS</span>
+      <h4>Alguien que te <em>pregunta</em> cómo estás</h4>
+      <p class="hl-sub"><b>Un chequeo cálido, cada día.</b> Nunca una app fría midiéndote.</p>
+      <div class="hl-cta">Empezar la conversación</div>
+      <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ OPCIÓN C — Carta Sellada ═══════════════════════ -->
+  <section class="opcion op-c" aria-label="Opción C">
+    <div class="meta">
+      <h2><span class="letra">C</span> Carta Sellada</h2>
+      <p class="direccion">Casi nada de pantalla — un sobre sellado con tu mensaje del día, esperando a que lo abras. Todo lo demás queda abajo, discreto.</p>
+      <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
+        <span class="slot">el gesto de "abrir algo" se siente como un pequeño regalo diario — genera anticipación positiva, no obligación</span>
+      </p>
+      <ul class="tokens">
+        <li>--bg #FAF3EE · --accent #AD7C3E · --rosa #E8C6C9</li>
+        <li>radius 16/999 · sobre con solapa y sello de cera</li>
+      </ul>
+      <div class="paleta" aria-hidden="true">
+        <span style="background:#faf3ee"></span><span style="background:#ffffff"></span>
+        <span style="background:#423229"></span><span style="background:#e8c6c9"></span>
+        <span style="background:#ad7c3e"></span>
+      </div>
+      <div class="especimen">
+        <p class="esp-display">Bitter — AaBbÑñ 0123</p>
+        <p class="esp-body">Sora — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+      </div>
+    </div>
+
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/><rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/></svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/></svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
+        </span>
+      </div>
+      <div class="pantalla">
+        <p class="saludo-c">Hola, Valeria</p>
+
+        <div class="sobre-wrap">
+          <div class="sobre">
+            <span class="sello-c" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.9Z"/></svg>
+            </span>
           </div>
         </div>
 
-        <div class="cta">Comenzar mi respiración</div>
+        <p class="titulo-sobre">Tu carta de hoy está lista</p>
+        <p class="sub-sobre">Reset Emocional · 2 min</p>
 
-        <div class="nota-card">
-          <span class="sello" aria-hidden="true">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.9Z"/></svg>
-          </span>
-          <h4>¿Cómo llegaste después de tu día?</h4>
-          <div class="linea"></div>
-        </div>
+        <div class="cta">Abrir mi carta</div>
 
-        <div class="pills-b">
+        <div class="pills-c">
           <span class="pill">Arquetipo: <b>Empática</b></span>
           <span class="pill">Racha: <b>7 días</b></span>
         </div>
@@ -520,85 +475,9 @@
     <p class="rotulo-frame">Así se vería la página que vende tu app</p>
     <div class="hero-landing">
       <span class="hl-badge">Refugio PAS</span>
-      <h4>Una <em>respiración</em> entre tú y el caos</h4>
-      <p class="hl-sub"><b>Un solo botón, un solo momento.</b> Nada que pensar cuando ya estás sobrecargada.</p>
-      <div class="hl-cta">Quiero respirar ahora</div>
-      <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
-    </div>
-  </section>
-
-  <!-- ═══════════════════════ OPCIÓN C — Nota del Día ═══════════════════════ -->
-  <section class="opcion op-c" aria-label="Opción C">
-    <div class="meta">
-      <h2><span class="letra">C</span> Nota del Día</h2>
-      <p class="direccion">Tu diario es la estrella — la pantalla abre con la pregunta de hoy, como una nota escrita a mano. El SOS queda cerca, pero discreto, no como protagonista.</p>
-      <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
-        <span class="slot">poner el diario primero (no la crisis) le dice a tu usuaria "esto es para TODOS los días, no solo los malos" — construye el hábito diario</span>
-      </p>
-      <ul class="tokens">
-        <li>--bg #FAF5F1 · --accent #B98A3F · --rosa #EACBCE</li>
-        <li>radius 6/10 · tarjeta-nota con sello y filete superior</li>
-      </ul>
-      <div class="paleta" aria-hidden="true">
-        <span style="background:#faf5f1"></span><span style="background:#ffffff"></span>
-        <span style="background:#423035"></span><span style="background:#eacbce"></span>
-        <span style="background:#b98a3f"></span>
-      </div>
-      <div class="especimen">
-        <p class="esp-display">Petrona — AaBbÑñ 0123</p>
-        <p class="esp-body">Nunito Sans — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
-      </div>
-    </div>
-
-    <div class="telefono">
-      <div class="statusbar">
-        <span>9:41</span>
-        <span class="der">
-          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true"><rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/><rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/></svg>
-          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true"><path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/></svg>
-          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true"><rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/><rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/><rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/></svg>
-        </span>
-      </div>
-      <div class="pantalla">
-        <p class="saludo-c">Martes 15 de septiembre</p>
-
-        <div class="nota-card">
-          <span class="sello" aria-hidden="true">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.9Z"/></svg>
-          </span>
-          <h4>¿Cómo llegaste después de tu día, Valeria?</h4>
-          <div class="linea"></div>
-          <div class="linea" style="margin-top:14px;"></div>
-          <div class="linea" style="margin-top:14px; width:70%;"></div>
-        </div>
-
-        <div class="cta">Escribir mi nota de hoy</div>
-        <div class="sos-secundario">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#B98A3F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/></svg>
-          ¿Necesitas tu SOS ahora?
-        </div>
-
-        <div class="grid2x2">
-          <div class="tile"><p class="t-label">Arquetipo</p><p class="t-dato">Empática</p></div>
-          <div class="tile"><p class="t-label">Racha</p><p class="t-dato">7 días</p></div>
-        </div>
-
-        <nav class="tabbar" aria-label="Navegación">
-          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
-          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/></svg></span>Biblioteca</a>
-          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
-          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
-        </nav>
-      </div>
-      <div class="home-indicator"></div>
-    </div>
-
-    <p class="rotulo-frame">Así se vería la página que vende tu app</p>
-    <div class="hero-landing">
-      <span class="hl-badge">Refugio PAS</span>
-      <h4>Una <em>nota</em> para ti, todos los días</h4>
-      <p class="hl-sub"><b>Tu diario, tu refugio.</b> No hace falta una crisis para merecer este espacio.</p>
-      <div class="hl-cta">Empezar mi nota de hoy</div>
+      <h4>Una <em>carta</em> para ti, cada día</h4>
+      <p class="hl-sub"><b>Ábrela cuando quieras.</b> Tu momento de calma, sellado con cariño.</p>
+      <div class="hl-cta">Recibir mi primera carta</div>
       <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
     </div>
   </section>
@@ -606,9 +485,9 @@
 </div>
 
 <footer class="pie">
-  Ronda 2 — descartadas las direcciones anteriores (Refugio Cálido + Anillo de Calma combinados,
-  y Ritual en Tres Actos). Estas 3 son estructuralmente distintas entre sí: A apila tarjetas,
-  B casi no tiene interfaz (solo un orbe que respira), C pone tu diario como protagonista del día.
+  Ronda 3 — se descartaron todas las direcciones anteriores (rondas 1 y 2, incluida la combinación
+  Respiración Central + Nota del Día). Estas 3 son nuevas en composición Y tipografía: A muestra tu
+  semana completa · B conversa contigo como una amiga · C te entrega una carta sellada cada día.
 </footer>
 
 </body>
