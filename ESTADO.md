@@ -25,7 +25,8 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 
 ## Sesión 2 — Identidad visual: CERRADA Y APROBADA (2026-09-15)
 - Dirección final: "Refugio Cálido" + "Anillo de Calma" (grilla 2x2: arquetipo, racha, audios, próxima sesión) — usuario confirmó "sí, esta es"
-- El botón SOS pasó por 5 iteraciones de color/forma y terminó siendo EL ORBE QUE RESPIRA (círculo grande de 140px, degradé dorado→rosa, texto "Inhala" + "Toca para comenzar") — tomado de la dirección "Respiración Central" de la ronda 2, que el usuario prefirió sobre todas las variantes de botón chico probadas. APROBADO — cosa juzgada, no cambiar el botón de nuevo sin que el usuario lo pida.
+- El botón SOS pasó por 5 iteraciones de color/forma y terminó siendo EL ORBE QUE RESPIRA (círculo grande de 140px, degradé dorado→rosa, texto "2 min" + "Toca para comenzar") — tomado de la dirección "Respiración Central" de la ronda 2. APROBADO — cosa juzgada, no cambiar el botón de nuevo sin que el usuario lo pida.
+- El botón "Activar mi SOS ahora" al final de Inicio era REDUNDANTE con el orbe (misma acción, dos veces) — se quitó y en su lugar va el CHEQUEO DE ÁNIMO DIARIO (5 caritas propias, sin emojis) directo en la pantalla de Inicio, no solo al entrar al Diario. Esto además es una función nueva del MVP: ver "Chequeo de ánimo" abajo.
 - FICHA-ARTE.md: APROBADA
 - Brand kit: dorado intenso #C2921F · rosa #F0C9CD · fondo #FFF9F5 · Fraunces (display) + Albert Sans (body)
 - Archivos vigentes: `direcciones-abc.html` y `vista-previa-app.html` (raíz del proyecto)
@@ -50,7 +51,7 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 2. Botón SOS de Desintoxicación Sensorial: audios de 2-5 min
 3. Biblioteca de Autohipnosis Guiada (Reset Emocional, El Jardín Interior, Limpieza Energética Nocturna)
 4. Módulos didácticos progresivos (Reconocerme, Comprenderme, Sostenerme, Honrarme)
-5. Diario digital de journaling + registro de ánimo
+5. Diario digital de journaling + registro de ánimo — decidido 2026-09-15: el chequeo de ánimo (5 caritas propias, sin emojis genéricos) vive en la pantalla de INICIO, no solo al entrar al diario; reemplazó al botón "Activar mi SOS ahora" que era redundante con el orbe
 
 ## Qué NO construir todavía (definido por el usuario)
 - Videollamadas 1:1 o agendamiento nativo (redirigir a Calendly externo)
