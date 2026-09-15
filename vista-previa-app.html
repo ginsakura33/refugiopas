@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="es" data-kit="abc-v2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tour de la app — Refugio PAS (Refugio Cálido)</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Albert+Sans:wght@400..700&display=swap" rel="stylesheet">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  :root {
+    --bg: #FFF9F5;
+    --surface: #FFFFFF;
+    --text-1: #4A3B3F;
+    --text-2: #9C8388;
+    --accent: #C2921F;
+    --rosa: #F0C9CD;
+    --radius-card: 20px;
+    --radius-btn: 14px;
+    --font-display: 'Fraunces', monospace;
+    --font-body: 'Albert Sans', monospace;
+    --shadow-tinta: 194 146 31;
+  }
+  body {
+    background:
+      radial-gradient(1100px 520px at 12% -6%, #f7f7f9, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #e2e2e9, transparent 58%),
+      linear-gradient(180deg, #ededf0, #e4e4e9);
+    color: #1c1c1f;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 32px 20px 64px;
+  }
+  .cabecera { max-width: 1180px; margin: 0 auto 24px; }
+  .cabecera h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .cabecera p.sub { margin-top: 6px; font-size: 14px; color: #55555c; max-width: 70ch; }
+  .salidas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .salidas span {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid #c9c9cf; border-radius: 999px;
+    padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: #3a3a40;
+    background: #f7f7f8;
+  }
+  .salidas b { color: #1c1c1f; }
+
+  .vistas { max-width: 1180px; margin: 0 auto; display: grid; gap: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(310px, 1fr)); }
+  .vista { display: flex; flex-direction: column; gap: 12px; }
+  .rotulo {
+    font-family: var(--font-body); font-size: 14px; font-weight: 700; color: #1c1c1f;
+  }
+  .rotulo small { display: block; font-size: 12px; font-weight: 500; color: #6a6a72; margin-top: 2px; }
+
+  .telefono {
+    width: 310px; margin: 0 auto;
+    aspect-ratio: 9 / 19.5;
+    border: 10px solid #101014;
+    border-radius: 46px;
+    box-shadow: 0 24px 60px rgb(20 18 24 / 0.28);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+  }
+  .statusbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 22px 6px; font-size: 13px; font-weight: 600;
+    font-variant-numeric: tabular-nums; color: var(--text-1);
+  }
+  .statusbar .der { display: flex; align-items: center; gap: 5px; }
+  .home-indicator {
+    position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+    width: 116px; height: 5px; border-radius: 999px; opacity: 0.85; background: var(--text-1);
+  }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden;
+              font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
+
+  .chip-icono {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex-shrink: 0; border-radius: var(--radius-btn);
+    background: color-mix(in oklab, var(--rosa) 45%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+  .cta {
+    display: flex; align-items: center; justify-content: center;
+    height: 48px; font-size: 15px; font-weight: 600; letter-spacing: 0.01em;
+    border-radius: var(--radius-btn); background: var(--accent); color: #fff;
+    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent);
+    margin-top: auto; margin-bottom: 0;
+  }
+  .cta.fantasma {
+    background: transparent; color: var(--text-2); box-shadow: none;
+    border: 1.5px solid color-mix(in oklab, var(--text-2) 30%, transparent);
+    margin-top: 10px;
+  }
+
+  .tabbar {
+    display: flex; align-items: stretch; justify-content: space-around;
+    margin: 12px -18px 0; padding: 8px 8px 16px;
+    border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+  }
+  .tabbar a {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 9.5px; font-weight: 600; color: var(--text-2); text-decoration: none;
+  }
+  .tabbar .tab-chip {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 26px; border-radius: 9px;
+  }
+  .tabbar a.activa { color: var(--accent); }
+  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 14%, transparent); }
+
+  /* ── VISTA 1: Inicio (M0) ── */
+  .saludo { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+  h3.titulo {
+    font-family: var(--font-display); font-size: 25px; font-weight: 600;
+    line-height: 1.15; letter-spacing: -0.005em; margin-top: 2px;
+  }
+  .heroe {
+    margin-top: 14px; border-radius: var(--radius-card);
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--rosa) 60%, transparent) 60%) border-box;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6) inset, 0 14px 34px -10px rgb(var(--shadow-tinta) / 0.35);
+    padding: 18px; text-align: center;
+  }
+  .heroe .label { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
+  .sos-btn {
+    margin: 10px auto 0; width: 92px; height: 92px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent) 92%, white), var(--accent));
+    box-shadow: 0 0 0 8px color-mix(in oklab, var(--accent) 14%, transparent), 0 10px 26px -6px rgb(var(--shadow-tinta) / 0.55);
+  }
+  .sos-btn span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; }
+  .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .card {
+    margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+    padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .card h4 { font-size: 14px; font-weight: 700; }
+  .card p { margin-top: 2px; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+
+  /* ── VISTA 2: Onboarding ── */
+  .progreso-dots { display: flex; gap: 6px; margin-top: 14px; }
+  .progreso-dots span { height: 4px; flex: 1; border-radius: 999px; background: color-mix(in oklab, var(--rosa) 60%, transparent); }
+  .progreso-dots span.activo { background: var(--accent); }
+  .pregunta-eyebrow { margin-top: 22px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em;
+                      text-transform: uppercase; color: var(--accent); }
+  h3.titulo-pregunta {
+    font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25;
+    margin-top: 8px;
+  }
+  .opcion-quiz {
+    margin-top: 12px; display: flex; align-items: center; gap: 12px;
+    background: var(--surface); border-radius: var(--radius-card);
+    border: 1.5px solid color-mix(in oklab, var(--rosa) 70%, transparent);
+    padding: 14px 16px; font-size: 14px; font-weight: 600;
+  }
+  .opcion-quiz.seleccionada {
+    border-color: var(--accent);
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, var(--accent), color-mix(in oklab, var(--rosa) 70%, transparent)) border-box;
+    box-shadow: 0 8px 20px -8px rgb(var(--shadow-tinta) / 0.3);
+  }
+  .opcion-quiz .radio {
+    width: 20px; height: 20px; border-radius: 999px; border: 2px solid color-mix(in oklab, var(--text-2) 40%, transparent);
+    flex-shrink: 0;
+  }
+  .opcion-quiz.seleccionada .radio { border-color: var(--accent); background: var(--accent);
+    box-shadow: inset 0 0 0 3px #fff; }
+
+  /* ── VISTA 3: Paywall ── */
+  .paywall-header { margin-top: 18px; text-align: center; }
+  .paywall-icon {
+    width: 56px; height: 56px; margin: 0 auto; border-radius: 999px;
+    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent) 92%, white), var(--accent));
+    display: flex; align-items: center; justify-content: center;
+  }
+  h3.titulo-paywall {
+    font-family: var(--font-display); font-size: 23px; font-weight: 600; line-height: 1.2;
+    margin-top: 12px; text-align: center;
+  }
+  .paywall-sub { margin-top: 6px; font-size: 12.5px; color: var(--text-2); text-align: center; line-height: 1.45; }
+  .planes { margin-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+  .plan {
+    display: flex; align-items: center; justify-content: space-between;
+    border-radius: var(--radius-card); border: 1.5px solid color-mix(in oklab, var(--rosa) 70%, transparent);
+    background: var(--surface); padding: 12px 14px; position: relative;
+  }
+  .plan.recomendado {
+    border-color: var(--accent);
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, var(--accent), color-mix(in oklab, var(--rosa) 60%, transparent)) border-box;
+    box-shadow: 0 10px 24px -10px rgb(var(--shadow-tinta) / 0.35);
+  }
+  .plan .badge {
+    position: absolute; top: -10px; right: 14px; background: var(--accent); color: #fff;
+    font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px;
+    letter-spacing: 0.03em;
+  }
+  .plan h4 { font-size: 14px; font-weight: 700; }
+  .plan p { font-size: 11.5px; color: var(--text-2); margin-top: 2px; }
+  .plan .precio { font-family: var(--font-display); font-size: 18px; font-weight: 700; text-align: right; }
+  .plan .precio small { display: block; font-size: 10.5px; font-weight: 500; color: var(--text-2); }
+  .paywall-legal { margin-top: 10px; font-size: 10.5px; color: var(--text-2); text-align: center; line-height: 1.5; }
+  .beneficios { margin-top: 18px; display: flex; flex-direction: column; gap: 10px; }
+  .beneficios .item { display: flex; align-items: center; gap: 10px; font-size: 12.5px; color: var(--text-1); }
+  .beneficios .check {
+    width: 20px; height: 20px; border-radius: 999px; flex-shrink: 0;
+    background: color-mix(in oklab, var(--accent) 16%, transparent);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── VISTA 4: Mecanismo — SOS en acción ── */
+  .sos-activo { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+  .sos-eyebrow { font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2); }
+  .anillo-sos { position: relative; width: 190px; height: 190px; margin-top: 18px; }
+  .anillo-sos .centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .anillo-sos .tiempo { font-family: var(--font-display); font-size: 34px; font-weight: 600; }
+  .anillo-sos .fase { margin-top: 4px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .sos-instruccion { margin-top: 22px; font-size: 13.5px; color: var(--text-2); line-height: 1.55; max-width: 220px; }
+  .sos-controles { margin-top: 24px; display: flex; gap: 14px; align-items: center; justify-content: center; }
+  .sos-controles .pausa {
+    width: 44px; height: 44px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid color-mix(in oklab, var(--text-2) 30%, transparent); color: var(--text-2);
+  }
+  .sos-controles .detener {
+    height: 44px; padding: 0 20px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+    background: var(--accent); color: #fff; font-size: 13px; font-weight: 700;
+    box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <h1>Tu app por dentro — Refugio Cálido</h1>
+  <p class="sub">Las 4 pantallas más importantes con el estilo que elegiste: rosa pastel + dorado intenso + blanco.</p>
+  <div class="salidas" role="list">
+    <span role="listitem"><b>1 · Me encanta</b> — seguimos con este estilo</span>
+    <span role="listitem"><b>2 · Ajusta un detalle</b> — un color, una fuente, un espacio</span>
+    <span role="listitem"><b>3 · Prefiero repensar</b> — volvemos a las opciones</span>
+  </div>
+</header>
+
+<div class="vistas">
+
+  <!-- VISTA 1: INICIO / M0 -->
+  <div class="vista">
+    <p class="rotulo">1 · Tu pantalla de cada día<small>Lo primero que ves al abrir la app</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
+      <div class="pantalla">
+        <p class="saludo">Buenos días</p>
+        <h3 class="titulo">Hola, Valeria</h3>
+        <div class="heroe">
+          <p class="label">Tu SOS de hoy</p>
+          <div class="sos-btn"><span>2 min</span></div>
+          <p class="insight">Respira — vamos a bajar la sobrecarga juntas</p>
+        </div>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2921F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/></svg>
+          </span>
+          <div><h4>Reset Emocional · 8 min</h4><p>El audio recomendado para tu arquetipo Alma Empática</p></div>
+        </div>
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2921F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+          </span>
+          <div><h4>Diario de hoy</h4><p>¿Cómo llegaste después de tu día? 3 preguntas</p></div>
+        </div>
+        <div class="cta">Activar mi SOS ahora</div>
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg></span>Biblioteca</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- VISTA 2: ONBOARDING -->
+  <div class="vista">
+    <p class="rotulo">2 · Así te pregunta al empezar<small>Test de arquetipo PAS · pregunta 3 de 8</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
+      <div class="pantalla">
+        <div class="progreso-dots">
+          <span class="activo"></span><span class="activo"></span><span class="activo"></span>
+          <span></span><span></span><span></span><span></span><span></span>
+        </div>
+        <p class="pregunta-eyebrow">Pregunta 3 de 8</p>
+        <h3 class="titulo-pregunta">¿Con qué frecuencia te sientes abrumada en lugares con mucho ruido o gente?</h3>
+        <div class="opcion-quiz"><span class="radio"></span> Casi nunca</div>
+        <div class="opcion-quiz seleccionada"><span class="radio"></span> Frecuentemente</div>
+        <div class="opcion-quiz"><span class="radio"></span> Casi siempre</div>
+        <div class="cta">Continuar</div>
+        <div class="cta fantasma">Atrás</div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- VISTA 3: PAYWALL -->
+  <div class="vista">
+    <p class="rotulo">3 · Aquí eliges tu plan<small>Aparece después de ver tu arquetipo y probar un audio SOS</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
+      <div class="pantalla">
+        <div class="paywall-header">
+          <div class="paywall-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.9Z"/></svg>
+          </div>
+          <h3 class="titulo-paywall">Tu refugio completo te espera</h3>
+          <p class="paywall-sub">Audios ilimitados, tu diario y protocolos hechos para tu arquetipo PAS.</p>
+        </div>
+        <div class="planes">
+          <div class="plan recomendado">
+            <span class="badge">3 días gratis</span>
+            <div><h4>Plan anual</h4><p>$34.99 al año</p></div>
+            <div class="precio">$2.92<small>al mes</small></div>
+          </div>
+          <div class="plan">
+            <div><h4>Plan mensual</h4><p>se cobra cada mes</p></div>
+            <div class="precio">$4.99<small>al mes</small></div>
+          </div>
+        </div>
+        <div class="beneficios">
+          <div class="item"><span class="check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C2921F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>SOS ilimitado, cuando lo necesites</div>
+          <div class="item"><span class="check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C2921F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>Biblioteca completa de autohipnosis</div>
+          <div class="item"><span class="check"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#C2921F" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg></span>1-2 audios nuevos cada mes</div>
+        </div>
+        <div class="cta">Comenzar mi prueba gratis</div>
+        <p class="paywall-legal">Cancela cuando quieras. Al terminar la prueba se cobra el plan anual.</p>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+  <!-- VISTA 4: MECANISMO — SOS en acción -->
+  <div class="vista">
+    <p class="rotulo">4 · Tu SOS en acción<small>El mecanismo que calma la sobrecarga en minutos</small></p>
+    <div class="telefono">
+      <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
+      <div class="pantalla">
+        <div class="sos-activo">
+          <p class="sos-eyebrow">Reset Emocional</p>
+          <div class="anillo-sos">
+            <svg width="190" height="190" viewBox="0 0 190 190" role="img" aria-label="Sesión al 40 por ciento">
+              <circle cx="95" cy="95" r="82" fill="none" stroke-width="10" stroke="#F0C9CD"/>
+              <circle cx="95" cy="95" r="82" fill="none" stroke-width="10" stroke="#C2921F" stroke-linecap="round"
+                      stroke-dasharray="515.2" stroke-dashoffset="309" transform="rotate(-90 95 95)"/>
+            </svg>
+            <div class="centro">
+              <span class="tiempo">1:12</span>
+              <span class="fase">Inhala...</span>
+            </div>
+          </div>
+          <p class="sos-instruccion">Deja que el aire entre despacio. No tienes que resolver nada ahora — solo respirar.</p>
+          <div class="sos-controles">
+            <div class="pausa" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            </div>
+            <div class="detener">Terminar sesión</div>
+          </div>
+        </div>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

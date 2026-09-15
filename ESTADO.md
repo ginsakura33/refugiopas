@@ -24,13 +24,11 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
 ## Sesión 2 en curso — Identidad visual
-- Ruta de diseño: propuesta propia, con restricción de color dada por el usuario (rosa pastel + dorado + blanco, minimalista)
-- Comparativa A/B/C creada: `direcciones-abc.html` (raíz del proyecto) — 3 direcciones, misma paleta, distinta composición:
-  - A "Refugio Cálido": botón SOS al centro con halo dorado + cards (Fraunces + Albert Sans)
-  - B "Anillo de Calma": anillo dorado sobre pista rosa + grid 2x2 de progreso semanal (Instrument Serif + Onest)
-  - C "Ritual en Tres Actos": timeline editorial de 3 momentos del día + filete dorado (Marcellus + Figtree)
-- Verificado: fuentes cargan en su clase real (sin fallback-trampa), 3 layouts estructuralmente distintos
-- Pendiente: elección del usuario (elegir/combinar/otras 3/ajustar) → cierra FICHA-ARTE.md
+- Usuario ELIGIÓ la Opción A "Refugio Cálido" con el dorado más intenso (#C2921F en vez de #C9A15A)
+- FICHA-ARTE.md: creada y llena (2026-09-15) — pendiente solo la aprobación del TOUR de la app
+- Tour construido: `vista-previa-app.html` (4 vistas: Inicio/M0, Onboarding, Paywall, SOS en acción) — presentado al usuario, esperando su OK
+- Direcciones descartadas (no repetir en próximo proyecto): B "Anillo de Calma" (Instrument Serif + Onest) · C "Ritual en Tres Actos" (Marcellus + Figtree)
+- REGISTRO ANTI-REPETICIÓN: paleta rosa #F0C9CD + dorado #C2921F + blanco #FFF9F5, par Fraunces + Albert Sans — VETADOS para el próximo proyecto del SO
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
