@@ -23,13 +23,11 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Deseo #1: desactivar la sobrecarga sensorial en menos de 5 minutos en momentos de crisis
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
-## Sesión 2 en curso — Identidad visual
-- El usuario vio la combinación B+C de la ronda 2 (orbe + nota del día) y pidió una RONDA 3 completa — esa combinación también queda descartada
-- Ronda 3 vigente en `direcciones-abc.html`: A "Semana en Calma" (Spectral/Mulish) · B "Conversación Gentil" (Lora/Manrope) · C "Carta Sellada" (Bitter/Sora) — todas dentro de la paleta rosa/dorado/blanco pedida
-- `vista-previa-app.html` (tour) quedó desactualizado — corresponde a la ronda 2; se reconstruye cuando el usuario elija entre A/B/C de la ronda 3
-- Descartado acumulado (NO repetir tipografía ni composición): Fraunces+Albert Sans, Instrument Serif+Onest, Marcellus+Figtree, Domine+Work Sans, Cormorant+Karla, Petrona+Nunito Sans — 6 pares ya usados
-- Nota técnica guardada en FICHA-ARTE.md: Spectral requiere pesos estáticos en la URL de Google Fonts, no rango variable (si no, cae al fallback-trampa)
-- Pendiente: elección del usuario entre las 3 nuevas opciones de la ronda 3
+## Sesión 2 — Identidad visual: DECIDIDA (2026-09-15)
+- Tras explorar 2 rondas adicionales (descartadas), el usuario pidió volver a la combinación original: "Refugio Cálido" (halo dorado en el botón SOS) + "Anillo de Calma" (grilla 2x2: arquetipo, racha, audios, próxima sesión)
+- `direcciones-abc.html` y `vista-previa-app.html` restaurados a esa versión — dorado intenso #C2921F, Fraunces + Albert Sans, fondo #FFF9F5, rosa #F0C9CD
+- Direcciones exploradas y descartadas (no re-proponer su tipografía/composición si se pide otra ronda): ronda 2 (Tarjetas en Cascada — Domine/Work Sans · Respiración Central+Nota del Día — Cormorant/Karla) y ronda 3 (Semana en Calma — Spectral/Mulish · Conversación Gentil — Lora/Manrope · Carta Sellada — Bitter/Sora)
+- FICHA-ARTE.md actualizada con el brand kit final · pendiente: confirmación final del usuario sobre el tour restaurado
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
