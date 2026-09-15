@@ -96,7 +96,7 @@
 
   .tabbar {
     display: flex; align-items: stretch; justify-content: space-around;
-    margin: 12px -18px 0; padding: 8px 8px 16px;
+    margin: auto -18px 0; padding: 8px 8px 16px;
     border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
     background: color-mix(in oklab, var(--surface) 88%, transparent);
   }
@@ -185,28 +185,26 @@
     line-height: 1.15; letter-spacing: -0.005em; margin-top: 2px;
   }
   .op-a .heroe {
-    margin-top: 10px; border-radius: var(--radius-card);
+    margin-top: 12px; border-radius: var(--radius-card);
     border: 1.5px solid transparent;
     background:
       linear-gradient(var(--surface), var(--surface)) padding-box,
       linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--rosa) 60%, transparent) 60%) border-box;
     box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6) inset,
                 0 10px 24px -10px rgb(var(--shadow-tinta) / 0.3);
-    padding: 12px 16px; text-align: center;
-    display: flex; align-items: center; gap: 12px;
+    padding: 16px; text-align: center;
   }
-  .op-a .heroe .heroe-texto { flex: 1; text-align: left; }
-  .op-a .heroe .label { font-size: 11px; font-weight: 600; color: var(--text-2); }
+  .op-a .heroe .label { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
   .op-a .heroe .sos-btn {
-    margin: 0; width: 76px; height: 76px; border-radius: 999px; flex-shrink: 0;
+    margin: 10px auto 0; width: 104px; height: 104px; border-radius: 999px;
     display: flex; align-items: center; justify-content: center; text-align: center;
-    /* el orbe que respira, en tamaño compacto */
+    /* el orbe que respira, centrado y equilibrado */
     background: radial-gradient(circle at 32% 28%, color-mix(in oklab, var(--accent) 38%, white), color-mix(in oklab, var(--rosa) 55%, white) 75%);
-    box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 9%, transparent),
-                0 10px 20px -10px rgb(var(--shadow-tinta) / 0.45);
+    box-shadow: 0 0 0 9px color-mix(in oklab, var(--accent) 8%, transparent),
+                0 16px 30px -14px rgb(var(--shadow-tinta) / 0.45);
   }
-  .op-a .heroe .sos-btn .fase { font-family: var(--font-display); font-style: italic; font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.1; }
-  .op-a .heroe .insight { margin-top: 4px; font-size: 12px; color: var(--accent); font-weight: 600; }
+  .op-a .heroe .sos-btn .fase { font-family: var(--font-display); font-style: italic; font-size: 17px; font-weight: 600; color: var(--text-1); line-height: 1.1; }
+  .op-a .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
   .op-a .chips-fila { display: flex; gap: 6px; margin-top: 10px; }
   .op-a .chip-dato {
     flex: 1; background: var(--surface); border-radius: 12px;
@@ -221,16 +219,18 @@
     padding: 12px 14px;
   }
   .op-a .animo-card .animo-titulo { font-size: 12px; font-weight: 600; color: var(--text-2); }
-  .op-a .animo-fila-mini { display: flex; justify-content: space-between; margin-top: 9px; }
-  .op-a .animo-mini { display: flex; flex-direction: column; align-items: center; }
+  .op-a .animo-fila-mini { display: flex; justify-content: space-between; margin-top: 10px; }
+  .op-a .animo-mini { display: flex; flex-direction: column; align-items: center; gap: 4px; }
   .op-a .animo-circulo-mini {
-    width: 32px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
     background: var(--bg); border: 1.5px solid color-mix(in oklab, var(--rosa) 70%, transparent); color: var(--text-2);
   }
   .op-a .animo-mini.seleccionada .animo-circulo-mini {
     background: color-mix(in oklab, var(--accent) 12%, var(--bg));
     border: 1.5px solid var(--accent); color: var(--accent);
   }
+  .op-a .animo-mini .etiqueta-mini { font-size: 8.5px; font-weight: 600; color: var(--text-2); text-align: center; }
+  .op-a .animo-mini.seleccionada .etiqueta-mini { color: var(--accent); }
   .op-a .card {
     margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
     border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
@@ -487,11 +487,9 @@
         <h3 class="titulo-a">Hola, Valeria</h3>
 
         <div class="heroe">
+          <p class="label">Tu SOS de hoy</p>
           <div class="sos-btn"><div><p class="fase">2 min</p></div></div>
-          <div class="heroe-texto">
-            <p class="label">Tu SOS de hoy</p>
-            <p class="insight">Respira y baja la sobrecarga</p>
-          </div>
+          <p class="insight">Respira y baja la sobrecarga</p>
         </div>
 
         <div class="chips-fila">
@@ -507,26 +505,31 @@
               <span class="animo-circulo-mini" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 16c1-1.5 6-1.5 7 0"/></svg>
               </span>
+              <span class="etiqueta-mini">Agobiada</span>
             </div>
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M9 15.5c1.2-.6 4.8-.6 6 0"/></svg>
               </span>
+              <span class="etiqueta-mini">Inquieta</span>
             </div>
             <div class="animo-mini seleccionada">
               <span class="animo-circulo-mini" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M9 15h6"/></svg>
               </span>
+              <span class="etiqueta-mini">En calma</span>
             </div>
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 14.5c1.2 1.2 5.8 1.2 7 0"/></svg>
               </span>
+              <span class="etiqueta-mini">Contenta</span>
             </div>
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8.3 9.3c.3-.6 1-.9 1.6-.6"/><path d="M14.1 8.7c.6-.3 1.3 0 1.6.6"/><path d="M8 14c1.5 1.8 6.5 1.8 8 0"/></svg>
               </span>
+              <span class="etiqueta-mini">Luminosa</span>
             </div>
           </div>
         </div>
