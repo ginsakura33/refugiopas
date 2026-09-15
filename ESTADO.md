@@ -24,11 +24,10 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
 ## Sesión 2 en curso — Identidad visual
-- El usuario pidió volver a las opciones y luego "3 direcciones totalmente nuevas" (2026-09-15) — se DESCARTÓ toda la ronda 1 (Refugio Cálido + Anillo de Calma combinados, y Ritual en Tres Actos)
-- Ronda 2 vigente en `direcciones-abc.html`: A "Tarjetas en Cascada" (Domine/Work Sans) · B "Respiración Central" (Cormorant/Karla) · C "Nota del Día" (Petrona/Nunito Sans) — todas dentro de la paleta rosa/dorado/blanco pedida
-- `vista-previa-app.html` (tour) quedó desactualizado — corresponde a la ronda 1; se reconstruye cuando el usuario elija entre A/B/C de la ronda 2
-- FICHA-ARTE.md actualizada con ambas rondas (para no repetir lo descartado)
-- Pendiente: elección del usuario entre las 3 nuevas opciones
+- Dirección ELEGIDA (2026-09-15): combinación de B "Respiración Central" + C "Nota del Día" — el orbe que respira (héroe) + la tarjeta "Nota del Día" debajo. Tipografía Cormorant (itálica) + Karla · dorado #CFA05C · rosa #F3D6D9 · fondo #FFFBF8
+- Descartadas definitivamente: ronda 1 completa (Refugio Cálido + Anillo de Calma, Ritual en Tres Actos) y de la ronda 2, A "Tarjetas en Cascada" (Domine/Work Sans) — no re-proponer estos pares tipográficos ni composiciones
+- FICHA-ARTE.md actualizada con el brand kit final de la combinación elegida
+- Tour reconstruido en `vista-previa-app.html` con las 4 vistas en este estilo — presentado al usuario, esperando su OK final
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)

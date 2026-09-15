@@ -15,22 +15,23 @@
 - 3 adjetivos de personalidad: cálida, protectora, luminosa
 - Compilación: spring suave (bounce 0-0.1, casi sin rebote) · duración base 300-350ms · exclamaciones máx 1/pantalla · celebración nivel medio (sin fuegos artificiales, un halo que se intensifica) · radio tendencial 16-20px
 
-## Brand kit final (Opción A — "Refugio Cálido", dorado intensificado por pedido del usuario)
-- Fondo: #FFF9F5 · Superficie: #FFFFFF · Hundido: N/A (app clara, sin modo hundido marcado) · Texto 1º/2º: #4A3B3F / #9C8388
-- Acento: #C2921F — dorado intenso (ajustado desde #C9A15A por pedido del usuario) (SOLO en: botón SOS, CTA principal, badges, íconos de chip, hairlines) · 2ª nota: #F0C9CD (rosa pastel — en bordes de card, pista del anillo, nodos de timeline; porqué: es la mitad de la paleta pedida por el usuario, reservada a detalles secundarios para que el dorado siga siendo EL acento)
+## Brand kit final (COMBINACIÓN "Respiración Central" + "Nota del Día" — elegida 2026-09-15, cosa juzgada)
+- Fondo: #FFFBF8 · Superficie: #FFFFFF · Hundido: N/A (app clara, sin modo hundido marcado) · Texto 1º/2º: #4B3A3E / #A08D91
+- Acento: #CFA05C — dorado suave (SOLO en: orbe de respiración, CTA principal, sello de la nota, filete superior de tarjetas, chips destacados) · 2ª nota: #F3D6D9 (rosa pastel — pista del orbe, bordes de tarjeta; reservada a detalles secundarios para que el dorado siga siendo EL acento)
 - Semánticos: éxito #7FB59B (verde salvia suave, coherente con la paleta cálida) · error #D97060 (terracota suave, no rojo puro) · aviso #E0B458
-- Display: Fraunces (pesos 400/600) · Body: Albert Sans (pesos 400/600/700) · Escala: display 25px / title 17px / body 14-15px / label 11-12px
-- Radio: 20px cards / 14px botones · Profundidad: hairline degradé padding-box/border-box (dorado→rosa) en el módulo héroe, sombras tintadas del propio dorado (nunca negras) · Espaciado base: escala 4·8·12·16·24·32·48·64
-- Dispositivo ownable: halo dorado alrededor del botón SOS (anillo de luz que comunica "aquí está tu ayuda" en el primer segundo) — propio del proyecto, inspirado en el banco 54 pero sin dirección exacta que coincidiera. Se combina con el módulo de grilla 2x2 (tomado de la Opción B) para el resumen semanal: arquetipo, racha, audios escuchados, próxima sesión.
-- Se probó un detalle botánico de línea fina (inspirado en el "Jardín Interior" del ebook) y el usuario lo RECHAZÓ explícitamente (2026-09-15) — retirado de ambos archivos. NO reintentar ilustraciones botánicas/naturales en este proyecto sin que el usuario lo pida de nuevo.
-- Motion signature: ease-out suave `cubic-bezier(0.16, 1, 0.3, 1)` · stagger 70-90ms · firma: fades amplios, casi sin rebote — coherente con arquetipo Cuidador
+- Display: Cormorant, itálica (pesos 400/600) · Body: Karla (pesos 400/600/700) · Escala: display 21-26px / title 16px / body 14-15px / label 10-11px
+- Radio: 20px cards / 999px botones (píldora) · Profundidad: sombras tintadas del propio dorado (nunca negras), el orbe con halo de luz radial · Espaciado base: escala 4·8·12·16·24·32·48·64
+- Dispositivo ownable: el ORBE que respira (círculo cálido central, la pantalla entera gira en torno a él — "menos interfaz, más alivio") + la tarjeta "Nota del Día" con sello circular y filete dorado superior, debajo del orbe
+- Se probó un detalle botánico de línea fina (inspirado en el "Jardín Interior" del ebook) y el usuario lo RECHAZÓ explícitamente (2026-09-15) — retirado. NO reintentar ilustraciones botánicas/naturales en este proyecto sin que el usuario lo pida de nuevo.
+- Motion signature: ease-out suave `cubic-bezier(0.16, 1, 0.3, 1)` · stagger 70-90ms · firma: fades amplios, casi sin rebote, el orbe pulsa lento (inhala/exhala) — coherente con arquetipo Cuidador
 
 ## Trazabilidad y vetos
 - Ruta de diseño: propuesta propia (el usuario dio la restricción de color, no una captura)
 - RONDA 1 (descartada por completo — el usuario pidió "3 direcciones totalmente nuevas" el 2026-09-15): combinación de A "Refugio Cálido" (halo dorado + Fraunces/Albert Sans) + B "Anillo de Calma" (grilla 2x2), y C "Ritual en Tres Actos" (timeline editorial, Marcellus/Figtree) — NO re-proponer esta composición ni estos pares tipográficos.
-- RONDA 2 (vigente, 2026-09-15): A "Tarjetas en Cascada" (pila de naipes + chips, Domine/Work Sans) · B "Respiración Central" (orbe que respira, muy aireada, Cormorant/Karla) · C "Nota del Día" (diario protagonista + SOS secundario, Petrona/Nunito Sans) — página comparativa: `direcciones-abc.html` (reescrita, mismas 3 letras A/B/C con contenido nuevo) · pendiente de elección del usuario
+- RONDA 2: A "Tarjetas en Cascada" (Domine/Work Sans) y C "Nota del Día" en solitario — descartadas como opciones independientes (C se absorbió en la combinación de abajo)
+- ELEGIDA (2026-09-15): COMBINACIÓN de B "Respiración Central" + C "Nota del Día" — el orbe que respira (héroe, de B) arriba, y debajo la tarjeta "Nota del Día" (de C, con su sello y filete dorado) como invitación a escribir, sin competir con el orbe. Tipografía y paleta de B: Cormorant (display, itálica) + Karla (body) · fondo #FFFBF8 · acento #CFA05C · rosa #F3D6D9. Orden: orbe → CTA "Comenzar mi respiración" → nota del día → chips de arquetipo/racha → nav.
 - screenshots: verificados en sesión (fuentes cargando en su clase real, sin fallback-trampa) — no se guardó copia PNG en docs/revisiones/ por no contar con herramienta de captura a archivo en este entorno; el HTML mismo queda como evidencia versionada en git
-- Tour de la app: `vista-previa-app.html` — corresponde a la RONDA 1, ahora obsoleto/pendiente de rehacer una vez el usuario elija entre las direcciones de la RONDA 2
+- Tour de la app: `vista-previa-app.html` (reconstruido 2026-09-15 con la combinación B+C) — 4 vistas: Inicio/M0 (orbe + nota del día), Onboarding, Paywall ($39.99/año), Mecanismo (orbe grande en pantalla completa) · aprobado por el usuario: PENDIENTE — se presenta a continuación en esta sesión
 - Paleta derivada de: restricción de color del usuario (rosa pastel + dorado + blanco) + lógica de "1 acento, uso disciplinado" de los líderes de bienestar · Dispositivo ownable elegido: halo dorado en el botón SOS
 - Registro anti-repetición: paleta (rosa pastel #F0C9CD + dorado #C2921F + blanco cálido #FFF9F5) y par tipográfico (Fraunces + Albert Sans) quedan anotados en ESTADO.md como VETADOS para el próximo proyecto del SO
 - Modo (claro/oscuro) DERIVADO por: arquetipo Cuidador/Inocente + pedido explícito del usuario de blanco como base — claro es, además, más distintivo hoy que oscuro+neón
