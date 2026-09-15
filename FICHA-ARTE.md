@@ -18,11 +18,11 @@
 ## Brand kit final (COMBINACIÓN "Refugio Cálido" + "Anillo de Calma" — ELEGIDA y confirmada 2026-09-15, cosa juzgada)
 > Nota de recorrido: entre medio se exploraron y descartaron una ronda 2 (Tarjetas en Cascada / Respiración Central+Nota del Día / Nota del Día) y una ronda 3 (Semana en Calma / Conversación Gentil / Carta Sellada). El usuario las vio todas y pidió volver explícitamente a esta — es la definitiva.
 - Fondo: #FFF9F5 · Superficie: #FFFFFF · Hundido: N/A (app clara, sin modo hundido marcado) · Texto 1º/2º: #4A3B3F / #9C8388
-- Acento: #C2921F — dorado intenso (SOLO en: halo/anillo del botón SOS, CTA principal, badges, íconos de chip, hairlines) · 2ª nota: #F0C9CD (rosa pastel claro — bordes de card, pista) · Botón SOS: #D98A97 (rosa más saturado que la 2ª nota, para que el texto blanco tenga contraste)
+- Acento: #C2921F — dorado intenso (CTA principal, badges, íconos de chip, hairlines) · 2ª nota: #F0C9CD (rosa pastel claro — bordes de card, pista) · Botón SOS: gradiente radial dorado luminoso #FDF3DC → #F0CD78 → #C2921F, con glow suave (no anillo duro)
 - Semánticos: éxito #7FB59B (verde salvia suave) · error #D97060 (terracota suave, no rojo puro) · aviso #E0B458
 - Display: Fraunces (pesos 400/600) · Body: Albert Sans (pesos 400/600/700) · Escala: display 25px / title 17px / body 14-15px / label 11-12px
 - Radio: 20px cards / 14px botones · Profundidad: hairline degradé padding-box/border-box (dorado→rosa) en el módulo héroe, sombras tintadas del propio dorado (nunca negras) · Espaciado base: escala 4·8·12·16·24·32·48·64
-- Dispositivo ownable: botón SOS ROSA (#D98A97) con halo dorado alrededor (ajustado 2026-09-15 a pedido del usuario: el botón es rosa, el halo/anillo que lo envuelve es dorado) + la grilla 2x2 de resumen semanal debajo (arquetipo, racha, audios escuchados, próxima sesión)
+- Dispositivo ownable: botón SOS dorado LUMINOSO — esfera con brillo champán (#FDF3DC) al centro que se funde al dorado intenso (#C2921F) en el borde, más un resplandor suave alrededor (glow, no un anillo duro) — versión final tras 2 ajustes del usuario el 2026-09-15 (primero probamos el botón rosa con halo dorado, no le gustó; pidió "dorado pero luminoso, elegante" y esta es la versión aprobada) + la grilla 2x2 de resumen semanal debajo (arquetipo, racha, audios escuchados, próxima sesión)
 - Se probó un detalle botánico de línea fina (inspirado en el "Jardín Interior" del ebook) y el usuario lo RECHAZÓ explícitamente — no reintentar ilustraciones botánicas/naturales en este proyecto sin que el usuario lo pida de nuevo.
 - Motion signature: ease-out suave `cubic-bezier(0.16, 1, 0.3, 1)` · stagger 70-90ms · firma: fades amplios, casi sin rebote — coherente con arquetipo Cuidador
 
