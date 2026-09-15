@@ -9,7 +9,7 @@
 ## 1. PRECIO — contra qué se compara el tuyo
 - Mediana de precio de la categoría (mensual): $4.99-9.99 USD (apps de bienestar/salud mental LATAM) · (anual): $34.99-39.99 USD | fuente: benchmark del propio RESUMEN del usuario | fecha: 2026-09-15
 - Rango que cobran los líderes investigados: Reveri $24.99/mes · $99.99/año (mercado angloparlante, precio premium) — ver FICHA-MODELO §4 | fecha: 2026-09-15
-- **Precio elegido para esta app:** $4.99 USD/mes · $34.99 USD/año · **Desvío respecto a Reveri:** -80% mensual, -65% anual
+- **Precio elegido para esta app:** $4.99 USD/mes · $39.99 USD/año (~$3.33/mes) · **Desvío respecto a Reveri:** -80% mensual, -60% anual
 - Razón del desvío: Reveri cobra en USD a un mercado angloparlante con mayor poder adquisitivo; Refugio PAS se posiciona como alternativa accesible en español, alineada al benchmark de apps de salud mental LATAM ($4.99/mes), no al de Reveri
 - Precio por país/moneda: sin ajuste de paridad por ahora — se revisa si el dato de conversión real de Hotmart lo justifica (Sesión 8)
 

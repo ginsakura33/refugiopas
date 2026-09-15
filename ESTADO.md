@@ -41,7 +41,7 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 
 ## Estrategia de monetización (decidida por el usuario en su investigación)
 - Modelo: Freemium con suscripción mensual y anual
-- Precio: $4.99 USD/mes · $34.99 USD/año (~$2.92/mes)
+- Precio: $4.99 USD/mes · $39.99 USD/año (~$3.33/mes) — corregido por el usuario el 2026-09-15 (el borrador inicial traía $34.99, dato equivocado)
 - Trial: 3 días, vinculado al plan anual
 - Justificación: ya validado por el usuario contra benchmark del nicho (Reveri, apps de salud mental LATAM)
 
