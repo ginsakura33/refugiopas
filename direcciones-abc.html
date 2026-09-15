@@ -198,19 +198,16 @@
   }
   .op-a .heroe .label { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
   .op-a .heroe .sos-btn {
-    margin: 10px auto 0; width: 92px; height: 92px; border-radius: 999px;
-    display: flex; align-items: center; justify-content: center;
-    /* medallón dorado satinado: degradé suave + bisel fino + halo rosado delicado */
-    background: radial-gradient(circle at 38% 32%, color-mix(in oklab, var(--accent) 52%, white) 0%, var(--accent) 48%, color-mix(in oklab, var(--accent) 76%, black) 100%);
-    box-shadow: inset 0 0 0 1.5px color-mix(in oklab, var(--accent) 55%, black 12%),
-                inset 0 -6px 10px -3px rgb(var(--shadow-tinta) / 0.4),
-                inset 0 3px 5px -2px rgb(255 255 255 / 0.16),
-                0 0 0 5px color-mix(in oklab, var(--rosa) 70%, transparent),
-                0 0 20px -6px color-mix(in oklab, var(--rosa) 45%, transparent),
-                0 10px 22px -10px rgb(var(--shadow-tinta) / 0.5);
+    margin: 12px auto 0; width: 140px; height: 140px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center; text-align: center;
+    /* el orbe que respira — el botón original que le gustó al usuario */
+    background: radial-gradient(circle at 32% 28%, color-mix(in oklab, var(--accent) 38%, white), color-mix(in oklab, var(--rosa) 55%, white) 75%);
+    box-shadow: 0 0 0 14px color-mix(in oklab, var(--accent) 8%, transparent),
+                0 24px 46px -18px rgb(var(--shadow-tinta) / 0.45);
   }
-  .op-a .heroe .sos-btn span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-1); }
-  .op-a .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .op-a .heroe .sos-btn .fase { font-family: var(--font-display); font-style: italic; font-size: 22px; font-weight: 600; color: var(--text-1); }
+  .op-a .heroe .sos-btn .sub { margin-top: 4px; font-size: 10px; color: var(--text-2); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+  .op-a .heroe .insight { margin-top: 12px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
   .op-a .card {
     margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
     border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
@@ -468,7 +465,7 @@
 
         <div class="heroe">
           <p class="label">Tu SOS de hoy</p>
-          <div class="sos-btn"><span>2 min</span></div>
+          <div class="sos-btn"><div><p class="fase">Inhala</p><p class="sub">Toca para comenzar</p></div></div>
           <p class="insight">Respira — vamos a bajar la sobrecarga juntas</p>
         </div>
 

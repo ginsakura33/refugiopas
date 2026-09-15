@@ -24,11 +24,12 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
 ## Sesión 2 — Identidad visual: CERRADA Y APROBADA (2026-09-15)
-- Dirección final: "Refugio Cálido" (halo dorado en el botón SOS) + "Anillo de Calma" (grilla 2x2: arquetipo, racha, audios, próxima sesión) — usuario confirmó explícitamente "sí, esta es"
-- FICHA-ARTE.md: APROBADA — cosa juzgada, no se redecide a mitad de proyecto
+- Dirección final: "Refugio Cálido" + "Anillo de Calma" (grilla 2x2: arquetipo, racha, audios, próxima sesión) — usuario confirmó "sí, esta es"
+- El botón SOS pasó por 5 iteraciones de color/forma y terminó siendo EL ORBE QUE RESPIRA (círculo grande de 140px, degradé dorado→rosa, texto "Inhala" + "Toca para comenzar") — tomado de la dirección "Respiración Central" de la ronda 2, que el usuario prefirió sobre todas las variantes de botón chico probadas. APROBADO — cosa juzgada, no cambiar el botón de nuevo sin que el usuario lo pida.
+- FICHA-ARTE.md: APROBADA
 - Brand kit: dorado intenso #C2921F · rosa #F0C9CD · fondo #FFF9F5 · Fraunces (display) + Albert Sans (body)
 - Archivos vigentes: `direcciones-abc.html` y `vista-previa-app.html` (raíz del proyecto)
-- Direcciones exploradas y descartadas (no re-proponer su tipografía/composición): ronda 2 (Tarjetas en Cascada — Domine/Work Sans · Respiración Central+Nota del Día — Cormorant/Karla) y ronda 3 (Semana en Calma — Spectral/Mulish · Conversación Gentil — Lora/Manrope · Carta Sellada — Bitter/Sora)
+- Direcciones exploradas y descartadas como composición general (aunque el botón "Inhala" de una de ellas SÍ se reusó): ronda 2 (Tarjetas en Cascada — Domine/Work Sans · Nota del Día — Petrona/Nunito Sans) y ronda 3 (Semana en Calma — Spectral/Mulish · Conversación Gentil — Lora/Manrope · Carta Sellada — Bitter/Sora)
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
