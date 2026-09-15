@@ -200,12 +200,13 @@
   .op-a .heroe .sos-btn {
     margin: 10px auto 0; width: 92px; height: 92px; border-radius: 999px;
     display: flex; align-items: center; justify-content: center;
-    /* dorado LUMINOSO al centro + halo rosado clarito alrededor */
-    background: radial-gradient(circle at 32% 26%, #FDF3DC 0%, #F0CD78 30%, var(--accent) 76%);
-    box-shadow: 0 1px 2px rgb(255 255 255 / 0.7) inset,
+    /* dorado con PROFUNDIDAD (esfera tallada, sin brillo/sheen) + halo rosado clarito */
+    background: radial-gradient(circle at 34% 28%, color-mix(in oklab, var(--accent) 78%, white) 0%, var(--accent) 52%, color-mix(in oklab, var(--accent) 72%, black) 100%);
+    box-shadow: inset 0 -9px 14px -4px rgb(var(--shadow-tinta) / 0.5),
+                inset 0 4px 6px -2px rgb(255 255 255 / 0.2),
                 0 0 0 9px color-mix(in oklab, var(--rosa) 65%, transparent),
-                0 0 28px -6px color-mix(in oklab, var(--rosa) 60%, transparent),
-                0 12px 26px -8px rgb(var(--shadow-tinta) / 0.4);
+                0 0 24px -8px color-mix(in oklab, var(--rosa) 55%, transparent),
+                0 12px 24px -8px rgb(var(--shadow-tinta) / 0.45);
   }
   .op-a .heroe .sos-btn span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-1); }
   .op-a .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
