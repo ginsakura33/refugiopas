@@ -22,6 +22,7 @@
 - Display: Fraunces (pesos 400/600) · Body: Albert Sans (pesos 400/600/700) · Escala: display 25px / title 17px / body 14-15px / label 11-12px
 - Radio: 20px cards / 14px botones · Profundidad: hairline degradé padding-box/border-box (dorado→rosa) en el módulo héroe, sombras tintadas del propio dorado (nunca negras) · Espaciado base: escala 4·8·12·16·24·32·48·64
 - Dispositivo ownable: halo dorado alrededor del botón SOS (anillo de luz que comunica "aquí está tu ayuda" en el primer segundo) — propio del proyecto, inspirado en el banco 54 pero sin dirección exacta que coincidiera. Se combina con el módulo de grilla 2x2 (tomado de la Opción B) para el resumen semanal: arquetipo, racha, audios escuchados, próxima sesión.
+- Segundo dispositivo ownable: ramita botánica de línea fina (dorado + rosa, opacidad 16-22%), inspirada en el "Jardín Interior" del ebook de la autora — aparece como detalle discreto en la esquina del encabezado y en la pantalla del mecanismo (SOS en acción). Nunca decora más de 1-2 zonas por pantalla, para mantenerse minimalista.
 - Motion signature: ease-out suave `cubic-bezier(0.16, 1, 0.3, 1)` · stagger 70-90ms · firma: fades amplios, casi sin rebote — coherente con arquetipo Cuidador
 
 ## Trazabilidad y vetos
