@@ -164,6 +164,7 @@
     --text-2: #9C8388;
     --accent: #C2921F;
     --rosa: #F0C9CD;
+    --rosa-boton: #D98A97;
     --radius-card: 20px;
     --radius-btn: 14px;
     --font-display: 'Fraunces', monospace;
@@ -199,9 +200,10 @@
   .op-a .heroe .sos-btn {
     margin: 10px auto 0; width: 92px; height: 92px; border-radius: 999px;
     display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent) 92%, white), var(--accent));
-    box-shadow: 0 0 0 8px color-mix(in oklab, var(--accent) 14%, transparent),
-                0 10px 26px -6px rgb(var(--shadow-tinta) / 0.55);
+    /* botón rosa, con el HALO dorado alrededor (el dispositivo ownable de esta opción) */
+    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--rosa-boton) 88%, white), var(--rosa-boton));
+    box-shadow: 0 0 0 8px color-mix(in oklab, var(--accent) 22%, transparent),
+                0 10px 26px -6px rgb(var(--shadow-tinta) / 0.5);
   }
   .op-a .heroe .sos-btn span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; }
   .op-a .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
