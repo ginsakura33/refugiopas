@@ -24,11 +24,11 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
 ## Sesión 2 en curso — Identidad visual
-- Usuario ELIGIÓ una COMBINACIÓN: SOS con halo dorado (de A) + grilla 2x2 de resumen semanal (de B), con tipografía y paleta de A (dorado intensificado #C2921F)
-- FICHA-ARTE.md: creada y llena (2026-09-15) — pendiente solo la aprobación del TOUR de la app
-- Tour actualizado: `vista-previa-app.html` (4 vistas: Inicio/M0 con la combinación, Onboarding, Paywall $39.99/año, SOS en acción) — presentado al usuario, esperando su OK
-- Dirección descartada (no repetir en próximo proyecto): C "Ritual en Tres Actos" (Marcellus + Figtree)
-- REGISTRO ANTI-REPETICIÓN: paleta rosa #F0C9CD + dorado #C2921F + blanco #FFF9F5, par Fraunces + Albert Sans — VETADOS para el próximo proyecto del SO
+- El usuario pidió volver a las opciones y luego "3 direcciones totalmente nuevas" (2026-09-15) — se DESCARTÓ toda la ronda 1 (Refugio Cálido + Anillo de Calma combinados, y Ritual en Tres Actos)
+- Ronda 2 vigente en `direcciones-abc.html`: A "Tarjetas en Cascada" (Domine/Work Sans) · B "Respiración Central" (Cormorant/Karla) · C "Nota del Día" (Petrona/Nunito Sans) — todas dentro de la paleta rosa/dorado/blanco pedida
+- `vista-previa-app.html` (tour) quedó desactualizado — corresponde a la ronda 1; se reconstruye cuando el usuario elija entre A/B/C de la ronda 2
+- FICHA-ARTE.md actualizada con ambas rondas (para no repetir lo descartado)
+- Pendiente: elección del usuario entre las 3 nuevas opciones
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
