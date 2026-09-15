@@ -52,7 +52,7 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 3. Biblioteca de Autohipnosis Guiada (Reset Emocional, El Jardín Interior, Limpieza Energética Nocturna)
 4. Módulos didácticos progresivos (Reconocerme, Comprenderme, Sostenerme, Honrarme)
 5. Diario digital de journaling + registro de ánimo — decidido 2026-09-15: el chequeo de ánimo (5 caritas propias, sin emojis genéricos) vive en la pantalla de INICIO, no solo al entrar al diario; reemplazó al botón "Activar mi SOS ahora" que era redundante con el orbe
-6. Seguimiento de hábitos saludables recomendados — agregado 2026-09-15 a pedido del usuario: checklist diario en Inicio (Respiración matutina 8:00 · Pausa SOS 13:00, si se necesita · Autohipnosis nocturna 21:30), con estado hecho/pendiente
+6. Seguimiento de hábitos saludables recomendados — agregado 2026-09-15: checklist diario (Respiración matutina 8:00 · Pausa SOS 13:00, si se necesita · Autohipnosis nocturna 21:30), con estado hecho/pendiente. Vive en su PROPIA sección del menú ("Hábitos", 5º ítem de la barra de navegación entre Inicio y Biblioteca), no dentro de Inicio — así quedó decidido tras el primer intento
 
 ## Qué NO construir todavía (definido por el usuario)
 - Videollamadas 1:1 o agendamiento nativo (redirigir a Calendly externo)

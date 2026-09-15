@@ -167,22 +167,6 @@
     background: color-mix(in oklab, var(--accent) 12%, var(--bg));
     border: 1.5px solid var(--accent); color: var(--accent);
   }
-  .habitos-card {
-    margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
-    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    padding: 12px 14px;
-  }
-  .habitos-card .habitos-titulo { font-size: 12px; font-weight: 600; color: var(--text-2); }
-  .habito-fila { display: flex; align-items: center; gap: 10px; margin-top: 9px; }
-  .habito-check {
-    width: 22px; height: 22px; border-radius: 999px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    border: 1.5px solid color-mix(in oklab, var(--rosa) 80%, transparent); color: transparent;
-  }
-  .habito-fila.hecho .habito-check { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .habito-nombre { flex: 1; font-size: 12.5px; font-weight: 600; color: var(--text-1); }
-  .habito-fila.hecho .habito-nombre { color: var(--text-2); text-decoration: line-through; text-decoration-color: color-mix(in oklab, var(--text-2) 50%, transparent); }
-  .habito-hora { font-size: 10.5px; color: var(--text-2); font-variant-numeric: tabular-nums; }
   .card {
     margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
     border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
@@ -284,29 +268,42 @@
     box-shadow: 0 8px 20px color-mix(in oklab, var(--accent) 35%, transparent);
   }
 
-  /* ── VISTA 5: Diario — chequeo de ánimo (caritas propias, sin emojis) ── */
-  .animo-eyebrow { margin-top: 18px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em;
-                   text-transform: uppercase; color: var(--accent); text-align: center; }
-  h3.titulo-animo {
-    font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.25;
-    margin-top: 8px; text-align: center;
+  /* ── VISTA: Hábitos — pantalla propia, se abre desde el menú ── */
+  .habitos-eyebrow { margin-top: 10px; font-size: 11.5px; font-weight: 700; letter-spacing: 0.08em;
+                     text-transform: uppercase; color: var(--text-2); }
+  h3.titulo-habitos {
+    font-family: var(--font-display); font-size: 23px; font-weight: 600; line-height: 1.2; margin-top: 2px;
   }
-  .animo-fila { display: flex; justify-content: space-between; margin-top: 28px; padding: 0 4px; }
-  .animo-opcion { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  .animo-circulo {
-    width: 52px; height: 52px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
-    background: var(--surface); border: 1.5px solid color-mix(in oklab, var(--rosa) 70%, transparent);
-    color: var(--text-2);
+  .habitos-resumen { margin-top: 4px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .habito-card-grande {
+    margin-top: 12px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+    padding: 14px; display: flex; align-items: center; gap: 12px;
   }
-  .animo-opcion.seleccionada .animo-circulo {
-    background: color-mix(in oklab, var(--accent) 12%, var(--surface));
-    border: 1.5px solid var(--accent);
-    box-shadow: 0 8px 18px -8px rgb(var(--shadow-tinta) / 0.4);
-    color: var(--accent);
+  .habito-card-grande.hecho {
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 45%, transparent), transparent 60%) border-box;
   }
-  .animo-opcion span.etiqueta { font-size: 10px; font-weight: 600; color: var(--text-2); }
-  .animo-opcion.seleccionada span.etiqueta { color: var(--accent); }
-  .animo-nota { margin-top: 26px; font-size: 12.5px; color: var(--text-2); text-align: center; line-height: 1.5; }
+  .habito-icono {
+    width: 40px; height: 40px; border-radius: var(--radius-btn); flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center; color: var(--accent);
+    background: color-mix(in oklab, var(--rosa) 45%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+  .habito-info { flex: 1; }
+  .habito-info h4 { font-size: 14px; font-weight: 700; }
+  .habito-card-grande.hecho .habito-info h4 { color: var(--text-2); text-decoration: line-through;
+    text-decoration-color: color-mix(in oklab, var(--text-2) 50%, transparent); }
+  .habito-info p { margin-top: 2px; font-size: 11.5px; color: var(--text-2); line-height: 1.4; }
+  .habito-check-grande {
+    width: 26px; height: 26px; border-radius: 999px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid color-mix(in oklab, var(--rosa) 80%, transparent); color: transparent;
+  }
+  .habito-card-grande.hecho .habito-check-grande { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .habitos-nota { margin-top: 16px; font-size: 12px; color: var(--text-2); text-align: center; line-height: 1.5; }
 </style>
 </head>
 <body>
@@ -373,28 +370,9 @@
             </div>
           </div>
         </div>
-        <div class="habitos-card">
-          <p class="habitos-titulo">Tus hábitos de hoy</p>
-          <div class="habito-fila hecho">
-            <span class="habito-check" aria-hidden="true">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-            </span>
-            <span class="habito-nombre">Respiración matutina</span>
-            <span class="habito-hora">8:00</span>
-          </div>
-          <div class="habito-fila">
-            <span class="habito-check" aria-hidden="true"></span>
-            <span class="habito-nombre">Pausa SOS, si la necesitas</span>
-            <span class="habito-hora">13:00</span>
-          </div>
-          <div class="habito-fila">
-            <span class="habito-check" aria-hidden="true"></span>
-            <span class="habito-nombre">Autohipnosis para dormir</span>
-            <span class="habito-hora">21:30</span>
-          </div>
-        </div>
         <nav class="tabbar" aria-label="Navegación">
           <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 12 2.5 2.5L16 9"/></svg></span>Hábitos</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg></span>Biblioteca</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
           <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
@@ -462,51 +440,60 @@
     </div>
   </div>
 
-  <!-- VISTA 4B (idea nueva): Diario — chequeo de ánimo con caritas propias -->
+  <!-- VISTA NUEVA: Hábitos — su propia sección del menú -->
   <div class="vista">
-    <p class="rotulo">Idea nueva · Así empieza tu diario<small>Chequeo de ánimo antes de escribir — sin emojis genéricos, caritas propias</small></p>
+    <p class="rotulo">Nueva · Sección de Hábitos<small>Se abre desde la barra de menú, no vive en Inicio</small></p>
     <div class="telefono">
       <div class="statusbar"><span>9:41</span><span class="der">●●●●</span></div>
       <div class="pantalla">
-        <p class="animo-eyebrow">Antes de escribir</p>
-        <h3 class="titulo-animo">¿Cómo te sientes ahora, Valeria?</h3>
+        <p class="habitos-eyebrow">Martes 15 de septiembre</p>
+        <h3 class="titulo-habitos">Tus hábitos de hoy</h3>
+        <p class="habitos-resumen">1 de 3 completados</p>
 
-        <div class="animo-fila">
-          <div class="animo-opcion">
-            <span class="animo-circulo" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M8.5 16c1-1.5 6-1.5 7 0"/></svg>
-            </span>
-            <span class="etiqueta">Agobiada</span>
+        <div class="habito-card-grande hecho">
+          <span class="habito-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18c-3-3-3-7 0-10"/><path d="M18 18c3-3 3-7 0-10"/><circle cx="12" cy="12" r="3"/></svg>
+          </span>
+          <div class="habito-info">
+            <h4>Respiración matutina</h4>
+            <p>3 min · te ayuda a empezar sin cargar lo de ayer</p>
           </div>
-          <div class="animo-opcion">
-            <span class="animo-circulo" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M9 15.5c1.2-.6 4.8-.6 6 0"/></svg>
-            </span>
-            <span class="etiqueta">Inquieta</span>
-          </div>
-          <div class="animo-opcion seleccionada">
-            <span class="animo-circulo" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M9 15h6"/></svg>
-            </span>
-            <span class="etiqueta">En calma</span>
-          </div>
-          <div class="animo-opcion">
-            <span class="animo-circulo" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1.1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1.1" fill="currentColor" stroke="none"/><path d="M8.5 14.5c1.2 1.2 5.8 1.2 7 0"/></svg>
-            </span>
-            <span class="etiqueta">Contenta</span>
-          </div>
-          <div class="animo-opcion">
-            <span class="animo-circulo" aria-hidden="true">
-              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8.3 9.3c.3-.6 1-.9 1.6-.6" stroke-linecap="round"/><path d="M14.1 8.7c.6-.3 1.3 0 1.6.6" stroke-linecap="round"/><path d="M8 14c1.5 1.8 6.5 1.8 8 0" /></svg>
-            </span>
-            <span class="etiqueta">Luminosa</span>
-          </div>
+          <span class="habito-check-grande" aria-hidden="true">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
         </div>
 
-        <p class="animo-nota">Elegiste "En calma" — vamos a escribir sobre eso.</p>
+        <div class="habito-card-grande">
+          <span class="habito-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/></svg>
+          </span>
+          <div class="habito-info">
+            <h4>Pausa SOS, si la necesitas</h4>
+            <p>2 min · tu botón de alivio siempre disponible</p>
+          </div>
+          <span class="habito-check-grande" aria-hidden="true"></span>
+        </div>
 
-        <div class="cta" style="margin-top:28px;">Continuar a mi nota</div>
+        <div class="habito-card-grande">
+          <span class="habito-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg>
+          </span>
+          <div class="habito-info">
+            <h4>Autohipnosis para dormir</h4>
+            <p>12 min · Limpieza Energética Nocturna</p>
+          </div>
+          <span class="habito-check-grande" aria-hidden="true"></span>
+        </div>
+
+        <p class="habitos-nota">Marcar un hábito no es obligación — es solo para que veas tu propio ritmo.</p>
+
+        <nav class="tabbar" aria-label="Navegación">
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="4"/><path d="m8 12 2.5 2.5L16 9"/></svg></span>Hábitos</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg></span>Biblioteca</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
       </div>
       <div class="home-indicator"></div>
     </div>

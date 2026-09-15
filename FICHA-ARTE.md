@@ -19,8 +19,8 @@
 - El orbe se redujo de 140px a 76px y pasó a vivir DENTRO de la tarjeta "Tu SOS de hoy" en formato horizontal (orbe a la izquierda, texto a la derecha) — antes ocupaba solo, centrado, mucho más espacio vertical.
 - La grilla 2x2 (arquetipo/racha/audios/próxima sesión) se comprimió a una fila de 3 chips (arquetipo, racha, audios) para liberar espacio — "próxima sesión" se puede recuperar en la Biblioteca, no hacía falta en Inicio.
 - El chequeo de ánimo se comprimió (sin etiquetas de texto bajo cada carita, solo los círculos).
-- Se agregó una tarjeta NUEVA "Tus hábitos de hoy": checklist de 3 hábitos recomendados con hora (Respiración matutina 8:00 · Pausa SOS 13:00 · Autohipnosis nocturna 21:30) — tomada del contenido de la dirección "Ritual en Tres Actos" (Opción C de la comparativa original), reutilizada como FUNCIÓN, no solo como estilo visual.
-- Resultado: Inicio ahora tiene 5 módulos (SOS+chips+ánimo+hábitos) y la barra de navegación siempre visible al final de la pantalla, sin que nada se corte.
+- Se agregó "Tus hábitos de hoy" (checklist de 3 hábitos con hora: Respiración matutina 8:00 · Pausa SOS 13:00 · Autohipnosis nocturna 21:30, contenido tomado de la dirección "Ritual en Tres Actos") — PERO el usuario pidió que NO viva dentro de Inicio: ahora es su PROPIA sección, con un 5º ítem en la barra de navegación ("Hábitos", ícono de checklist) entre Inicio y Biblioteca. La pantalla dedicada muestra cada hábito en una tarjeta grande con ícono, descripción y check circular.
+- Resultado: Inicio quedó con 4 módulos (saludo + SOS/chips + ánimo) más compacto y enfocado; Hábitos es su propia pantalla completa, accesible desde el menú.
 - Este cambio es también una decisión de PRODUCTO, no solo de diseño: el "seguimiento de hábitos saludables" se suma como función nueva del MVP (anotado en ESTADO.md).
 
 ## Brand kit final (COMBINACIÓN "Refugio Cálido" + "Anillo de Calma" — ELEGIDA y confirmada 2026-09-15, cosa juzgada)
