@@ -122,44 +122,67 @@
     line-height: 1.15; letter-spacing: -0.005em; margin-top: 2px;
   }
   .heroe {
-    margin-top: 14px; border-radius: var(--radius-card);
+    margin-top: 10px; border-radius: var(--radius-card);
     border: 1.5px solid transparent;
     background:
       linear-gradient(var(--surface), var(--surface)) padding-box,
       linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--rosa) 60%, transparent) 60%) border-box;
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6) inset, 0 14px 34px -10px rgb(var(--shadow-tinta) / 0.35);
-    padding: 18px; text-align: center;
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6) inset, 0 10px 24px -10px rgb(var(--shadow-tinta) / 0.3);
+    padding: 12px 16px; text-align: center;
+    display: flex; align-items: center; gap: 12px;
   }
-  .heroe .label { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
+  .heroe .heroe-texto { flex: 1; text-align: left; }
+  .heroe .label { font-size: 11px; font-weight: 600; color: var(--text-2); }
   .sos-btn {
-    margin: 12px auto 0; width: 140px; height: 140px; border-radius: 999px;
+    margin: 0; width: 76px; height: 76px; border-radius: 999px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center; text-align: center;
-    /* el orbe que respira — el botón original que le gustó al usuario */
+    /* el orbe que respira, en tamaño compacto */
     background: radial-gradient(circle at 32% 28%, color-mix(in oklab, var(--accent) 38%, white), color-mix(in oklab, var(--rosa) 55%, white) 75%);
-    box-shadow: 0 0 0 14px color-mix(in oklab, var(--accent) 8%, transparent),
-                0 24px 46px -18px rgb(var(--shadow-tinta) / 0.45);
+    box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent) 9%, transparent),
+                0 10px 20px -10px rgb(var(--shadow-tinta) / 0.45);
   }
-  .sos-btn .fase { font-family: var(--font-display); font-style: italic; font-size: 22px; font-weight: 600; color: var(--text-1); }
-  .sos-btn .sub { margin-top: 4px; font-size: 10px; color: var(--text-2); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
-  .heroe .insight { margin-top: 12px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
-  .animo-card {
-    margin-top: 12px; background: var(--surface); border-radius: var(--radius-card);
+  .sos-btn .fase { font-family: var(--font-display); font-style: italic; font-size: 13px; font-weight: 600; color: var(--text-1); line-height: 1.1; }
+  .heroe .insight { margin-top: 4px; font-size: 12px; color: var(--accent); font-weight: 600; }
+  .chips-fila { display: flex; gap: 6px; margin-top: 10px; }
+  .chip-dato {
+    flex: 1; background: var(--surface); border-radius: 12px;
     border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    padding: 14px;
+    padding: 7px 4px; text-align: center;
   }
-  .animo-card .animo-titulo { font-size: 12.5px; font-weight: 600; color: var(--text-2); }
-  .animo-fila-mini { display: flex; justify-content: space-between; margin-top: 12px; }
-  .animo-mini { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .chip-dato .c-label { font-size: 8.5px; font-weight: 600; color: var(--text-2); text-transform: uppercase; letter-spacing: 0.03em; }
+  .chip-dato .c-dato { margin-top: 2px; font-family: var(--font-display); font-size: 13.5px; font-weight: 700; color: var(--text-1); }
+  .animo-card {
+    margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+    padding: 12px 14px;
+  }
+  .animo-card .animo-titulo { font-size: 12px; font-weight: 600; color: var(--text-2); }
+  .animo-fila-mini { display: flex; justify-content: space-between; margin-top: 9px; }
+  .animo-mini { display: flex; flex-direction: column; align-items: center; }
   .animo-circulo-mini {
-    width: 38px; height: 38px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
+    width: 32px; height: 32px; border-radius: 999px; display: flex; align-items: center; justify-content: center;
     background: var(--bg); border: 1.5px solid color-mix(in oklab, var(--rosa) 70%, transparent); color: var(--text-2);
   }
   .animo-mini.seleccionada .animo-circulo-mini {
     background: color-mix(in oklab, var(--accent) 12%, var(--bg));
     border: 1.5px solid var(--accent); color: var(--accent);
   }
-  .animo-mini .etiqueta-mini { font-size: 9px; font-weight: 600; color: var(--text-2); }
-  .animo-mini.seleccionada .etiqueta-mini { color: var(--accent); }
+  .habitos-card {
+    margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+    padding: 12px 14px;
+  }
+  .habitos-card .habitos-titulo { font-size: 12px; font-weight: 600; color: var(--text-2); }
+  .habito-fila { display: flex; align-items: center; gap: 10px; margin-top: 9px; }
+  .habito-check {
+    width: 22px; height: 22px; border-radius: 999px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border: 1.5px solid color-mix(in oklab, var(--rosa) 80%, transparent); color: transparent;
+  }
+  .habito-fila.hecho .habito-check { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .habito-nombre { flex: 1; font-size: 12.5px; font-weight: 600; color: var(--text-1); }
+  .habito-fila.hecho .habito-nombre { color: var(--text-2); text-decoration: line-through; text-decoration-color: color-mix(in oklab, var(--text-2) 50%, transparent); }
+  .habito-hora { font-size: 10.5px; color: var(--text-2); font-variant-numeric: tabular-nums; }
   .card {
     margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
     border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
@@ -167,24 +190,6 @@
   }
   .card h4 { font-size: 14px; font-weight: 700; }
   .card p { margin-top: 2px; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
-  .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
-  .tile {
-    background: var(--surface); border-radius: var(--radius-card);
-    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
-    padding: 12px;
-  }
-  .tile.destacada {
-    border: 1.5px solid transparent;
-    background:
-      linear-gradient(var(--surface), var(--surface)) padding-box,
-      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), transparent 60%) border-box;
-  }
-  .tile .t-label { display: flex; align-items: center; gap: 6px;
-                   font-size: 10.5px; font-weight: 600; color: var(--text-2); }
-  .tile .t-dato {
-    margin-top: 6px; font-family: var(--font-display); font-size: 19px; font-weight: 700;
-    font-variant-numeric: tabular-nums; letter-spacing: -0.01em;
-  }
   .tile .t-dato small { font-size: 11.5px; color: var(--text-2); font-weight: 600; }
 
   /* ── VISTA 2: Onboarding ── */
@@ -327,73 +332,65 @@
         <p class="saludo">Buenos días</p>
         <h3 class="titulo">Hola, Valeria</h3>
         <div class="heroe">
-          <p class="label">Tu SOS de hoy</p>
-          <div class="sos-btn"><div><p class="fase">2 min</p><p class="sub">Toca para comenzar</p></div></div>
-          <p class="insight">Respira — vamos a bajar la sobrecarga juntas</p>
+          <div class="sos-btn"><div><p class="fase">2 min</p></div></div>
+          <div class="heroe-texto">
+            <p class="label">Tu SOS de hoy</p>
+            <p class="insight">Respira y baja la sobrecarga</p>
+          </div>
         </div>
-        <div class="grid2x2">
-          <div class="tile destacada">
-            <p class="t-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#C2921F" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
-              Tu arquetipo
-            </p>
-            <p class="t-dato">Empática</p>
-          </div>
-          <div class="tile">
-            <p class="t-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4Z"/></svg>
-              Racha
-            </p>
-            <p class="t-dato">7<small> días</small></p>
-          </div>
-          <div class="tile">
-            <p class="t-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg>
-              Audios
-            </p>
-            <p class="t-dato">12</p>
-          </div>
-          <div class="tile">
-            <p class="t-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-              Esta noche
-            </p>
-            <p class="t-dato">Limpieza</p>
-          </div>
+        <div class="chips-fila">
+          <div class="chip-dato"><p class="c-label">Arquetipo</p><p class="c-dato">Empática</p></div>
+          <div class="chip-dato"><p class="c-label">Racha</p><p class="c-dato">7 días</p></div>
+          <div class="chip-dato"><p class="c-label">Audios</p><p class="c-dato">12</p></div>
         </div>
         <div class="animo-card">
           <p class="animo-titulo">¿Cómo te sientes hoy?</p>
           <div class="animo-fila-mini">
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 16c1-1.5 6-1.5 7 0"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 16c1-1.5 6-1.5 7 0"/></svg>
               </span>
-              <span class="etiqueta-mini">Agobiada</span>
             </div>
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M9 15.5c1.2-.6 4.8-.6 6 0"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M9 15.5c1.2-.6 4.8-.6 6 0"/></svg>
               </span>
-              <span class="etiqueta-mini">Inquieta</span>
             </div>
             <div class="animo-mini seleccionada">
               <span class="animo-circulo-mini" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M9 15h6"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M9 15h6"/></svg>
               </span>
-              <span class="etiqueta-mini">En calma</span>
             </div>
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 14.5c1.2 1.2 5.8 1.2 7 0"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="9" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="10" r="1" fill="currentColor" stroke="none"/><path d="M8.5 14.5c1.2 1.2 5.8 1.2 7 0"/></svg>
               </span>
-              <span class="etiqueta-mini">Contenta</span>
             </div>
             <div class="animo-mini">
               <span class="animo-circulo-mini" aria-hidden="true">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8.3 9.3c.3-.6 1-.9 1.6-.6"/><path d="M14.1 8.7c.6-.3 1.3 0 1.6.6"/><path d="M8 14c1.5 1.8 6.5 1.8 8 0"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8.3 9.3c.3-.6 1-.9 1.6-.6"/><path d="M14.1 8.7c.6-.3 1.3 0 1.6.6"/><path d="M8 14c1.5 1.8 6.5 1.8 8 0"/></svg>
               </span>
-              <span class="etiqueta-mini">Luminosa</span>
             </div>
+          </div>
+        </div>
+        <div class="habitos-card">
+          <p class="habitos-titulo">Tus hábitos de hoy</p>
+          <div class="habito-fila hecho">
+            <span class="habito-check" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+            <span class="habito-nombre">Respiración matutina</span>
+            <span class="habito-hora">8:00</span>
+          </div>
+          <div class="habito-fila">
+            <span class="habito-check" aria-hidden="true"></span>
+            <span class="habito-nombre">Pausa SOS, si la necesitas</span>
+            <span class="habito-hora">13:00</span>
+          </div>
+          <div class="habito-fila">
+            <span class="habito-check" aria-hidden="true"></span>
+            <span class="habito-nombre">Autohipnosis para dormir</span>
+            <span class="habito-hora">21:30</span>
           </div>
         </div>
         <nav class="tabbar" aria-label="Navegación">
