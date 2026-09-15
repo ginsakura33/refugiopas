@@ -102,6 +102,16 @@ Completar el Test de Arquetipos (3 min), descubrir su arquetipo, y escuchar un a
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [ ] Ninguna todavía — se avisará cuando llegue el momento de crear cuentas
 
+## Fuente de contenido: tu Ebook "El Refugio de tu Sensibilidad"
+- Autora: Ginette Rivas — psicóloga clínica y transpersonal, terapeuta en hipnosis regresiva y directa, especializada en PAS. Es una credencial real y verificable — debe aparecer en la landing (autoridad/confianza).
+- Los 4 capítulos del ebook SON los 4 módulos didácticos del MVP, con el mismo nombre exacto: Reconocerme, Comprenderme, Sostenerme, Honrarme.
+- El ebook trae su PROPIO test de alta sensibilidad (10 preguntas Sí/No, ≥5 síes = PAS, inspirado en Elaine Aron) — DISTINTO del test de arquetipo. Son 2 tests: primero el de alta sensibilidad, luego el de los 5 Arquetipos del Alma Sensible (Introspectiva/Solar/Visionaria/Empática/Luminosa) — ambos con texto real ya escrito por la autora, listos para usar en el onboarding.
+- Práctica central del ebook: la "burbuja de luz dorada" de protección energética — coincide (sin haberlo planeado) con el dorado que ya elegiste para la app. Buena señal: el color tiene sentido real, no solo estético.
+- Categorías de audio ya nombradas en el ebook y coincidentes con el MVP: "Reset Emocional" (ya existe como bonus del libro), "Visualización del Jardín Interior", "Limpieza emocional nocturna".
+- El ebook trae decretos/afirmaciones cortas reutilizables como microcopy de la app (ej. "Mi paz es mi prioridad", "Devuelvo esto a quien pertenece").
+- Cada capítulo cierra con ejercicios de workbook — son la base directa del Diario Digital de Journaling.
+- Texto completo extraído y guardado en el scratchpad de la sesión (no en el repo) — pendiente decidir con el usuario si se traen fragmentos textuales al repo (docs/contenido/) para que el copy de la app y los guiones de audio se deriven de ahí.
+
 ## Notas para la próxima sesión
 - El usuario pegó el RESUMEN FINAL — IDEA VALIDADA completo; no se re-valida el mercado.
 - Falta definir: quién provee la voz/los audios de autohipnosis (persona real vs IA) — esto condiciona la arquitectura de la Sesión 1 (30-INTEGRACION-IA.md si aplica).
