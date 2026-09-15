@@ -1,7 +1,7 @@
 # ESTADO — Refugio PAS: Guía & Autohipnosis
-Última actualización: 2026-09-15 | Sesión actual: 1
+Última actualización: 2026-09-15 | Sesión actual: 3
 
-⏸️ CHECKPOINT — Última acción completada: FICHA-MODELO.md, FICHA-AVATAR.md (BORRADOR) y FICHA-MERCADO.md creadas; usuario confirmó que los audios de autohipnosis se graban con voz humana real / Siguiente acción exacta: definir arquitectura técnica (datos/RLS/auth) de la Sesión 1, presentar Plan Maestro y pasar a Sesión 2 (identidad visual).
+⏸️ CHECKPOINT — Última acción completada: usuario APROBÓ definitivamente la dirección de arte "Refugio Cálido + Anillo de Calma" (FICHA-ARTE.md cerrada y aprobada) / Siguiente acción exacta: arrancar Sesión 3 — página de ventas (19-PAGINA-DE-VENTAS.md + 52-COPY-VISUALES-CONVERSION.md + 55-DISENO-DE-LANDING.md), con el aviso de que primero hay que terminar FICHA-AVATAR.md (sigue en BORRADOR, faltan ≥3 frases VoC) porque el copy de venta se deriva de ella.
 
 ## Qué es esta app (3 líneas máximo)
 Botiquín móvil de autorregulación emocional, desintoxicación sensorial y autohipnosis guiada para Personas Altamente Sensibles (PAS) en español. Test de arquetipo PAS + botón SOS + biblioteca de audios de autohipnosis + módulos didácticos + diario de journaling. Suscripción mensual/anual con prueba gratis de 3 días.
@@ -23,20 +23,20 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Deseo #1: desactivar la sobrecarga sensorial en menos de 5 minutos en momentos de crisis
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
-## Sesión 2 — Identidad visual: DECIDIDA (2026-09-15)
-- Tras explorar 2 rondas adicionales (descartadas), el usuario pidió volver a la combinación original: "Refugio Cálido" (halo dorado en el botón SOS) + "Anillo de Calma" (grilla 2x2: arquetipo, racha, audios, próxima sesión)
-- `direcciones-abc.html` y `vista-previa-app.html` restaurados a esa versión — dorado intenso #C2921F, Fraunces + Albert Sans, fondo #FFF9F5, rosa #F0C9CD
-- Direcciones exploradas y descartadas (no re-proponer su tipografía/composición si se pide otra ronda): ronda 2 (Tarjetas en Cascada — Domine/Work Sans · Respiración Central+Nota del Día — Cormorant/Karla) y ronda 3 (Semana en Calma — Spectral/Mulish · Conversación Gentil — Lora/Manrope · Carta Sellada — Bitter/Sora)
-- FICHA-ARTE.md actualizada con el brand kit final · pendiente: confirmación final del usuario sobre el tour restaurado
+## Sesión 2 — Identidad visual: CERRADA Y APROBADA (2026-09-15)
+- Dirección final: "Refugio Cálido" (halo dorado en el botón SOS) + "Anillo de Calma" (grilla 2x2: arquetipo, racha, audios, próxima sesión) — usuario confirmó explícitamente "sí, esta es"
+- FICHA-ARTE.md: APROBADA — cosa juzgada, no se redecide a mitad de proyecto
+- Brand kit: dorado intenso #C2921F · rosa #F0C9CD · fondo #FFF9F5 · Fraunces (display) + Albert Sans (body)
+- Archivos vigentes: `direcciones-abc.html` y `vista-previa-app.html` (raíz del proyecto)
+- Direcciones exploradas y descartadas (no re-proponer su tipografía/composición): ronda 2 (Tarjetas en Cascada — Domine/Work Sans · Respiración Central+Nota del Día — Cormorant/Karla) y ronda 3 (Semana en Calma — Spectral/Mulish · Conversación Gentil — Lora/Manrope · Carta Sellada — Bitter/Sora)
 
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
 - FICHA-AVATAR.md: BORRADOR (2026-09-15) — 7 frases VoC reunidas, faltan ≥3 para aprobar; PROHIBIDO derivar copy de venta hasta completarla en Sesión 3
 - FICHA-MERCADO.md: completa (2026-09-15) — vence 2027-03-15
 
-## Dirección de Arte (Sesión 2 — pendiente)
-- FICHA-ARTE.md: NO existe todavía
-- ¿Hubo referencia visual del usuario?: NO (por confirmar con la pregunta de referencia del 54)
+## Dirección de Arte (Sesión 2 — cerrada, ver arriba)
+- ¿Hubo referencia visual del usuario?: NO — dio una restricción de color/estilo verbal (rosa pastel + dorado + blanco, minimalista), tratada como gusto/identidad
 
 ## Estrategia de monetización (decidida por el usuario en su investigación)
 - Modelo: Freemium con suscripción mensual y anual
@@ -81,14 +81,13 @@ Completar el Test de Arquetipos (3 min), descubrir su arquetipo, y escuchar un a
 - Modelo de datos (esquema base, se refina en Sesión 6): `profiles` (datos de usuario + arquetipo PAS resultante del test) · `subscriptions` (plan, estado, origen=hotmart, vigencia) · `audio_library` (categoría: SOS/biblioteca, título, duración, url del archivo) · `audio_progress` (qué escuchó cada usuario, favoritos) · `journal_entries` (texto, estado de ánimo, fecha) — todas con RLS por `(select auth.uid()) = user_id`, columna user_id indexada
 
 ## Sesiones completadas ✅
-(ninguna aún)
+- Sesión 1 — Validación, avatar, monetización y arquitectura: FICHA-MODELO/MERCADO completas, FICHA-AVATAR en borrador, arquitectura técnica decidida — verificado 2026-09-15
+- Sesión 2 — Identidad visual: FICHA-ARTE.md aprobada (Refugio Cálido + Anillo de Calma) — verificado 2026-09-15
 
 ## Sesión en progreso 🔧
-- Sesión 1 — Validación, avatar, monetización y arquitectura: idea capturada, falta FICHA-MODELO.md, FICHA-AVATAR.md, FICHA-MERCADO.md y arquitectura técnica
+- Sesión 3 — Página de ventas: por arrancar
 
 ## Próximas sesiones 📋
-- Sesión 2: Identidad visual y sistema de diseño
-- Sesión 3: Página de ventas
 - Sesión 4: Onboarding, paywall y login
 - Sesión 5: App interna simplificada
 - Sesión 6: Integraciones reales y seguridad

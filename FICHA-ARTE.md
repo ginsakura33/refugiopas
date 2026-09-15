@@ -38,4 +38,4 @@
 - Registro anti-repetición: paleta (rosa pastel #F0C9CD + dorado #C2921F + blanco cálido #FFF9F5) y par tipográfico (Fraunces + Albert Sans) quedan anotados en ESTADO.md como VETADOS para el PRÓXIMO proyecto del SO (dentro de este proyecto siguen vigentes)
 - Modo (claro/oscuro) DERIVADO por: arquetipo Cuidador/Inocente + pedido explícito del usuario de blanco como base
 
-## Idioma UI: Español latino neutro · Fecha de cierre de la ficha: 2026-09-15 · Aprobada por el usuario: PENDIENTE (falta la confirmación final del tour restaurado)
+## Idioma UI: Español latino neutro · Fecha de cierre de la ficha: 2026-09-15 · Aprobada por el usuario: SÍ (2026-09-15) — cosa juzgada, no se redecide a mitad de proyecto
