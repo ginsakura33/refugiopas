@@ -134,12 +134,12 @@
   .sos-btn {
     margin: 10px auto 0; width: 92px; height: 92px; border-radius: 999px;
     display: flex; align-items: center; justify-content: center;
-    /* dorado LUMINOSO: brillo champán al centro que se funde al dorado intenso en el borde */
+    /* dorado LUMINOSO al centro + halo rosado clarito alrededor */
     background: radial-gradient(circle at 32% 26%, #FDF3DC 0%, #F0CD78 30%, var(--accent) 76%);
     box-shadow: 0 1px 2px rgb(255 255 255 / 0.7) inset,
-                0 0 0 9px color-mix(in oklab, var(--accent) 12%, transparent),
-                0 0 34px -4px color-mix(in oklab, var(--accent) 55%, transparent),
-                0 12px 26px -8px rgb(var(--shadow-tinta) / 0.5);
+                0 0 0 9px color-mix(in oklab, var(--rosa) 65%, transparent),
+                0 0 28px -6px color-mix(in oklab, var(--rosa) 60%, transparent),
+                0 12px 26px -8px rgb(var(--shadow-tinta) / 0.4);
   }
   .sos-btn span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: var(--text-1); }
   .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
