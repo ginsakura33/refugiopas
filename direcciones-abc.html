@@ -1,0 +1,726 @@
+<!doctype html>
+<html lang="es" data-kit="abc-v2">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direcciones de arte A/B/C — Refugio PAS</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Albert+Sans:wght@400..700&family=Instrument+Serif:ital@0;1&family=Onest:wght@400..700&family=Marcellus&family=Figtree:wght@400..700&display=swap" rel="stylesheet">
+
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    background:
+      radial-gradient(1100px 520px at 12% -6%, #f7f7f9, transparent 62%),
+      radial-gradient(900px 460px at 92% 4%, #e2e2e9, transparent 58%),
+      linear-gradient(180deg, #ededf0, #e4e4e9);
+    color: #1c1c1f;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    padding: 32px 20px 64px;
+  }
+  .cabecera { max-width: 1180px; margin: 0 auto 12px; }
+  .cabecera h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.01em; }
+  .cabecera p.sub { margin-top: 6px; font-size: 14px; color: #55555c; max-width: 70ch; }
+
+  .salidas { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .salidas span {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid #c9c9cf; border-radius: 999px;
+    padding: 6px 12px; font-size: 12.5px; font-weight: 600; color: #3a3a40;
+    background: #f7f7f8;
+  }
+  .salidas b { color: #1c1c1f; }
+  .aviso-fuentes {
+    max-width: 1180px; margin: 10px auto 28px; font-size: 12.5px; color: #6a6a72;
+  }
+
+  .opciones { max-width: 1180px; margin: 0 auto; display: grid; gap: 40px;
+              grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); }
+
+  .opcion { display: flex; flex-direction: column; gap: 18px; }
+
+  .meta { background: #f7f7f8; border: 1px solid #d9d9de; border-radius: 14px; padding: 18px; }
+  .meta .letra {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 8px; font-weight: 800; font-size: 15px;
+    color: #f7f7f8; background: #1c1c1f; margin-right: 8px;
+  }
+  .meta h2 { display: flex; align-items: center; font-size: 17px; font-weight: 700; }
+  .meta .direccion { margin-top: 4px; font-size: 13px; color: #55555c; }
+  .hipotesis { margin-top: 10px; font-size: 13px; line-height: 1.5; color: #3a3a40; }
+  .hipotesis .slot {
+    background: #fff3c7; border-radius: 4px; padding: 1px 4px; font-style: italic;
+  }
+  .meta ul.tokens { margin-top: 10px; list-style: none; font-size: 12px; color: #6a6a72;
+                    font-family: ui-monospace, monospace; line-height: 1.7; }
+
+  .especimen { margin-top: 12px; border-top: 1px solid #d9d9de; padding-top: 12px; }
+  .especimen .esp-display { font-size: 21px; font-weight: 700; letter-spacing: -0.01em; }
+  .especimen .esp-body { margin-top: 4px; font-size: 13.5px; color: #3a3a40; }
+
+  .telefono {
+    width: 310px; margin: 0 auto;
+    aspect-ratio: 9 / 19.5;
+    border: 10px solid #101014;
+    border-radius: 46px;
+    box-shadow: 0 24px 60px rgb(20 18 24 / 0.28);
+    overflow: hidden;
+    position: relative;
+    display: flex; flex-direction: column;
+  }
+  .statusbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 22px 6px; font-size: 13px; font-weight: 600;
+    font-variant-numeric: tabular-nums;
+  }
+  .statusbar .der { display: flex; align-items: center; gap: 5px; }
+  .statusbar svg { display: block; }
+  .home-indicator {
+    position: absolute; bottom: 7px; left: 50%; transform: translateX(-50%);
+    width: 116px; height: 5px; border-radius: 999px; opacity: 0.85;
+  }
+  .pantalla { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .chip-icono {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 40px; height: 40px; flex-shrink: 0;
+  }
+  .cta {
+    display: flex; align-items: center; justify-content: center;
+    height: 48px; font-size: 15px; font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+
+  .tabbar {
+    display: flex; align-items: stretch; justify-content: space-around;
+    margin: 12px -18px 0; padding: 8px 8px 16px;
+    border-top: 1px solid color-mix(in oklab, var(--text-2) 18%, transparent);
+    background: color-mix(in oklab, var(--surface) 88%, transparent);
+  }
+  .op-c .tabbar { margin-inline: -20px; }
+  .tabbar a {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    font-size: 9.5px; font-weight: 600; color: var(--text-2); text-decoration: none;
+  }
+  .tabbar .tab-chip {
+    display: flex; align-items: center; justify-content: center;
+    width: 36px; height: 26px; border-radius: 9px;
+  }
+  .tabbar a.activa { color: var(--accent); }
+  .tabbar a.activa .tab-chip { background: color-mix(in oklab, var(--accent) 14%, transparent); }
+
+  .paleta { display: flex; gap: 8px; margin-top: 10px; }
+  .paleta span {
+    width: 26px; height: 26px; border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.10), 0 1px 3px rgb(0 0 0 / 0.12);
+  }
+
+  .rotulo-frame {
+    text-align: center; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: #85858e; margin-top: 2px;
+  }
+  .hero-landing {
+    width: 310px; margin: 6px auto 0; border-radius: 18px; overflow: hidden;
+    border: 1px solid rgb(0 0 0 / 0.10);
+    box-shadow: 0 16px 40px rgb(20 18 24 / 0.16);
+    background: var(--bg); color: var(--text-1);
+    font-family: var(--font-body); padding: 22px 18px 18px;
+  }
+  .hero-landing .hl-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+    color: var(--accent);
+    background: color-mix(in oklab, var(--accent) 10%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent);
+    border-radius: 999px; padding: 4px 10px;
+  }
+  .hero-landing h4 {
+    font-family: var(--font-display); font-size: 24px; font-weight: 700;
+    line-height: 1.14; letter-spacing: -0.01em; margin-top: 10px;
+  }
+  .hero-landing h4 em { font-style: normal; color: var(--accent); }
+  .hero-landing .hl-sub { margin-top: 8px; font-size: 13px; color: var(--text-2); line-height: 1.5; }
+  .hero-landing .hl-sub b { color: var(--text-1); font-weight: 600; }
+  .hero-landing .hl-cta {
+    margin-top: 14px; display: flex; align-items: center; justify-content: center;
+    height: 46px; border-radius: var(--radius-btn); font-size: 14.5px; font-weight: 700;
+    color: var(--bg);
+    background: linear-gradient(180deg, color-mix(in oklab, var(--accent) 86%, white), var(--accent));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.35),
+                0 10px 24px -6px color-mix(in oklab, var(--accent) 45%, transparent);
+  }
+  .hero-landing .hl-prueba { margin-top: 10px; font-size: 11.5px; color: var(--text-2); text-align: center; }
+
+  /* ==========================================================================
+     OPCIÓN A — "Refugio Cálido": halo dorado + cards apiladas
+     ========================================================================== */
+  .op-a {
+    --bg: #FFF9F5;
+    --surface: #FFFFFF;
+    --text-1: #4A3B3F;
+    --text-2: #9C8388;
+    --accent: #C9A15A;
+    --rosa: #F0C9CD;
+    --radius-card: 20px;
+    --radius-btn: 14px;
+    --font-display: 'Fraunces', monospace;
+    --font-body: 'Albert Sans', monospace;
+    --shadow-tinta: 201 161 90;
+  }
+  .op-a .especimen .esp-display { font-family: var(--font-display); }
+  .op-a .especimen .esp-body { font-family: var(--font-body); }
+
+  .op-a .telefono { background: var(--bg); }
+  .op-a .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
+  .op-a .statusbar { color: var(--text-1); }
+  .op-a .home-indicator { background: var(--text-1); }
+
+  .op-a .saludo { margin-top: 10px; font-size: 12px; font-weight: 600; color: var(--text-2); }
+  .op-a h3.titulo-a {
+    font-family: var(--font-display); font-size: 25px; font-weight: 600;
+    line-height: 1.15; letter-spacing: -0.005em; margin-top: 2px;
+  }
+  .op-a .heroe {
+    margin-top: 14px; border-radius: var(--radius-card);
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), color-mix(in oklab, var(--rosa) 60%, transparent) 60%) border-box;
+    /* HALO dorado — dispositivo ownable de esta opción */
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.6) inset,
+                0 14px 34px -10px rgb(var(--shadow-tinta) / 0.35);
+    padding: 18px;
+    text-align: center;
+  }
+  .op-a .heroe .label { font-size: 11.5px; font-weight: 600; color: var(--text-2); }
+  .op-a .heroe .sos-btn {
+    margin: 10px auto 0; width: 92px; height: 92px; border-radius: 999px;
+    display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 35% 30%, color-mix(in oklab, var(--accent) 92%, white), var(--accent));
+    box-shadow: 0 0 0 8px color-mix(in oklab, var(--accent) 14%, transparent),
+                0 10px 26px -6px rgb(var(--shadow-tinta) / 0.55);
+  }
+  .op-a .heroe .sos-btn span { font-family: var(--font-display); font-size: 15px; font-weight: 700; color: #fff; }
+  .op-a .heroe .insight { margin-top: 10px; font-size: 12.5px; color: var(--accent); font-weight: 600; }
+  .op-a .card {
+    margin-top: 10px; background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 60%, transparent);
+    padding: 12px 14px; display: flex; gap: 12px; align-items: flex-start;
+  }
+  .op-a .chip-icono {
+    border-radius: var(--radius-btn);
+    background: color-mix(in oklab, var(--rosa) 45%, transparent);
+    border: 1px solid color-mix(in oklab, var(--accent) 30%, transparent);
+  }
+  .op-a .card h4 { font-size: 14px; font-weight: 700; }
+  .op-a .card p { margin-top: 2px; font-size: 12.5px; color: var(--text-2); line-height: 1.45; }
+  .op-a .cta {
+    margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn);
+    background: var(--accent); color: #fff;
+    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 35%, transparent);
+  }
+
+  /* ==========================================================================
+     OPCIÓN B — "Anillo de Calma": anillo dorado sobre pista rosa + grid 2x2
+     ========================================================================== */
+  .op-b {
+    --bg: #FFFFFF;
+    --surface: #FDF6F4;
+    --text-1: #3D2E33;
+    --text-2: #8B7377;
+    --accent: #B8935B;
+    --rosa: #EFC7CB;
+    --radius-card: 16px;
+    --radius-btn: 12px;
+    --font-display: 'Instrument Serif', monospace;
+    --font-body: 'Onest', monospace;
+    --shadow-tinta: 184 147 91;
+  }
+  .op-b .especimen .esp-display { font-family: var(--font-display); font-style: italic; }
+  .op-b .especimen .esp-body { font-family: var(--font-body); }
+
+  .op-b .telefono { background: var(--bg); }
+  .op-b .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 18px; }
+  .op-b .statusbar { color: var(--text-1); }
+  .op-b .home-indicator { background: var(--text-1); }
+
+  .op-b .encabezado-b { margin-top: 12px; text-align: center; }
+  .op-b .encabezado-b .periodo { font-size: 11.5px; font-weight: 600; color: var(--text-2);
+                                 font-variant-numeric: tabular-nums; }
+  .op-b h3.titulo-b {
+    font-family: var(--font-display); font-style: italic; font-size: 23px; font-weight: 400;
+    letter-spacing: 0; margin-top: 2px;
+  }
+  .op-b .anillo-wrap { margin: 16px auto 0; position: relative; width: 132px; height: 132px; }
+  .op-b .anillo-wrap .centro {
+    position: absolute; inset: 0; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .op-b .anillo-wrap .pct {
+    font-family: var(--font-display); font-style: italic; font-size: 30px; font-weight: 400;
+    font-variant-numeric: tabular-nums;
+  }
+  .op-b .anillo-wrap .pct-label { font-size: 10.5px; color: var(--text-2); font-weight: 600; }
+  .op-b .grid2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+  .op-b .tile {
+    background: var(--surface); border-radius: var(--radius-card);
+    border: 1px solid color-mix(in oklab, var(--rosa) 70%, transparent);
+    padding: 12px;
+  }
+  .op-b .tile.destacada {
+    border: 1.5px solid transparent;
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 55%, transparent), transparent 60%) border-box;
+  }
+  .op-b .tile .t-label { display: flex; align-items: center; gap: 6px;
+                         font-size: 10.5px; font-weight: 600; color: var(--text-2); }
+  .op-b .tile .t-dato {
+    margin-top: 6px; font-family: var(--font-display); font-style: italic; font-size: 22px; font-weight: 400;
+    font-variant-numeric: tabular-nums; letter-spacing: 0;
+  }
+  .op-b .tile .t-dato small { font-size: 12px; color: var(--text-2); font-weight: 600; font-style: normal; }
+  .op-b .cta {
+    margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn);
+    background: var(--accent); color: #fff;
+    box-shadow: 0 8px 24px color-mix(in oklab, var(--accent) 32%, transparent);
+  }
+
+  /* ==========================================================================
+     OPCIÓN C — "Ritual en Tres Actos": editorial, doble filete dorado + timeline
+     ========================================================================== */
+  .op-c {
+    --bg: #FBF6F2;
+    --surface: #FFFFFF;
+    --text-1: #453036;
+    --text-2: #8C777B;
+    --accent: #A97C3E;
+    --rosa: #E3AEB4;
+    --radius-card: 10px;
+    --radius-btn: 8px;
+    --font-display: 'Marcellus', monospace;
+    --font-body: 'Figtree', monospace;
+    --shadow-tinta: 169 124 62;
+  }
+  .op-c .especimen .esp-display { font-family: var(--font-display); }
+  .op-c .especimen .esp-body { font-family: var(--font-body); }
+
+  .op-c .telefono { background: var(--bg); }
+  .op-c .pantalla { font-family: var(--font-body); color: var(--text-1); padding: 0 20px; }
+  .op-c .statusbar { color: var(--text-1); }
+  .op-c .home-indicator { background: var(--text-1); }
+
+  .op-c .masthead { margin-top: 10px; border-bottom: 2px solid var(--accent);
+                    padding-bottom: 8px; position: relative; }
+  .op-c .masthead::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: -5px;
+    border-bottom: 1px solid var(--accent);
+  }
+  .op-c .masthead .edicion { font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em;
+                             text-transform: uppercase; color: var(--text-2); }
+  .op-c h3.titulo-c {
+    font-family: var(--font-display); font-size: 26px; font-weight: 400;
+    line-height: 1.15; margin-top: 2px;
+  }
+  .op-c .timeline { margin-top: 18px; display: flex; flex-direction: column; }
+  .op-c .evento { display: grid; grid-template-columns: 44px 14px 1fr; gap: 0 8px;
+                  padding-bottom: 16px; position: relative; }
+  .op-c .evento .hora { font-size: 12px; font-weight: 600; color: var(--text-2);
+                        font-variant-numeric: tabular-nums; padding-top: 1px; }
+  .op-c .evento .nodo { position: relative; display: flex; justify-content: center; }
+  .op-c .evento .nodo::before {
+    content: ''; position: absolute; top: 14px; bottom: -4px; width: 1.5px;
+    background: color-mix(in oklab, var(--rosa) 70%, transparent);
+  }
+  .op-c .evento:last-child .nodo::before { display: none; }
+  .op-c .evento .punto {
+    width: 10px; height: 10px; border-radius: 999px; margin-top: 3px;
+    border: 2px solid color-mix(in oklab, var(--rosa) 90%, transparent);
+    background: var(--bg); z-index: 1;
+  }
+  .op-c .evento.activo .punto { border-color: var(--accent); background: var(--accent); }
+  .op-c .evento h4 { font-size: 14px; font-weight: 700; line-height: 1.3; }
+  .op-c .evento.activo h4 { color: var(--accent); }
+  .op-c .evento p { margin-top: 2px; font-size: 12px; color: var(--text-2); line-height: 1.45; }
+  .op-c .cierre-nota {
+    margin-top: 4px; border: 1px solid transparent; border-radius: var(--radius-card);
+    background:
+      linear-gradient(var(--surface), var(--surface)) padding-box,
+      linear-gradient(135deg, color-mix(in oklab, var(--accent) 45%, transparent), transparent 60%) border-box;
+    box-shadow: 0 8px 20px -10px rgb(var(--shadow-tinta) / 0.25);
+    padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start;
+  }
+  .op-c .chip-icono {
+    width: 36px; height: 36px; border-radius: var(--radius-btn);
+    background: color-mix(in oklab, var(--rosa) 40%, transparent);
+  }
+  .op-c .cierre-nota p { font-size: 12.5px; color: var(--text-2); line-height: 1.5; }
+  .op-c .cierre-nota p b { color: var(--text-1); }
+  .op-c .cta {
+    margin-top: auto; margin-bottom: 0; border-radius: var(--radius-btn);
+    background: var(--accent); color: #fff;
+    box-shadow: 0 8px 22px color-mix(in oklab, var(--accent) 30%, transparent);
+    font-family: var(--font-body);
+  }
+
+  .pie {
+    max-width: 1180px; margin: 40px auto 0; font-size: 12.5px; color: #6a6a72;
+    border-top: 1px solid #d0d0d6; padding-top: 14px; line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<header class="cabecera">
+  <h1>Dirección de arte — 3 opciones para Refugio PAS</h1>
+  <p class="sub">
+    Las tres respetan lo que pediste (minimalista, rosa pastel + dorado + blanco) y cambian en
+    cómo se organiza la pantalla y cómo se siente al usarla. Cualquiera puede ser la app final.
+  </p>
+  <div class="salidas" role="list">
+    <span role="listitem"><b>1 · Elegir</b> A, B o C</span>
+    <span role="listitem"><b>2 · Combinar</b> («la B pero con la tipografía de la A»)</span>
+    <span role="listitem"><b>3 · Pedir otras 3</b> direcciones nuevas</span>
+    <span role="listitem"><b>4 · Ajustar un detalle</b> («la A con el dorado más intenso»)</span>
+  </div>
+</header>
+<p class="aviso-fuentes">
+  El nombre de cada letra (abajo, en cada panel) se muestra EN su propia fuente. Si se ve letra
+  de máquina de escribir, avísame — significa que no cargó.
+</p>
+
+<div class="opciones">
+
+  <!-- ═══════════════════════ OPCIÓN A — Refugio Cálido ═══════════════════════ -->
+  <section class="opcion op-a" aria-label="Opción A">
+    <div class="meta">
+      <h2><span class="letra">A</span> Refugio Cálido</h2>
+      <p class="direccion">Cálida y suave — tu botón de SOS es lo primero que ves, envuelto en un halo dorado, con tus audios debajo en tarjetas.</p>
+      <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
+        <span class="slot">el botón SOS al centro comunica "aquí está tu ayuda inmediata" en el primer segundo — clave para alguien en crisis de sobrecarga</span>
+      </p>
+      <ul class="tokens">
+        <li>--bg #FFF9F5 · --accent #C9A15A · --rosa #F0C9CD</li>
+        <li>radius 20/14 · halo dorado alrededor del botón SOS</li>
+      </ul>
+      <div class="paleta" aria-hidden="true">
+        <span style="background:#fff9f5"></span><span style="background:#ffffff"></span>
+        <span style="background:#4a3b3f"></span><span style="background:#f0c9cd"></span>
+        <span style="background:#c9a15a"></span>
+      </div>
+      <div class="especimen">
+        <p class="esp-display">Fraunces — AaBbÑñ 0123</p>
+        <p class="esp-body">Albert Sans — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+      </div>
+    </div>
+
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/>
+          </svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="pantalla">
+        <p class="saludo">Buenos días</p>
+        <h3 class="titulo-a">Hola, Valeria</h3>
+
+        <div class="heroe">
+          <p class="label">Tu SOS de hoy</p>
+          <div class="sos-btn"><span>2 min</span></div>
+          <p class="insight">Respira — vamos a bajar la sobrecarga juntas</p>
+        </div>
+
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A15A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><path d="M12 18v4"/>
+            </svg>
+          </span>
+          <div>
+            <h4>Reset Emocional · 8 min</h4>
+            <p>El audio recomendado para tu arquetipo Alma Empática</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C9A15A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+            </svg>
+          </span>
+          <div>
+            <h4>Diario de hoy</h4>
+            <p>¿Cómo llegaste después de tu día? 3 preguntas, 2 minutos</p>
+          </div>
+        </div>
+
+        <div class="cta">Activar mi SOS ahora</div>
+
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/></svg></span>Biblioteca</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <p class="rotulo-frame">Así se vería la página que vende tu app</p>
+    <div class="hero-landing">
+      <span class="hl-badge">Refugio PAS</span>
+      <h4>Calma tu <em>sistema nervioso</em> en minutos</h4>
+      <p class="hl-sub"><b>Autohipnosis guiada en español</b>, hecha para personas altamente sensibles como tú.</p>
+      <div class="hl-cta">Quiero sentir calma hoy</div>
+      <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ OPCIÓN B — Anillo de Calma ═══════════════════════ -->
+  <section class="opcion op-b" aria-label="Opción B">
+    <div class="meta">
+      <h2><span class="letra">B</span> Anillo de Calma</h2>
+      <p class="direccion">Suave y ordenada — un anillo dorado en el centro muestra tus minutos de calma de la semana, con tus datos clave alrededor en cuatro tarjetas.</p>
+      <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
+        <span class="slot">ver el progreso semanal como algo que ya está construyendo (no solo "usa la app hoy") ayuda a que vuelva por costumbre, no por culpa</span>
+      </p>
+      <ul class="tokens">
+        <li>--bg #FFFFFF · --accent #B8935B · --rosa #EFC7CB</li>
+        <li>radius 16/12 · anillo dorado sobre pista rosa pastel</li>
+      </ul>
+      <div class="paleta" aria-hidden="true">
+        <span style="background:#ffffff"></span><span style="background:#fdf6f4"></span>
+        <span style="background:#3d2e33"></span><span style="background:#efc7cb"></span>
+        <span style="background:#b8935b"></span>
+      </div>
+      <div class="especimen">
+        <p class="esp-display">Instrument Serif — AaBbÑñ 0123</p>
+        <p class="esp-body">Onest — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+      </div>
+    </div>
+
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/>
+          </svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="pantalla">
+        <div class="encabezado-b">
+          <p class="periodo">Semana del 8 al 14 sep</p>
+          <h3 class="titulo-b">Tu refugio de calma</h3>
+        </div>
+
+        <div class="anillo-wrap">
+          <svg width="132" height="132" viewBox="0 0 132 132" role="img" aria-label="64 por ciento de tu meta semanal">
+            <circle cx="66" cy="66" r="57" fill="none" stroke-width="11"
+                    stroke="#EFC7CB"/>
+            <circle cx="66" cy="66" r="57" fill="none" stroke-width="11"
+                    stroke="#B8935B" stroke-linecap="round"
+                    stroke-dasharray="358.1" stroke-dashoffset="129"
+                    transform="rotate(-90 66 66)"/>
+          </svg>
+          <div class="centro">
+            <span class="pct">32</span>
+            <span class="pct-label">min. de calma</span>
+          </div>
+        </div>
+
+        <div class="grid2x2">
+          <div class="tile destacada">
+            <p class="t-label">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#B8935B" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg>
+              Tu arquetipo
+            </p>
+            <p class="t-dato">Empática</p>
+          </div>
+          <div class="tile">
+            <p class="t-label">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2 2.6 6.9L22 9.3l-5.4 4.6 1.8 7.1L12 17l-6.4 4 1.8-7.1L2 9.3l7.4-.4Z"/></svg>
+              Racha
+            </p>
+            <p class="t-dato">7<small> días</small></p>
+          </div>
+          <div class="tile">
+            <p class="t-label">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/></svg>
+              Audios
+            </p>
+            <p class="t-dato">12</p>
+          </div>
+          <div class="tile">
+            <p class="t-label">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Esta noche
+            </p>
+            <p class="t-dato">Limpieza</p>
+          </div>
+        </div>
+
+        <div class="cta">Escuchar mi audio de esta noche</div>
+
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/></svg></span>Biblioteca</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <p class="rotulo-frame">Así se vería la página que vende tu app</p>
+    <div class="hero-landing">
+      <span class="hl-badge">Refugio PAS</span>
+      <h4>Tu refugio de calma, <em>cada noche</em></h4>
+      <p class="hl-sub"><b>Descubre tu arquetipo PAS</b> y recibe un audio que sí te entiende.</p>
+      <div class="hl-cta">Descubrir mi arquetipo</div>
+      <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════ OPCIÓN C — Ritual en Tres Actos ═══════════════════════ -->
+  <section class="opcion op-c" aria-label="Opción C">
+    <div class="meta">
+      <h2><span class="letra">C</span> Ritual en Tres Actos</h2>
+      <p class="direccion">Elegante, como una libreta cuidada — tu día contado como un ritual de 3 momentos, con un filete dorado que separa cada sección.</p>
+      <p class="hipotesis"><strong>Por qué podría funcionar:</strong>
+        <span class="slot">convertir la app en un RITUAL diario (no solo "una herramienta para crisis") es lo que hace que alguien vuelva incluso los días que está bien</span>
+      </p>
+      <ul class="tokens">
+        <li>--bg #FBF6F2 · --accent #A97C3E · --rosa #E3AEB4</li>
+        <li>radius 10/8 · doble filete dorado editorial</li>
+      </ul>
+      <div class="paleta" aria-hidden="true">
+        <span style="background:#fbf6f2"></span><span style="background:#ffffff"></span>
+        <span style="background:#453036"></span><span style="background:#e3aeb4"></span>
+        <span style="background:#a97c3e"></span>
+      </div>
+      <div class="especimen">
+        <p class="esp-display">Marcellus — AaBbÑñ 0123</p>
+        <p class="esp-body">Figtree — El veloz murciélago hindú comía feliz cardillo y kiwi.</p>
+      </div>
+    </div>
+
+    <div class="telefono">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="der">
+          <svg width="17" height="11" viewBox="0 0 17 11" fill="currentColor" aria-hidden="true">
+            <rect x="0" y="7" width="3" height="4" rx="0.8"/><rect x="4.5" y="5" width="3" height="6" rx="0.8"/>
+            <rect x="9" y="3" width="3" height="8" rx="0.8"/><rect x="13.5" y="0.5" width="3" height="10.5" rx="0.8"/>
+          </svg>
+          <svg width="16" height="11" viewBox="0 0 16 11" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" aria-hidden="true">
+            <path d="M1.5 4.2a9.5 9.5 0 0 1 13 0"/><path d="M3.8 6.6a6.2 6.2 0 0 1 8.4 0"/><path d="M6.2 9a2.8 2.8 0 0 1 3.6 0"/>
+          </svg>
+          <svg width="25" height="12" viewBox="0 0 25 12" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="21" height="11" rx="3" fill="none" stroke="currentColor" opacity="0.4"/>
+            <rect x="2" y="2" width="15" height="8" rx="1.6" fill="currentColor"/>
+            <rect x="22.5" y="3.8" width="2" height="4.4" rx="1" fill="currentColor" opacity="0.4"/>
+          </svg>
+        </span>
+      </div>
+
+      <div class="pantalla">
+        <div class="masthead">
+          <p class="edicion">Martes 15 de septiembre</p>
+          <h3 class="titulo-c">Tu ritual de hoy</h3>
+        </div>
+
+        <div class="timeline">
+          <div class="evento activo">
+            <span class="hora">8:00</span>
+            <span class="nodo"><span class="punto"></span></span>
+            <div>
+              <h4>Respiración matutina · 3 min</h4>
+              <p>Empieza el día sin cargar lo de ayer.</p>
+            </div>
+          </div>
+          <div class="evento">
+            <span class="hora">13:00</span>
+            <span class="nodo"><span class="punto"></span></span>
+            <div>
+              <h4>Pausa SOS, si la necesitas</h4>
+              <p>Tu botón de alivio siempre a un tap.</p>
+            </div>
+          </div>
+          <div class="evento">
+            <span class="hora">21:30</span>
+            <span class="nodo"><span class="punto"></span></span>
+            <div>
+              <h4>Autohipnosis para dormir</h4>
+              <p>Limpieza Energética Nocturna · 12 min.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="cierre-nota">
+          <span class="chip-icono" aria-hidden="true">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A97C3E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.5 1-1a5.5 5.5 0 0 0 0-7.9Z"/>
+            </svg>
+          </span>
+          <p><b>Ser sensible es tu fortaleza</b>, no algo que arreglar.</p>
+        </div>
+
+        <div class="cta">Comenzar mi ritual nocturno</div>
+
+        <nav class="tabbar" aria-label="Navegación">
+          <a class="activa" href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 10 9-7 9 7v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></span>Inicio</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3Z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3Z"/></svg></span>Biblioteca</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/></svg></span>Diario</a>
+          <a href="#"><span class="tab-chip"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6 8-6s8 2 8 6"/></svg></span>Perfil</a>
+        </nav>
+      </div>
+      <div class="home-indicator"></div>
+    </div>
+
+    <p class="rotulo-frame">Así se vería la página que vende tu app</p>
+    <div class="hero-landing">
+      <span class="hl-badge">Refugio PAS</span>
+      <h4>Deja de <em>absorber</em> lo que no es tuyo</h4>
+      <p class="hl-sub"><b>Un ritual diario de 3 momentos</b> para proteger tu energía, mañana, tarde y noche.</p>
+      <div class="hl-cta">Empezar mi ritual de hoy</div>
+      <p class="hl-prueba">3 días gratis · cancela cuando quieras</p>
+    </div>
+  </section>
+
+</div>
+
+<footer class="pie">
+  Las tres opciones comparten tu paleta (rosa pastel + dorado + blanco) y cambian en cómo
+  organizan la pantalla: A pone el botón de ayuda inmediata al centro · B te muestra tu progreso
+  de la semana en un vistazo · C convierte tu día en un pequeño ritual de 3 momentos.
+</footer>
+
+</body>
+</html>

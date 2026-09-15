@@ -23,6 +23,15 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Deseo #1: desactivar la sobrecarga sensorial en menos de 5 minutos en momentos de crisis
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
 
+## Sesión 2 en curso — Identidad visual
+- Ruta de diseño: propuesta propia, con restricción de color dada por el usuario (rosa pastel + dorado + blanco, minimalista)
+- Comparativa A/B/C creada: `direcciones-abc.html` (raíz del proyecto) — 3 direcciones, misma paleta, distinta composición:
+  - A "Refugio Cálido": botón SOS al centro con halo dorado + cards (Fraunces + Albert Sans)
+  - B "Anillo de Calma": anillo dorado sobre pista rosa + grid 2x2 de progreso semanal (Instrument Serif + Onest)
+  - C "Ritual en Tres Actos": timeline editorial de 3 momentos del día + filete dorado (Marcellus + Figtree)
+- Verificado: fuentes cargan en su clase real (sin fallback-trampa), 3 layouts estructuralmente distintos
+- Pendiente: elección del usuario (elegir/combinar/otras 3/ajustar) → cierra FICHA-ARTE.md
+
 ## Fichas de memoria (Sesión 1)
 - FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
 - FICHA-AVATAR.md: BORRADOR (2026-09-15) — 7 frases VoC reunidas, faltan ≥3 para aprobar; PROHIBIDO derivar copy de venta hasta completarla en Sesión 3
