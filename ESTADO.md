@@ -1,7 +1,7 @@
 # ESTADO — Refugio PAS: Guía & Autohipnosis
 Última actualización: 2026-09-15 | Sesión actual: 1
 
-⏸️ CHECKPOINT — Última acción completada: ESTADO.md creado con la idea validada (RESUMEN FINAL del usuario) / Siguiente acción exacta: completar FICHA-MODELO.md, FICHA-AVATAR.md y FICHA-MERCADO.md, y decidir arquitectura (datos/RLS/auth) de la Sesión 1.
+⏸️ CHECKPOINT — Última acción completada: FICHA-MODELO.md, FICHA-AVATAR.md (BORRADOR) y FICHA-MERCADO.md creadas; usuario confirmó que los audios de autohipnosis se graban con voz humana real / Siguiente acción exacta: definir arquitectura técnica (datos/RLS/auth) de la Sesión 1, presentar Plan Maestro y pasar a Sesión 2 (identidad visual).
 
 ## Qué es esta app (3 líneas máximo)
 Botiquín móvil de autorregulación emocional, desintoxicación sensorial y autohipnosis guiada para Personas Altamente Sensibles (PAS) en español. Test de arquetipo PAS + botón SOS + biblioteca de audios de autohipnosis + módulos didácticos + diario de journaling. Suscripción mensual/anual con prueba gratis de 3 días.
@@ -22,6 +22,11 @@ Botiquín móvil de autorregulación emocional, desintoxicación sensorial y aut
 - Dolor #1: absorbe emociones/tensiones ajenas sin saber cómo desengancharse
 - Deseo #1: desactivar la sobrecarga sensorial en menos de 5 minutos en momentos de crisis
 - Objeción #1: teme suscripciones automáticas caras y difíciles de cancelar
+
+## Fichas de memoria (Sesión 1)
+- FICHA-MODELO.md: APROBADA (2026-09-15) — app modelo: Reveri (2 señales de tracción: descargas/ranking + financiamiento)
+- FICHA-AVATAR.md: BORRADOR (2026-09-15) — 7 frases VoC reunidas, faltan ≥3 para aprobar; PROHIBIDO derivar copy de venta hasta completarla en Sesión 3
+- FICHA-MERCADO.md: completa (2026-09-15) — vence 2027-03-15
 
 ## Dirección de Arte (Sesión 2 — pendiente)
 - FICHA-ARTE.md: NO existe todavía
@@ -65,8 +70,9 @@ Completar el Test de Arquetipos (3 min), descubrir su arquetipo, y escuchar un a
 
 ## Decisiones técnicas (NO re-discutir sin pedirlo el usuario)
 - Framework: Next.js (App Router) — landing con SEO + funnel integrado + futura app; decidido 2026-09-15
-- Audios: requieren almacenamiento de archivos de audio (Supabase Storage) — pendiente de definir en Sesión 1 si son grabados por la psicóloga (estáticos) o generados por IA (a decidir con el usuario si aplica)
-- Modelo de datos, RLS y método de auth: pendientes de definir en esta Sesión 1
+- Audios: voz humana real (grabada por la psicóloga/locutor del proyecto), NO generados por IA — confirmado por el usuario 2026-09-15. Se almacenan como archivos estáticos en Supabase Storage, sin necesidad de arquitectura de IA de audio (30-INTEGRACION-IA.md no aplica para este MVP)
+- Auth: Supabase Auth con magic link (correo sin contraseña) + Google OAuth — mínima fricción para una app de bienestar donde pedir contraseña agrega barrera emocional innecesaria
+- Modelo de datos (esquema base, se refina en Sesión 6): `profiles` (datos de usuario + arquetipo PAS resultante del test) · `subscriptions` (plan, estado, origen=hotmart, vigencia) · `audio_library` (categoría: SOS/biblioteca, título, duración, url del archivo) · `audio_progress` (qué escuchó cada usuario, favoritos) · `journal_entries` (texto, estado de ánimo, fecha) — todas con RLS por `(select auth.uid()) = user_id`, columna user_id indexada
 
 ## Sesiones completadas ✅
 (ninguna aún)
@@ -84,7 +90,7 @@ Completar el Test de Arquetipos (3 min), descubrir su arquetipo, y escuchar un a
 - Sesión 8: Adquisición, lanzamiento y backoffice
 
 ## Problemas conocidos ⚠️
-- Los audios de autohipnosis son contenido de audio real (voz cálida, grabada) — hay que decidir con el usuario si los graba una persona real/voz IA, quién los provee, y cómo se suben (impacta Sesión 6 y el costo unitario)
+- Ninguno abierto por ahora.
 
 ## Pendientes del usuario (acciones que el usuario debe hacer)
 - [ ] Ninguna todavía — se avisará cuando llegue el momento de crear cuentas
