@@ -47,4 +47,4 @@
 - Registro anti-repetición: paleta (rosa pastel #F0C9CD + dorado #C2921F + blanco cálido #FFF9F5) y par tipográfico (Fraunces + Albert Sans) quedan anotados en ESTADO.md como VETADOS para el PRÓXIMO proyecto del SO (dentro de este proyecto siguen vigentes)
 - Modo (claro/oscuro) DERIVADO por: arquetipo Cuidador/Inocente + pedido explícito del usuario de blanco como base
 
-## Idioma UI: Español latino neutro · Fecha de cierre de la ficha: 2026-09-15 · Aprobada por el usuario: SÍ (2026-09-15) — cosa juzgada, no se redecide a mitad de proyecto
+## Idioma UI: Español latino neutro · Fecha de cierre de la ficha: 2026-09-15 · Aprobada por el usuario: SÍ, confirmación final "Me encanta — sigamos con este estilo" (2026-09-15) — cosa juzgada, no se redecide a mitad de proyecto. Todos los ajustes finos de la pantalla de Inicio (orbe centrado, chequeo de ánimo con etiquetas, botón "AUDIO S.O.S.", frase inspiradora del día) quedan incorporados al sistema y se replican con el mismo criterio en el resto de las pantallas.
