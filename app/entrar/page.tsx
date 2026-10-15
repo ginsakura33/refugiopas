@@ -2,25 +2,56 @@
 
 // PANTALLA DE LOGIN — Sesión 4 (ver docs/sistema/50 sección E). Magic link por email como
 // método primario (decisión de ESTADO.md: Supabase Auth con magic link + Google OAuth).
-// ⚠️ Supabase todavía NO está conectado (llega en Sesión 6): el formulario simula los 3
-// estados (enviando/enviado/error) con estado local, sin backend real todavía.
+// Conectado a Supabase Auth (Sesión 6): envía el enlace de acceso real por correo. El botón de
+// Google solo aparece cuando NEXT_PUBLIC_AUTH_GOOGLE=1 (cuando el proveedor esté configurado).
 
 import { LogoMarca } from '@/components/Logo';
 import Link from 'next/link';
-import { useState, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import { Mail, Lock } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
 
-type Estado = 'idle' | 'enviando' | 'enviado';
+type Estado = 'idle' | 'enviando' | 'enviado' | 'error';
+const GOOGLE_ACTIVO = process.env.NEXT_PUBLIC_AUTH_GOOGLE === '1';
 
 export default function EntrarPage() {
   const [email, setEmail] = useState('');
   const [estado, setEstado] = useState<Estado>('idle');
 
-  const enviar = (e: FormEvent) => {
+  const [mensajeError, setMensajeError] = useState('');
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('error') === 'enlace') {
+      setEstado('error');
+      setMensajeError('Ese enlace ya se usó o venció. Pide uno nuevo y ábrelo desde el mismo dispositivo.');
+    }
+  }, []);
+
+  const enviar = async (e: FormEvent) => {
     e.preventDefault();
-    if (!email.trim()) return;
+    if (!email.trim() || estado === 'enviando') return;
     setEstado('enviando');
-    setTimeout(() => setEstado('enviado'), 900);
+    const { error } = await createClient().auth.signInWithOtp({
+      email: email.trim(),
+      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+    });
+    if (error) {
+      setEstado('error');
+      setMensajeError(
+        error.status === 429
+          ? 'Pediste varios enlaces seguidos. Espera unos minutos y vuelve a intentarlo.'
+          : 'No pudimos enviar el enlace. Revisa tu correo e inténtalo de nuevo.'
+      );
+      return;
+    }
+    setEstado('enviado');
+  };
+
+  const conGoogle = async () => {
+    await createClient().auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    });
   };
 
   return (
@@ -42,7 +73,13 @@ export default function EntrarPage() {
               Para guardarlo y verlo en cualquier dispositivo
             </p>
 
-            <form onSubmit={enviar} className="mt-8 flex flex-col gap-3">
+            {estado === 'error' && (
+              <p role="alert" className="mt-6 rounded-[var(--radius-button)] bg-[color-mix(in_oklab,var(--accent-2)_45%,transparent)] px-4 py-3 text-[14px] leading-snug text-[var(--text-primary)]">
+                {mensajeError}
+              </p>
+            )}
+
+            <form onSubmit={enviar} className={`${estado === 'error' ? 'mt-4' : 'mt-8'} flex flex-col gap-3`}>
               <input
                 type="email"
                 required
@@ -65,13 +102,16 @@ export default function EntrarPage() {
               </button>
             </form>
 
+            {GOOGLE_ACTIVO && (
             <button
               type="button"
+              onClick={conGoogle}
               className="mt-3 flex h-[52px] w-full items-center justify-center gap-2 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] bg-[var(--surface)] text-[15px] font-medium text-[var(--text-primary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
             >
               <span aria-hidden="true" className="text-[16px] font-bold">G</span>
               Continuar con Google
             </button>
+            )}
 
             <p className="mt-4 flex items-center gap-1.5 text-[13px] text-[var(--text-tertiary)]">
               <Lock size={14} aria-hidden="true" /> Sin contraseñas: te llegará un enlace de un solo uso

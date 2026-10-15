@@ -3,17 +3,35 @@
 // Perfil — cuenta y plan. Sin backend real todavía: "Cerrar sesión" es un mockup honesto que
 // vuelve a la landing (Sesión 6 conecta Supabase Auth de verdad, ver ESTADO.md).
 
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Compass, CreditCard, LogOut, Mail, ShieldCheck } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { LogoMarca } from '@/components/Logo';
 import { PERFIL_DEMO } from '@/lib/app-demo-data';
+import { createClient } from '@/lib/supabase/client';
 
 export default function PerfilPage() {
   const router = useRouter();
+  const [correo, setCorreo] = useState<string>(PERFIL_DEMO.email);
+
+  // Correo real de la sesión (si no se puede leer, queda el de ejemplo).
+  useEffect(() => {
+    createClient()
+      .auth.getUser()
+      .then(({ data }) => {
+        if (data.user?.email) setCorreo(data.user.email);
+      });
+  }, []);
+
+  const cerrarSesion = async () => {
+    await createClient().auth.signOut();
+    router.push('/');
+    router.refresh();
+  };
 
   const filas = [
-    { icon: Mail, label: 'Correo', valor: PERFIL_DEMO.email },
+    { icon: Mail, label: 'Correo', valor: correo },
     { icon: Compass, label: 'Tu arquetipo', valor: PERFIL_DEMO.arquetipoNombre },
     { icon: CreditCard, label: 'Tu plan', valor: PERFIL_DEMO.plan },
   ];
@@ -46,7 +64,7 @@ export default function PerfilPage() {
 
       <button
         type="button"
-        onClick={() => router.push('/')}
+        onClick={cerrarSesion}
         className="mt-8 flex h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] text-[14px] font-semibold text-[var(--text-secondary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
       >
         <LogOut size={16} aria-hidden="true" /> Cerrar sesión
