@@ -1,6 +1,6 @@
 # FICHA DE AVATAR — Refugio PAS
 
-- Estado: BORRADOR (7 frases VoC con fuente reunidas hasta ahora — faltan ≥3 para APROBADA; se completan con reseñas y comentarios reales antes de escribir copy de venta en la Sesión 3. PROHIBIDO derivar copy de venta mientras esté en BORRADOR)
+- Estado: APROBADA (12 frases VoC con fuente reunidas — supera el mínimo de 10; testimonios reales de clientas aportados por el usuario el 2026-09-16, ver Voice of customer)
 
 ## El avatar (cliente ideal — UNA persona concreta)
 - Nombre/arquetipo: Valeria · Edad: 34 años · Situación: profesional (educadora, diseñadora, consultora o de la salud) · País(es): ciudades principales de LATAM y España
@@ -31,6 +31,7 @@
 3. (emocional) "Acceder a audios de autohipnosis en su idioma con una voz cálida que reprogramen su mente subconsciente"
 4. (emocional) "Aprender a poner límites amorosos y proteger su campo energético sin sentir culpa"
 5. (identidad — en quién se convierte) "Comprender su rasgo (PAS) y validar que su sensibilidad es una fortaleza y no un defecto"
+6. (identidad — transformación profunda, evidencia: testimonios reales) "Sanar heridas emocionales del pasado, perdonar y perdonarse, y sentir que venció un vacío o una tristeza que cargaba desde hace años"
 
 ## Voice of customer (frases literales recolectadas)
 - "No tiene sentido escuchar la sesión de hipnosis en otro idioma. Espero lo traduzcan pronto porque se pierde la conexión emocional." (fuente: RESUMEN del usuario, cita de mercado)
@@ -40,6 +41,11 @@
 - "Es poco práctico tener que pagar por adelantado y de manera automática sin poder gestionar la terapia a mi ritmo." (fuente: RESUMEN del usuario)
 - "Pensé que la app era solo un PDF estático para leer en la pantalla." (fuente: RESUMEN del usuario, objeción)
 - "Ya he intentado meditar con apps comunes y me aburro o no logro relajarme." (fuente: RESUMEN del usuario, objeción)
+- "Me encantó la experiencia de la terapia, ver esos recuerdos, sanar emocionalmente cosas que pensé no afectaban tanto, estoy mucho más tranquila, relajada, de verdad que se siente el cambio." (fuente: testimonio real de clienta, 2026-09-16)
+- "Me doy cuenta que puedo ver mi historia de forma diferente, perdonar y perdonarme. Escribir una historia diferente y continuar aprendiendo sin juzgarme ni sentir culpa." (fuente: testimonio real de clienta, 2026-09-16)
+- "Me siento de un buen, pareciera que salí nueva de paquete jajaja, darme cuenta del poder que habita en mí, reconocerme." (fuente: testimonio real de clienta, 2026-09-16)
+- "En este proceso ha sido el mejor viaje al centro de mi ser, ha sido mágico, revelador y de mucho aprendizaje y conocimiento de mi esencia." (fuente: testimonio real de clienta, 2026-09-16)
+- "Hoy por fin algo dentro de mí ya supo que vencí la depresión y ese vacío después de tantos años. Me siento plena, feliz, agradecida con la vida." (fuente: testimonio real de clienta, 2026-09-16)
 
 ## Consciencia y sofisticación (diagnóstico)
 - Nivel de consciencia dominante: Alto en el reconocimiento del problema ("sé que me abrumo con facilidad") · Medio en el diagnóstico del rasgo PAS y en autohipnosis guiada como solución (evidencia: RESUMEN del usuario, campo 8)
@@ -64,4 +70,4 @@
 ## Cierre
 - INVENTARIO DE PRUEBA DÍA-1: NO ENCONTRADO — el usuario no mencionó tener resultados propios, beta testers ni demo grabable todavía; se pregunta antes de escribir el copy de la landing (Sesión 3)
 - ¿Hubo entrevistas del 44?: NO — la validación viene del RESUMEN FINAL con datos de mercado, no de entrevistas propias del usuario
-- Fecha de cierre: BORRADOR — pendiente de completar VoC y aprobación del usuario · Aprobada por el usuario: NO
+- Fecha de cierre: 2026-09-16 · Aprobada por el usuario: SÍ (completó el VoC con 5 testimonios reales de clientas el 2026-09-16) — cosa juzgada, no se redecide a mitad de proyecto

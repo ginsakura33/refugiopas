@@ -1,0 +1,106 @@
+/* ============================================================================
+   KIT DE LANDING — tokens.css
+   EL ÚNICO ARCHIVO QUE SE TEMATIZA. Los componentes del kit consumen SOLO estas
+   variables: cambias estos valores con la FICHA-ARTE.md del proyecto y toda la
+   landing cambia de piel sin tocar un .tsx.
+
+   Cómo se usa (orden de "EL KIT PRIMERO" en 55-DISENO-DE-LANDING.md):
+   1. FICHA-ARTE.md aprobada (16 PASO 0 — jamás inventar hex aquí).
+   2. Reemplazar TODOS los valores marcados "← reemplazar con FICHA-ARTE".
+   3. Importar este archivo en app/globals.css DESPUÉS de @import "tailwindcss".
+   4. Verificar contraste AA (≥4.5:1 texto / ≥3:1 UI) con los valores finales.
+
+   Reglas que NO cambian al tematizar:
+   - Ni #000 ni #FFF puros; casi-negro y casi-blanco CON tinte (DESIGN-CORE §2).
+   - El acento va SOLO en CTA y dato clave (60-30-10) — el kit ya lo aplica así.
+   - --chip-bg y los color-mix derivados se recalculan solos desde --accent.
+   ============================================================================ */
+
+:root {
+  /* ── SUPERFICIES (FICHA-ARTE.md — Brand kit final "Refugio Cálido") ── */
+  --bg: #fff9f5;               /* fondo base — FICHA-ARTE §Brand kit */
+  --surface: #ffffff;          /* superficie — FICHA-ARTE §Brand kit */
+  --surface-2: #f5ede4;        /* hundido — derivado del fondo (N/A explícito en la ficha) */
+
+  /* ── TEXTO (FICHA-ARTE.md — Texto 1º/2º) ── */
+  --text-primary: #4a3b3f;     /* FICHA-ARTE §Brand kit */
+  --text-secondary: #7f6a6f;   /* derivado de FICHA-ARTE (#9c8388 daba 3.3:1 sobre el fondo, falla AA): mismo tono, oscurecido a ~4.8:1 — revisor-visual 2026-10-11 */
+  --text-tertiary: #6b585c;    /* derivado (mezcla 1º/2º) para labels ≥4.5:1 sobre --bg/--surface — la ficha no fija un 3er nivel de texto */
+
+  /* ── MARCA (FICHA-ARTE.md — Acento / 2ª nota) ── */
+  --accent: #c2921f;           /* dorado intenso — FICHA-ARTE §Brand kit */
+  --accent-2: #f0c9cd;         /* rosa pastel, 2ª nota — FICHA-ARTE §Brand kit */
+
+  /* ── FORMA (FICHA-ARTE.md — Radio) ── */
+  --radius-card: 20px;         /* FICHA-ARTE §Brand kit */
+  --radius-button: 14px;       /* FICHA-ARTE §Brand kit */
+
+  /* ── TIPOGRAFÍA (FICHA-ARTE.md — Display / Body) ── */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Albert Sans', 'Segoe UI', sans-serif;
+
+  /* ── SOMBRAS tintadas del propio dorado (FICHA-ARTE: "nunca negras") ── */
+  --shadow-1: 0 1px 2px rgb(194 146 31 / 0.10);
+  --shadow-2: 0 12px 32px -12px rgb(194 146 31 / 0.28);
+
+  /* ── ISOTIPO (components/Logo.tsx): paleta propia del logo elegido por el usuario, 2026-10-13 ── */
+  --logo-oro-1: #e5c383;
+  --logo-oro-2: #cfa15a;
+  --logo-oro-3: #b2823b;
+  --logo-rosa-1: #f2d1c9;
+  --logo-rosa-2: #eaa89b;
+  --logo-cor-1: #eea89b;
+  --logo-cor-2: #de8c7e;
+
+  /* ── DERIVADOS (no se tocan: se recalculan solos desde --accent) ── */
+  --chip-bg: color-mix(in oklab, var(--accent) 10%, transparent);
+  /* --accent-cta: dorado LUMINOSO para el FONDO de los botones (más claro que
+     --accent, a pedido del usuario 2026-09-16: "más luminoso y llamativo") —
+     se empareja con texto OSCURO (--text-primary) encima, no con texto claro:
+     así sube el brillo del botón Y el contraste sube con él (~5:1), en vez de
+     bajarlo. --accent puro + texto claro solo daba ~2.7:1 (fallaba AA). */
+  --accent-cta: color-mix(in oklab, var(--accent) 82%, white);
+  /* --accent-ink: dorado OSCURECIDO para cuando el acento se usa como TEXTO
+     sobre fondo claro (ej. el botón mensual en outline) — ahí --accent puro
+     también falla AA (~2.7:1); esta versión da software ~3.7-4:1. */
+  --accent-ink: color-mix(in oklab, var(--accent) 70%, black);
+}
+
+/* ============================================================================
+   EJEMPLO LLENO (referencia de cómo queda tematizado — NO copiar estos hex a
+   una app real: fallan el test de intercambiabilidad de 16/DESIGN-CORE §4.
+   App ficticia de finanzas, modo oscuro DERIVADO, acento latón, display grotesk)
+
+:root {
+  --bg: #101216;
+  --surface: #171a21;
+  --surface-2: #12141a;
+  --text-primary: #e7e9ee;
+  --text-secondary: #9ca1ad;
+  --text-tertiary: #767c89;
+  --accent: #c9a24b;
+  --accent-2: #c9a24b;
+  --radius-card: 16px;
+  --radius-button: 12px;
+  --font-display: 'Archivo', 'Helvetica Neue', sans-serif;
+  --font-body: 'Instrument Sans', 'Segoe UI', sans-serif;
+  --shadow-1: 0 1px 2px rgb(5 6 10 / 0.5);
+  --shadow-2: 0 12px 32px -12px rgb(5 6 10 / 0.6);
+  --chip-bg: color-mix(in oklab, var(--accent) 10%, transparent);
+}
+============================================================================ */
+
+/* Base mínima que el kit asume (no tematizar) */
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+}

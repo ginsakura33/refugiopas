@@ -1,0 +1,51 @@
+@import "tailwindcss";
+@import "../components/landing/tokens.css";
+
+/* Las fuentes las carga next/font/google en app/layout.tsx (evita el
+   fallback-trampa de <link> con rangos variables — nota de FICHA-ARTE.md);
+   aquí solo se apunta --font-display/--font-body a esas variables. */
+:root {
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-body: var(--font-albert-sans), "Segoe UI", sans-serif;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+}
+
+/* Slider de compromiso del onboarding (50 → A6): el navegador pinta el thumb
+   de un input[type=range] en azul por defecto — se retematiza al acento. */
+input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+}
+input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+  border: 3px solid var(--surface);
+}
+input[type='range']::-moz-range-thumb {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: var(--accent);
+  box-shadow: var(--shadow-2);
+  cursor: pointer;
+  border: 3px solid var(--surface);
+}
+input[type='range']::-moz-range-track {
+  background: transparent;
+}
