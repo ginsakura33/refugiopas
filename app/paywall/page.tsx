@@ -5,15 +5,20 @@
 // prueba (SOLO el plan anual: 7 días — decisión del usuario 2026-10-12; el mensual se paga desde
 // el primer día) + CTA + garantía + salida limpia. La pantalla aparte del timeline se quitó
 // (2026-10-11): repetía lo que ya muestra el timeline compacto de la pantalla de precio.
-// ⚠️ Hotmart todavía NO está conectado (llega en Sesión 6): el CTA final simula el paso
-// siguiente localmente — nunca un checkout falso que parezca procesar un cobro real (ver
-// docs/sistema/50 → C3ter "mockups honestos"). "Restaurar compra" se oculta hasta entonces
-// (mostrar un stub sin terminar a un usuario real es peor que omitirlo — hallazgo revisor-visual).
+// Hotmart (Sesión 6): el CTA final lleva a la página de pago real del plan elegido
+// (NEXT_PUBLIC_HOTMART_CHECKOUT_ANUAL / _MENSUAL). Mientras esas variables no existan, lleva al
+// acceso por correo — nunca un checkout falso que parezca procesar un cobro real (docs/sistema/50 → C3ter).
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { X, ShieldCheck } from 'lucide-react';
+
+// Páginas de pago de Hotmart (públicas). Sin ellas configuradas, el botón lleva al acceso por correo.
+const CHECKOUT = {
+  anual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_ANUAL,
+  mensual: process.env.NEXT_PUBLIC_HOTMART_CHECKOUT_MENSUAL,
+} as const;
 import { CheckCustom, Hairline, useReveal } from '@/components/landing/ui';
 import { CtaFijo } from '@/components/onboarding/ui';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
@@ -56,6 +61,11 @@ function ordenarBeneficios(preferencia: string | null): string[] {
 
 export default function PaywallPage() {
   const router = useRouter();
+  const irAlPago = (plan: 'anual' | 'mensual') => {
+    const url = CHECKOUT[plan];
+    if (url) window.location.assign(url);
+    else router.push('/entrar');
+  };
   const [pantalla, setPantalla] = useState(0);
   const [datos, setDatos] = useState<DatosOnboarding | null>(null);
 
@@ -114,7 +124,7 @@ export default function PaywallPage() {
                 onSiguiente={() => setPantalla(1)}
               />
             ) : (
-              <PantallaPrecio onEmpezar={() => router.push('/entrar')} onAhoraNo={() => router.push('/')} />
+              <PantallaPrecio onEmpezar={irAlPago} onAhoraNo={() => router.push('/')} />
             )}
           </motion.div>
         </AnimatePresence>
@@ -208,7 +218,7 @@ const PASOS_PRUEBA = [
   { titulo: 'Día 7', detalle: 'Cobro: $59.88', cobro: true },
 ];
 
-function PantallaPrecio({ onEmpezar, onAhoraNo }: { onEmpezar: () => void; onAhoraNo: () => void }) {
+function PantallaPrecio({ onEmpezar, onAhoraNo }: { onEmpezar: (plan: 'anual' | 'mensual') => void; onAhoraNo: () => void }) {
   const { contenedor, item } = useReveal();
   const [seleccion, setSeleccion] = useState<'anual' | 'mensual'>(() => {
     try {
@@ -223,7 +233,7 @@ function PantallaPrecio({ onEmpezar, onAhoraNo }: { onEmpezar: () => void; onAho
   const empezar = () => {
     if (yendo) return;
     setYendo(true);
-    onEmpezar();
+    onEmpezar(seleccion);
   };
 
   return (

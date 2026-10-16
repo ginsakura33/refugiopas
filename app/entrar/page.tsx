@@ -33,8 +33,14 @@ export default function EntrarPage() {
     setEstado('enviando');
     const { error } = await createClient().auth.signInWithOtp({
       email: email.trim(),
-      options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      // Solo entra quien ya tiene cuenta (se crea al comprar). Nadie se registra por aquí.
+      options: { shouldCreateUser: false, emailRedirectTo: `${window.location.origin}/auth/callback` },
     });
+    // Respuesta UNIFORME exista o no la cuenta (no revela quién compró): salvo límite de envíos.
+    if (error && error.status !== 429) {
+      setEstado('enviado');
+      return;
+    }
     if (error) {
       setEstado('error');
       setMensajeError(
@@ -128,8 +134,8 @@ export default function EntrarPage() {
             <h1 className="mt-6 text-[22px] font-bold text-[var(--text-primary)] [font-family:var(--font-display)]">
               Revisa tu correo
             </h1>
-            <p className="mt-2 max-w-[32ch] text-[15px] leading-snug text-[var(--text-secondary)]">
-              Te enviamos el enlace a {email}
+            <p className="mt-2 max-w-[34ch] text-[15px] leading-snug text-[var(--text-secondary)]">
+              Si {email} tiene una compra activa, el enlace llega en unos minutos. Revisa también spam y promociones.
             </p>
           </div>
         )}
