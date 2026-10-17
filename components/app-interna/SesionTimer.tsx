@@ -22,6 +22,7 @@ export function SesionTimer({
   tamano = 140,
   audioSrc,
   etiqueta,
+  sinAvisoAudifonos = false,
 }: {
   duracionMin: number;
   onCompletar?: () => void;
@@ -31,6 +32,8 @@ export function SesionTimer({
   audioSrc?: string;
   /** Rótulo corto sobre la duración, solo en reposo (ej. "AUDIO S.O.S."). */
   etiqueta?: string;
+  /** Oculta la pastilla de audífonos cuando la pantalla ya da ese aviso con su propio texto. */
+  sinAvisoAudifonos?: boolean;
 }) {
   const reduce = useReducedMotion();
   const total = duracionMin * 60;
@@ -249,7 +252,7 @@ export function SesionTimer({
         </motion.div>
       </button>
 
-      {audioSrc && (estado === 'idle' || estado === 'preparando') && (
+      {audioSrc && !sinAvisoAudifonos && (estado === 'idle' || estado === 'preparando') && (
         <motion.p
           initial={{ opacity: 0, y: reduce ? 0 : 6 }}
           animate={{ opacity: 1, y: 0 }}
