@@ -11,7 +11,7 @@ import { motion } from 'motion/react';
 import { Flame, Compass, Headphones, ArrowRight, BookHeart, Quote } from 'lucide-react';
 import { AppShell, Card, MoodPicker, StatChip } from '@/components/app-interna/ui';
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
-import { ANIMOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
+import { ANIMOS, AUDIOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
 import { Hairline, useReveal } from '@/components/landing/ui';
@@ -150,7 +150,7 @@ export default function InicioPage() {
         <motion.div variants={item} className="mt-auto flex gap-3 pt-5">
           <StatChip label="Tu tipo" valor={tipoCorto} icon={Compass} href="/app/perfil" />
           <StatChip label="días de racha" valor={String(PERFIL_DEMO.racha)} icon={Flame} href="/app/habitos" />
-          <StatChip label="audios" valor={String(PERFIL_DEMO.audiosEscuchados)} icon={Headphones} href="/app/biblioteca" />
+          <StatChip label="audios" valor={String(AUDIOS.length)} icon={Headphones} href="/app/biblioteca" />
         </motion.div>
       </motion.div>
     </AppShell>

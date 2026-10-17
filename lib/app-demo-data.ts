@@ -258,6 +258,5 @@ export const PERFIL_DEMO = {
   arquetipoNombre: 'el Alma Empática',
   racha: 4,
   mejorRacha: 7,
-  audiosEscuchados: 7,
   plan: 'Anual · $4.99/mes',
 };
