@@ -3,7 +3,7 @@
 // reales del mercado, valores plausibles del nicho, fechas relativas a hoy — nunca "User 1" ni 0%.
 
 import type { LucideIcon } from 'lucide-react';
-import { Sunrise, Wind, Anchor, PenLine, MoonStar } from 'lucide-react';
+import { Sunrise, Wind, Anchor, PenLine, MoonStar, Dumbbell } from 'lucide-react';
 
 export interface HabitoDef {
   id: string;
@@ -17,6 +17,7 @@ export const HABITOS: HabitoDef[] = [
   { id: 'sos', nombre: 'Pausa SOS', horaLabel: 'Elige tu audio SOS de la biblioteca', icon: Wind },
   { id: 'grounding', nombre: 'Grounding', horaLabel: 'Anclaje a tierra 5 min', icon: Anchor },
   { id: 'escritura', nombre: 'Escritura terapéutica', horaLabel: 'Reflexión conmigo', icon: PenLine },
+  { id: 'gym', nombre: 'Gym o ejercicio', horaLabel: 'Mueve tu cuerpo hoy', icon: Dumbbell },
   { id: 'noche', nombre: 'Autohipnosis nocturna', horaLabel: 'Antes de dormir', icon: MoonStar },
 ];
 

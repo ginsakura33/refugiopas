@@ -4,7 +4,8 @@
 // (localStorage) por fecha: el check se resetea cada día — sin backend todavía (Sesión 6).
 
 import { useEffect, useState } from 'react';
-import { Check } from 'lucide-react';
+import { Check, Lock } from 'lucide-react';
+import { HabitosPropios } from '@/components/app-interna/HabitosPropios';
 import { RachaCard } from '@/components/app-interna/RachaCard';
 import { AppShell, Card, ScreenTitle } from '@/components/app-interna/ui';
 import { Celebracion } from '@/components/app-interna/Celebracion';
@@ -18,11 +19,13 @@ function hitosKey() {
   return `refugio-hitos-${new Date().toISOString().slice(0, 10)}`;
 }
 
-// Gratificación escalonada: 3 hábitos ya suman el día a la racha; 4 y 5 la hacen más grande.
+// Gratificación escalonada (hoy 6 hábitos recomendados): 3 ya suman el día a la racha; 4, 5 y todos la hacen más grande.
+const TOTAL = HABITOS.length;
 const HITOS: Record<number, { etiqueta: string; titulo: string; mensaje: string }> = {
   3: { etiqueta: 'Bien hecho', titulo: '¡Tu día ya suma a tu racha!', mensaje: 'Con 3 hábitos te cuidaste hoy. Cada paso cuenta.' },
-  4: { etiqueta: 'Excelente', titulo: '¡4 de 5 hábitos, qué constancia!', mensaje: 'Estás cuidándote de verdad. Solo te falta uno.' },
-  5: { etiqueta: 'Felicitaciones', titulo: '¡Completaste tus hábitos de hoy!', mensaje: 'Hoy elegiste cuidarte. Tu constancia es tu fuerza.' },
+  4: { etiqueta: 'Excelente', titulo: `¡4 de ${TOTAL} hábitos, qué constancia!`, mensaje: 'Estás cuidándote de verdad. Sigue a tu ritmo.' },
+  5: { etiqueta: 'Increíble', titulo: `¡5 de ${TOTAL}, casi lo logras!`, mensaje: 'Solo te falta uno para cerrar tu día completo.' },
+  [TOTAL]: { etiqueta: 'Felicitaciones', titulo: '¡Completaste tus hábitos de hoy!', mensaje: 'Hoy elegiste cuidarte. Tu constancia es tu fuerza.' },
 };
 const MINIMO_RACHA = 3;
 
@@ -113,6 +116,7 @@ export default function HabitosPage() {
                   </p>
                   <p className="text-[13px] text-[var(--text-tertiary)]">{h.horaLabel}</p>
                 </div>
+                <Lock size={14} strokeWidth={1.8} color="var(--text-tertiary)" aria-label="Recomendado por Refugio PAS, no se puede editar" className="shrink-0" />
                 <span
                   aria-hidden="true"
                   className={`flex size-6 shrink-0 items-center justify-center rounded-full ${
@@ -126,6 +130,8 @@ export default function HabitosPage() {
           );
         })}
       </div>
+
+      <HabitosPropios hechos={hechos} onToggle={toggle} nombresRecomendados={HABITOS.map((h) => h.nombre)} />
 
       <Celebracion
         abierta={abierto}
