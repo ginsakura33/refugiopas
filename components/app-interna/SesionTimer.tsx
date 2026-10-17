@@ -254,7 +254,7 @@ export function SesionTimer({
           initial={{ opacity: 0, y: reduce ? 0 : 6 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: reduce ? 0 : 0.4 }}
-          className="flex max-w-[34ch] items-center justify-center gap-2 rounded-full bg-[var(--chip-bg)] px-3 py-2 text-center text-[13px] font-medium leading-snug text-[var(--text-primary)]"
+          className="flex max-w-[38ch] items-center justify-center gap-2 rounded-full bg-[var(--chip-bg)] px-3 py-2 text-center text-[13px] font-medium leading-snug text-[var(--text-primary)]"
         >
           <motion.span
             aria-hidden="true"
@@ -264,7 +264,7 @@ export function SesionTimer({
           >
             <Headphones size={18} strokeWidth={1.8} color="var(--accent-ink)" />
           </motion.span>
-          Utiliza audífonos para una experiencia más inmersiva
+          Utiliza audífonos para una experiencia más inmersiva y mejores resultados
         </motion.p>
       )}
       {estado === 'error' && (
