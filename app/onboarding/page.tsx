@@ -491,7 +491,7 @@ function PrimeraVictoria({ onContinuar }: { onContinuar: () => void }) {
       <div className="flex flex-1 flex-col items-center justify-center gap-6">
         <SesionTimer duracionMin={2} tamano={220} audioSrc="/audio/orbe-liberacion-2min-v2.mp3" sinAvisoAudifonos onCompletar={() => setListo(true)} />
         <p className="max-w-[36ch] text-balance text-center text-[14px] leading-snug text-[var(--text-secondary)]">
-          Busca un lugar cómodo, ponte audífonos para una experiencia inmersiva y mejores resultados.
+          Busca un lugar cómodo, ponte audífonos para una experiencia inmersiva y mejores resultados. Respira siguiendo la voz de Ginette Rivas.
         </p>
       </div>
 
