@@ -5,7 +5,7 @@
 // experiencia real de respiración guiada, con la duración exacta del audio que vendrá.
 
 import { useState } from 'react';
-import { Play, Clock3, Sparkles } from 'lucide-react';
+import { Play, Clock3, Sparkles, Headphones } from 'lucide-react';
 import { AppShell, Card, ScreenTitle } from '@/components/app-interna/ui';
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
 import { AUDIOS, type CategoriaAudio } from '@/lib/app-demo-data';
@@ -18,6 +18,11 @@ export default function BibliotecaPage() {
   return (
     <AppShell>
       <ScreenTitle subtitulo={`${AUDIOS.length} audios en español, guiados por Psic. Ginette Rivas`}>Tu biblioteca</ScreenTitle>
+
+      <p className="-mt-2 mb-5 flex items-center gap-2 rounded-[var(--radius-card)] bg-[var(--chip-bg)] px-4 py-3 text-[13px] font-medium leading-snug text-[var(--text-primary)]">
+        <Headphones size={18} strokeWidth={1.8} color="var(--accent-ink)" className="shrink-0" aria-hidden="true" />
+        Utiliza audífonos para una experiencia más inmersiva.
+      </p>
 
       <div className="flex flex-col gap-3">
         {AUDIOS.map((a) => {
