@@ -10,6 +10,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
+import { Headphones } from 'lucide-react';
 
 type Estado = 'idle' | 'preparando' | 'activo' | 'pausado' | 'completo' | 'error';
 const DURACION_PREPARACION = 3;
@@ -248,6 +249,24 @@ export function SesionTimer({
         </motion.div>
       </button>
 
+      {audioSrc && (estado === 'idle' || estado === 'preparando') && (
+        <motion.p
+          initial={{ opacity: 0, y: reduce ? 0 : 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: reduce ? 0 : 0.4 }}
+          className="flex max-w-[34ch] items-center justify-center gap-2 rounded-full bg-[var(--chip-bg)] px-3 py-2 text-center text-[13px] font-medium leading-snug text-[var(--text-primary)]"
+        >
+          <motion.span
+            aria-hidden="true"
+            className="flex shrink-0"
+            animate={reduce ? undefined : { scale: [1, 1.18, 1], opacity: [0.75, 1, 0.75] }}
+            transition={{ duration: 2.4, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Headphones size={18} strokeWidth={1.8} color="var(--accent-ink)" />
+          </motion.span>
+          Utiliza audífonos para una experiencia más inmersiva
+        </motion.p>
+      )}
       {estado === 'error' && (
         <p role="alert" className="max-w-[28ch] text-center text-[13px] leading-snug text-[var(--text-secondary)]">
           No pudimos reproducir el audio. Revisa tu conexión y toca el Orbe para reintentar.
