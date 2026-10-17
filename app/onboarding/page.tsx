@@ -489,7 +489,7 @@ function PrimeraVictoria({ onContinuar }: { onContinuar: () => void }) {
     <>
       <PreguntaTitulo microcopy="Tu primera sesión es gratis, aquí mismo">Respira 2 minutos con el Orbe</PreguntaTitulo>
       <div className="flex flex-1 flex-col items-center justify-center gap-6">
-        <SesionTimer duracionMin={2} tamano={220} audioSrc="/audio/orbe-liberacion-2min.mp3" onCompletar={() => setListo(true)} />
+        <SesionTimer duracionMin={2} tamano={220} audioSrc="/audio/orbe-liberacion-2min-v2.mp3" onCompletar={() => setListo(true)} />
         <p className="max-w-[32ch] text-center text-[14px] leading-snug text-[var(--text-secondary)]">
           Busca un lugar cómodo, ponte audífonos y respira siguiendo la voz de Ginette Rivas.
         </p>

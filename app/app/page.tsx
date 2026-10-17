@@ -72,7 +72,7 @@ export default function InicioPage() {
         </motion.div>
 
         <motion.div variants={item} className="flex flex-col items-center gap-3 py-2">
-          <SesionTimer duracionMin={2} tamano={168} etiqueta="AUDIO S.O.S." audioSrc="/audio/orbe-liberacion-2min.mp3" />
+          <SesionTimer duracionMin={2} tamano={168} etiqueta="AUDIO S.O.S." audioSrc="/audio/orbe-liberacion-2min-v2.mp3" />
           <p className="text-center text-[14px] text-[var(--text-secondary)]">Toca el Orbe para comenzar y liberar la sobrecarga.</p>
         </motion.div>
 
