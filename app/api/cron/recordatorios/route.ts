@@ -47,7 +47,7 @@ async function enviar(request: Request) {
     .select('user_id, activo, hora, zona, ultimo_envio')
     .eq('activo', true)
     .limit(MAX_POR_VUELTA);
-  if (errPrefs) return NextResponse.json({ error: 'no se pudo leer la base de datos (revisa la clave de servicio)', codigo: errPrefs.code ?? null }, { status: 500 });
+  if (errPrefs) return NextResponse.json({ error: 'no se pudo leer la base de datos (revisa la clave de servicio)', codigo: errPrefs.code ?? null, detalle: errPrefs.message?.slice(0, 120) ?? null }, { status: 500 });
   const toca = (prefs ?? []).filter((p) => tocaEnviar(p, ahora));
   if (toca.length === 0) return NextResponse.json({ ok: true, enviados: 0 });
 
