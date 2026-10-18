@@ -9,6 +9,7 @@ import { Compass, CreditCard, LogOut, Mail, ShieldCheck } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { LogoMarca } from '@/components/Logo';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
+import { RecordatorioSuave } from '@/components/app-interna/RecordatorioSuave';
 import { PERFIL_DEMO } from '@/lib/app-demo-data';
 import { createClient } from '@/lib/supabase/client';
 
@@ -26,6 +27,21 @@ export default function PerfilPage() {
   }, []);
 
   const cerrarSesion = async () => {
+    // El recordatorio se apaga en este celular antes de cerrar la sesión (privacidad en celulares compartidos).
+    try {
+      const reg = await navigator.serviceWorker?.getRegistration();
+      const sub = await reg?.pushManager.getSubscription();
+      if (sub) {
+        await fetch('/api/push/suscribir', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ endpoint: sub.endpoint }),
+        });
+        await sub.unsubscribe();
+      }
+    } catch {
+      /* sin recordatorio activo: nada que apagar */
+    }
     await createClient().auth.signOut();
     // Se borran las pantallas guardadas de esta cuenta (el audio del Orbe se queda).
     try {
@@ -69,6 +85,8 @@ export default function PerfilPage() {
       <p className="mt-4 flex items-center gap-1.5 text-[12px] text-[var(--text-tertiary)]">
         <ShieldCheck size={13} aria-hidden="true" /> Garantía del Primer Alivio · cancela cuando quieras
       </p>
+
+      <RecordatorioSuave />
 
       <InstalarApp siempre />
 

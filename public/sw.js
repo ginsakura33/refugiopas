@@ -4,7 +4,7 @@
    - Archivos fijos (/_next/static, íconos): primero lo guardado.
    Al subir de versión se cambia VERSION y se borra lo viejo. No toca /api ni /auth. */
 
-const VERSION = 'v1';
+const VERSION = 'v2';
 const PAGINAS = `refugio-paginas-${VERSION}`;
 const AUDIO = `refugio-audio-${VERSION}`;
 const ESTATICOS = `refugio-estaticos-${VERSION}`;
@@ -134,4 +134,38 @@ self.addEventListener('fetch', (event) => {
       })()
     );
   }
+});
+
+// Recordatorio suave: llega un aviso del servidor y se muestra con calma (una vez al día).
+self.addEventListener('push', (event) => {
+  let datos = { titulo: 'Refugio PAS', cuerpo: 'Un respiro de 2 minutos, cuando quieras.', url: '/app' };
+  try {
+    if (event.data) datos = { ...datos, ...event.data.json() };
+  } catch {
+    /* aviso sin datos: se usa el texto por defecto */
+  }
+  event.waitUntil(
+    self.registration.showNotification(datos.titulo, {
+      body: datos.cuerpo,
+      icon: '/icons/icon-192.png',
+      tag: 'recordatorio-diario',
+      data: { url: datos.url },
+    })
+  );
+});
+
+self.addEventListener('notificationclick', (event) => {
+  event.notification.close();
+  const url = (event.notification.data && event.notification.data.url) || '/app';
+  event.waitUntil(
+    self.clients.matchAll({ type: 'window', includeUncontrolled: true }).then((ventanas) => {
+      for (const v of ventanas) {
+        if ('focus' in v) {
+          if ('navigate' in v) v.navigate(url);
+          return v.focus();
+        }
+      }
+      return self.clients.openWindow(url);
+    })
+  );
 });
