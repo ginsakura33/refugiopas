@@ -5,12 +5,13 @@
 // Sin backend todavía: arquetipo/racha se leen de sessionStorage (dejado por el onboarding) con
 // fallback a datos de ejemplo — nunca pantalla vacía (32-DEL-MVP-AL-PRODUCTO.md).
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { Flame, Compass, Headphones, ArrowRight, BookHeart, Quote } from 'lucide-react';
 import { AppShell, Card, MoodPicker, StatChip } from '@/components/app-interna/ui';
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
+import { DespuesDeSesion } from '@/components/app-interna/DespuesDeSesion';
 import { ANIMOS, AUDIOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
@@ -25,7 +26,18 @@ export default function InicioPage() {
   const [arquetipoNombre, setArquetipoNombre] = useState(PERFIL_DEMO.arquetipoNombre);
   const [animoHoy, setAnimoHoy] = useState<Animo | null>(null);
   const [modulosCompletados, setModulosCompletados] = useState(0);
+  const [sesionTerminada, setSesionTerminada] = useState(false);
+  const animoAntesRef = useRef<Animo | null>(null);
+  const animoHoyRef = useRef<Animo | null>(null);
+  animoHoyRef.current = animoHoy;
   const { contenedor, item } = useReveal(0.08);
+
+  // Ánimo de ANTES: el que tenía marcado al tocar el Orbe. Al terminar el audio se pregunta el de ahora.
+  const alIniciarSesion = useCallback(() => {
+    animoAntesRef.current = animoHoyRef.current;
+    setSesionTerminada(false);
+  }, []);
+  const alCompletarSesion = useCallback(() => setSesionTerminada(true), []);
 
   useEffect(() => {
     try {
@@ -72,9 +84,18 @@ export default function InicioPage() {
         </motion.div>
 
         <motion.div variants={item} className="flex flex-col items-center gap-3 py-2">
-          <SesionTimer duracionMin={2} tamano={168} etiqueta="AUDIO S.O.S." audioSrc="/audio/orbe-liberacion-2min-v2.mp3" />
+          <SesionTimer
+            duracionMin={2}
+            tamano={168}
+            etiqueta="AUDIO S.O.S."
+            audioSrc="/audio/orbe-liberacion-2min-v2.mp3"
+            onIniciar={alIniciarSesion}
+            onCompletar={alCompletarSesion}
+          />
           <p className="text-center text-[14px] text-[var(--text-secondary)]">Toca el Orbe para comenzar y liberar la sobrecarga.</p>
         </motion.div>
+
+        {sesionTerminada && <DespuesDeSesion antes={animoAntesRef.current} onElegir={(a) => elegirAnimo(a)} />}
 
         <motion.div variants={item} className="mt-5">
           <Hairline surface="surface" className="shadow-[var(--shadow-1)]">

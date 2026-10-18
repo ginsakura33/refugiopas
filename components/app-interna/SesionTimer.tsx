@@ -19,6 +19,7 @@ const DURACION_FASE = 4; // segundos por inhalación/exhalación
 export function SesionTimer({
   duracionMin,
   onCompletar,
+  onIniciar,
   tamano = 140,
   audioSrc,
   etiqueta,
@@ -26,6 +27,8 @@ export function SesionTimer({
 }: {
   duracionMin: number;
   onCompletar?: () => void;
+  /** Se avisa cuando la persona toca el Orbe para empezar (permite guardar su ánimo "antes"). */
+  onIniciar?: () => void;
   /** Diámetro del Orbe en px — permite una versión más compacta (ej. en tarjetas). */
   tamano?: number;
   /** Audio real de la sesión (mp3). Si no se pasa, el temporizador simula la respiración. */
@@ -129,6 +132,7 @@ export function SesionTimer({
 
   const tocarOrbe = () => {
     if (estado === 'idle') {
+      onIniciar?.();
       setCuentaPreparacion(DURACION_PREPARACION);
       setEstado('preparando');
     } else if (estado === 'activo') {

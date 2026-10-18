@@ -154,7 +154,7 @@ const ANIMO_TONOS = [
 
 // Emoji minimalista por estado — excepción explícita a "cero emoji" (pedido directo del
 // usuario, 2026-09-19): identifica el ánimo de un vistazo, uno por cada tono de ANIMO_TONOS.
-const ANIMO_EMOJI = ['😩', '😟', '😐', '🙂', '😌'];
+export const ANIMO_EMOJI = ['😩', '😟', '😐', '🙂', '😌'];
 
 export function MoodPicker({
   opciones,
