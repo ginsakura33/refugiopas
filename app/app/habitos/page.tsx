@@ -19,15 +19,15 @@ function hitosKey() {
   return `refugio-hitos-${new Date().toISOString().slice(0, 10)}`;
 }
 
-// Gratificación escalonada (hoy 6 hábitos recomendados): 3 ya suman el día a la racha; 4, 5 y todos la hacen más grande.
+// Gratificación escalonada (hoy 6 hábitos recomendados): desde el 4.º ya hay felicitación y el día
+// suma a la racha; el 5.º y el 6.º la hacen más grande.
 const TOTAL = HABITOS.length;
+const MINIMO_RACHA = 4;
 const HITOS: Record<number, { etiqueta: string; titulo: string; mensaje: string }> = {
-  3: { etiqueta: 'Bien hecho', titulo: '¡Tu día ya suma a tu racha!', mensaje: 'Con 3 hábitos te cuidaste hoy. Cada paso cuenta.' },
-  4: { etiqueta: 'Excelente', titulo: `¡4 de ${TOTAL} hábitos, qué constancia!`, mensaje: 'Estás cuidándote de verdad. Sigue a tu ritmo.' },
-  5: { etiqueta: 'Increíble', titulo: `¡5 de ${TOTAL}, casi lo logras!`, mensaje: 'Solo te falta uno para cerrar tu día completo.' },
+  [MINIMO_RACHA]: { etiqueta: 'Bien hecho', titulo: '¡Tu día ya suma a tu racha!', mensaje: `Con ${MINIMO_RACHA} hábitos te cuidaste hoy. Cada paso cuenta.` },
+  [TOTAL - 1]: { etiqueta: 'Excelente', titulo: `¡${TOTAL - 1} de ${TOTAL} hábitos, qué constancia!`, mensaje: 'Estás cuidándote de verdad. Solo te falta uno.' },
   [TOTAL]: { etiqueta: 'Felicitaciones', titulo: '¡Completaste tus hábitos de hoy!', mensaje: 'Hoy elegiste cuidarte. Tu constancia es tu fuerza.' },
 };
-const MINIMO_RACHA = 3;
 
 export default function HabitosPage() {
   const [hechos, setHechos] = useState<Record<string, boolean>>({});
@@ -56,7 +56,7 @@ export default function HabitosPage() {
     } catch {
       /* localStorage puede fallar en modo privado — no bloquea la interacción */
     }
-    // Gratificación escalonada: al llegar a 3, a 4 y a 5 hábitos (cada hito una sola vez por día).
+    // Gratificación escalonada: al llegar al 4.º, 5.º y 6.º hábito (cada hito una sola vez por día).
     const antes = HABITOS.filter((h) => hechos[h.id]).length;
     const ahora = HABITOS.filter((h) => next[h.id]).length;
     if (ahora > antes && HITOS[ahora] && !hitosVistos.includes(ahora)) {
