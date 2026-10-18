@@ -21,7 +21,7 @@ export default function BibliotecaPage() {
 
       <p className="-mt-2 mb-5 flex items-center gap-2 rounded-[var(--radius-card)] bg-[var(--chip-bg)] px-4 py-3 text-[13px] font-medium leading-snug text-[var(--text-primary)]">
         <Headphones size={18} strokeWidth={1.8} color="var(--accent-ink)" className="shrink-0" aria-hidden="true" />
-        Utiliza audífonos para una experiencia más inmersiva y mejores resultados.
+        Utiliza audífonos para una experiencia más inmersiva.
       </p>
 
       <div className="flex flex-col gap-3">
