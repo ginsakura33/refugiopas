@@ -28,16 +28,26 @@ async function enviar(request: Request) {
   const publica = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const privada = process.env.VAPID_PRIVATE_KEY;
   if (!publica || !privada) return NextResponse.json({ error: 'faltan las claves VAPID' }, { status: 500 });
-  webpush.setVapidDetails(process.env.VAPID_SUBJECT ?? 'https://refugiopas.vercel.app', publica, privada);
+  try {
+    webpush.setVapidDetails(process.env.VAPID_SUBJECT ?? 'https://refugiopas.vercel.app', publica.trim(), privada.trim());
+  } catch {
+    return NextResponse.json({ error: 'las claves VAPID no son válidas (revisa que estén completas y sin espacios)' }, { status: 500 });
+  }
 
-  const db = createAdminClient();
+  let db: ReturnType<typeof createAdminClient>;
+  try {
+    db = createAdminClient();
+  } catch {
+    return NextResponse.json({ error: 'falta la clave de servicio de Supabase' }, { status: 500 });
+  }
   const ahora = new Date();
 
-  const { data: prefs } = await db
+  const { data: prefs, error: errPrefs } = await db
     .from('recordatorio_prefs')
     .select('user_id, activo, hora, zona, ultimo_envio')
     .eq('activo', true)
     .limit(MAX_POR_VUELTA);
+  if (errPrefs) return NextResponse.json({ error: 'no se pudo leer la base de datos (revisa la clave de servicio)', codigo: errPrefs.code ?? null }, { status: 500 });
   const toca = (prefs ?? []).filter((p) => tocaEnviar(p, ahora));
   if (toca.length === 0) return NextResponse.json({ ok: true, enviados: 0 });
 
