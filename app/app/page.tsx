@@ -12,6 +12,7 @@ import { Flame, Compass, Headphones, ArrowRight, BookHeart, Quote } from 'lucide
 import { AppShell, Card, MoodPicker, StatChip } from '@/components/app-interna/ui';
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
 import { DespuesDeSesion } from '@/components/app-interna/DespuesDeSesion';
+import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { ANIMOS, AUDIOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
@@ -120,6 +121,8 @@ export default function InicioPage() {
             </div>
           </Hairline>
         </motion.div>
+
+        <InstalarApp />
 
         <motion.div variants={item} className="mt-5">
           <Card className="flex items-start gap-3 p-5">

@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Fraunces, Albert_Sans } from "next/font/google";
 import "./globals.css";
 
@@ -19,6 +19,11 @@ export const metadata: Metadata = {
   title: "Refugio PAS — Guía y Autohipnosis para Personas Altamente Sensibles",
   description:
     "Calma tu sobrecarga sensorial en 2 minutos con el Orbe que Respira: audios de autohipnosis guiada en español, hechos para personas altamente sensibles.",
+  appleWebApp: { capable: true, title: "Refugio PAS", statusBarStyle: "default" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#fff9f5",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

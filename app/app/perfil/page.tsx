@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Compass, CreditCard, LogOut, Mail, ShieldCheck } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { LogoMarca } from '@/components/Logo';
+import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { PERFIL_DEMO } from '@/lib/app-demo-data';
 import { createClient } from '@/lib/supabase/client';
 
@@ -26,6 +27,13 @@ export default function PerfilPage() {
 
   const cerrarSesion = async () => {
     await createClient().auth.signOut();
+    // Se borran las pantallas guardadas de esta cuenta (el audio del Orbe se queda).
+    try {
+      const claves = await caches.keys();
+      await Promise.all(claves.filter((k) => k.startsWith('refugio-paginas-')).map((k) => caches.delete(k)));
+    } catch {
+      /* sin caché del navegador: nada que borrar */
+    }
     router.push('/');
     router.refresh();
   };
@@ -61,6 +69,8 @@ export default function PerfilPage() {
       <p className="mt-4 flex items-center gap-1.5 text-[12px] text-[var(--text-tertiary)]">
         <ShieldCheck size={13} aria-hidden="true" /> Garantía del Primer Alivio · cancela cuando quieras
       </p>
+
+      <InstalarApp siempre />
 
       <button
         type="button"

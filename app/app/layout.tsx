@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react';
 import { TabBar } from '@/components/app-interna/ui';
+import { AvisoConexion, RegistrarSW } from '@/components/app-interna/PwaApp';
 
 // Fondo con profundidad (mismo mesh sutil dorado→rosa del onboarding) aplicado como background
 // del propio contenedor — sin capas absolutas, para no crear contextos de apilamiento que tapen la barra.
@@ -13,6 +14,8 @@ export default function AppInternaLayout({ children }: { children: ReactNode }) 
       className="flex min-h-dvh flex-col bg-[var(--bg)] text-[var(--text-primary)] [font-family:var(--font-body)]"
       style={{ backgroundImage: FONDO_MESH, backgroundAttachment: 'fixed' }}
     >
+      <RegistrarSW />
+      <AvisoConexion />
       <div className="flex flex-1 flex-col">{children}</div>
       <TabBar />
     </div>
