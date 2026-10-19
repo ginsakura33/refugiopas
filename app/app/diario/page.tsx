@@ -1,13 +1,32 @@
 'use client';
 
-// Diario — registro de journaling + historial de ánimo. Persistencia local (localStorage),
+// Diario — registro de journaling + historial de ánimo e intensidad. Persistencia local (localStorage),
 // arranca con 3 entradas de ejemplo (32: "la app nunca se enseña vacía") + lo que el usuario
-// escriba se guarda encima, más reciente primero.
+// escriba se guarda encima, más reciente primero. La intensidad de cada entrada SE VE en el historial
+// y en el gráfico de la semana; el borrador (ánimo, intensidad y texto) no se pierde al salir.
 
 import { useEffect, useState } from 'react';
 import { PenLine } from 'lucide-react';
 import { AppShell, Card, EmptyState, MoodPicker, ScreenTitle } from '@/components/app-interna/ui';
 import { ANIMOS, DIARIO_SEED, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
+import { fechaLocal } from '@/lib/racha';
+
+const CLAVE_BORRADOR = 'refugio-diario-borrador';
+const LETRAS_DIA = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+
+/** Intensidad de cada uno de los últimos 7 días (la última entrada propia de ese día). */
+function intensidadSemana(entradas: EntradaDiario[]) {
+  const porDia = new Map<string, number>();
+  [...entradas]
+    .filter((e) => e.id.startsWith('local-') && typeof e.intensidad === 'number')
+    .sort((a, b) => a.fecha.localeCompare(b.fecha))
+    .forEach((e) => porDia.set(fechaLocal(new Date(e.fecha)), e.intensidad as number));
+  return Array.from({ length: 7 }, (_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() - (6 - i));
+    return { letra: LETRAS_DIA[d.getDay()], valor: porDia.get(fechaLocal(d)) ?? null, hoy: i === 6 };
+  });
+}
 
 const FECHA_FMT = new Intl.DateTimeFormat('es', { day: 'numeric', month: 'short' });
 
@@ -26,6 +45,8 @@ export default function DiarioPage() {
   const [animo, setAnimo] = useState<Animo | null>(null);
   const [intensidad, setIntensidad] = useState(5);
   const [texto, setTexto] = useState('');
+  const [guardada, setGuardada] = useState(false);
+  const [borradorListo, setBorradorListo] = useState(false);
 
   useEffect(() => {
     try {
@@ -34,6 +55,18 @@ export default function DiarioPage() {
     } catch {
       /* sin entradas propias guardadas: se muestran solo las de ejemplo */
     }
+    try {
+      const b = localStorage.getItem(CLAVE_BORRADOR);
+      if (b) {
+        const d = JSON.parse(b) as { animo: Animo | null; intensidad: number; texto: string };
+        if (d.animo) setAnimo(d.animo);
+        if (typeof d.intensidad === 'number') setIntensidad(Math.min(10, Math.max(1, d.intensidad)));
+        if (d.texto) setTexto(d.texto);
+      }
+    } catch {
+      /* sin borrador guardado */
+    }
+    setBorradorListo(true);
     try {
       const prompt = sessionStorage.getItem('refugio-diario-prompt');
       if (prompt) {
@@ -44,6 +77,16 @@ export default function DiarioPage() {
       /* sin prompt precargado: el diario abre en blanco igual */
     }
   }, []);
+
+  // El borrador se guarda solo mientras la persona escribe o mueve la escala.
+  useEffect(() => {
+    if (!borradorListo) return;
+    try {
+      localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ animo, intensidad, texto }));
+    } catch {
+      /* modo privado: el borrador queda solo en esta sesión */
+    }
+  }, [animo, intensidad, texto, borradorListo]);
 
   const guardar = () => {
     if (!animo || texto.trim().length === 0) return;
@@ -59,7 +102,17 @@ export default function DiarioPage() {
     setAnimo(null);
     setIntensidad(5);
     setTexto('');
+    try {
+      localStorage.removeItem(CLAVE_BORRADOR);
+    } catch {
+      /* nada que borrar */
+    }
+    setGuardada(true);
+    setTimeout(() => setGuardada(false), 4000);
   };
+
+  const semana = intensidadSemana(entradas);
+  const hayDatosSemana = semana.some((d) => d.valor !== null);
 
   const pctIntensidad = ((intensidad - 1) / 9) * 100;
 
@@ -115,6 +168,37 @@ export default function DiarioPage() {
         </button>
       </Card>
 
+      {guardada && (
+        <p role="status" className="mt-3 rounded-[var(--radius-button)] bg-[var(--chip-bg)] px-4 py-3 text-center text-[14px] font-medium text-[var(--accent-ink)]">
+          Entrada guardada. Puedes verla abajo, con su intensidad.
+        </p>
+      )}
+
+      <Card className="mt-6 p-5">
+        <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tu intensidad esta semana</p>
+        {hayDatosSemana ? (
+          <div className="mt-4 flex items-end justify-between gap-2" role="img" aria-label="Intensidad de tus últimos 7 días">
+            {semana.map((d, i) => (
+              <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
+                <span className="text-[12px] font-semibold tabular-nums text-[var(--accent-ink)]">{d.valor ?? ''}</span>
+                <div className="flex h-20 w-full items-end justify-center">
+                  {d.valor !== null ? (
+                    <div className="w-full max-w-7 rounded-t-[8px] bg-gradient-to-t from-[var(--logo-rosa-2)] to-[var(--accent)]" style={{ height: `${d.valor * 10}%` }} />
+                  ) : (
+                    <div className="size-1.5 rounded-full bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]" />
+                  )}
+                </div>
+                <span className={`text-[12px] ${d.hoy ? 'font-semibold text-[var(--accent-ink)]' : 'text-[var(--text-tertiary)]'}`}>{d.letra}</span>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p className="mt-2 text-[13px] leading-snug text-[var(--text-secondary)]">
+            Cuando guardes tu primera entrada, aquí verás cómo cambia la intensidad de tus emociones día a día.
+          </p>
+        )}
+      </Card>
+
       <div className="mt-6 flex flex-col gap-3">
         {entradas.length === 0 ? (
           <EmptyState icon={PenLine} titulo="Todavía no escribiste nada. Cuando lo hagas, aparecerá aquí." />
@@ -122,7 +206,10 @@ export default function DiarioPage() {
           entradas.map((e) => (
             <Card key={e.id} className="p-4">
               <div className="flex items-center justify-between">
-                <span className="text-[12px] font-semibold uppercase tracking-[0.04em] text-[var(--accent-ink)]">{e.animo}</span>
+                <span className="text-[12px] font-semibold uppercase tracking-[0.04em] text-[var(--accent-ink)]">
+                  {e.animo}
+                  {typeof e.intensidad === 'number' && <span className="ml-2 normal-case tracking-normal text-[var(--text-secondary)]">· Intensidad {e.intensidad}/10</span>}
+                </span>
                 <span className="text-[12px] text-[var(--text-tertiary)]">{formatearFecha(e.fecha)}</span>
               </div>
               <p className="mt-2 text-[14px] leading-relaxed text-[var(--text-primary)]">{e.texto}</p>
