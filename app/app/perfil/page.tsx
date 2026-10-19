@@ -5,7 +5,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Compass, CreditCard, LogOut, Mail, ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { Compass, CreditCard, LogOut, Mail, Megaphone, ShieldCheck } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { LogoMarca } from '@/components/Logo';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
@@ -16,6 +17,7 @@ import { createClient } from '@/lib/supabase/client';
 export default function PerfilPage() {
   const router = useRouter();
   const [correo, setCorreo] = useState<string>(PERFIL_DEMO.email);
+  const [esAdmin, setEsAdmin] = useState(false);
 
   // Correo real de la sesión (si no se puede leer, queda el de ejemplo).
   useEffect(() => {
@@ -24,6 +26,12 @@ export default function PerfilPage() {
       .then(({ data }) => {
         if (data.user?.email) setCorreo(data.user.email);
       });
+    // Solo los administradores ven el acceso al panel de anuncios (la base de datos decide).
+    createClient()
+      .from('admins')
+      .select('user_id')
+      .maybeSingle()
+      .then(({ data }) => setEsAdmin(!!data));
   }, []);
 
   const cerrarSesion = async () => {
@@ -85,6 +93,15 @@ export default function PerfilPage() {
       <p className="mt-4 flex items-center gap-1.5 text-[12px] text-[var(--text-tertiary)]">
         <ShieldCheck size={13} aria-hidden="true" /> Garantía del Primer Alivio · cancela cuando quieras
       </p>
+
+      {esAdmin && (
+        <Link
+          href="/app/admin"
+          className="mt-4 flex min-h-12 items-center gap-3 rounded-[var(--radius-card)] bg-[var(--surface)] p-4 text-[15px] font-semibold text-[var(--text-primary)] shadow-[var(--shadow-1)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+        >
+          <Megaphone size={20} strokeWidth={1.8} color="var(--accent-ink)" aria-hidden="true" /> Panel de anuncios
+        </Link>
+      )}
 
       <RecordatorioSuave />
 

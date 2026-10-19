@@ -13,6 +13,7 @@ import { AppShell, Card, MoodPicker, StatChip } from '@/components/app-interna/u
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
 import { DespuesDeSesion } from '@/components/app-interna/DespuesDeSesion';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
+import { CampanaNovedades } from '@/components/app-interna/CampanaNovedades';
 import { ANIMOS, AUDIOS, HABITOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
 import { calcularRacha } from '@/lib/racha';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
@@ -84,7 +85,10 @@ export default function InicioPage() {
               Hola, {nombre}
             </h1>
           </div>
-          <LogoMarca size={72} />
+          <div className="flex items-center gap-2">
+            <CampanaNovedades />
+            <LogoMarca size={72} />
+          </div>
         </motion.div>
 
         <motion.div variants={item} className="flex flex-col items-center gap-3 py-2">
