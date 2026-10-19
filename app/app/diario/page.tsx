@@ -7,24 +7,32 @@
 
 import { useEffect, useState } from 'react';
 import { PenLine } from 'lucide-react';
-import { AppShell, Card, EmptyState, MoodPicker, ScreenTitle } from '@/components/app-interna/ui';
+import { ANIMO_EMOJI, AppShell, Card, EmptyState, MoodPicker, ScreenTitle } from '@/components/app-interna/ui';
 import { ANIMOS, DIARIO_SEED, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
 import { fechaLocal } from '@/lib/racha';
 
 const CLAVE_BORRADOR = 'refugio-diario-borrador';
 const LETRAS_DIA = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
+const NOMBRES_DIA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
-/** Intensidad de cada uno de los últimos 7 días (la última entrada propia de ese día). */
+/** Intensidad y ánimo de cada uno de los últimos 7 días (la última entrada propia de ese día). */
 function intensidadSemana(entradas: EntradaDiario[]) {
-  const porDia = new Map<string, number>();
+  const porDia = new Map<string, { valor: number; animo: Animo }>();
   [...entradas]
     .filter((e) => e.id.startsWith('local-') && typeof e.intensidad === 'number')
-    .sort((a, b) => a.fecha.localeCompare(b.fecha))
-    .forEach((e) => porDia.set(fechaLocal(new Date(e.fecha)), e.intensidad as number));
+    .sort((x, y) => x.fecha.localeCompare(y.fecha))
+    .forEach((e) => porDia.set(fechaLocal(new Date(e.fecha)), { valor: e.intensidad as number, animo: e.animo }));
   return Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i));
-    return { letra: LETRAS_DIA[d.getDay()], valor: porDia.get(fechaLocal(d)) ?? null, hoy: i === 6 };
+    const dato = porDia.get(fechaLocal(d));
+    return {
+      letra: LETRAS_DIA[d.getDay()],
+      nombre: NOMBRES_DIA[d.getDay()],
+      valor: dato?.valor ?? null,
+      animo: dato?.animo ?? null,
+      hoy: i === 6,
+    };
   });
 }
 
@@ -46,6 +54,7 @@ export default function DiarioPage() {
   const [intensidad, setIntensidad] = useState(5);
   const [texto, setTexto] = useState('');
   const [guardada, setGuardada] = useState(false);
+  const [diaElegido, setDiaElegido] = useState<number | null>(null);
   const [borradorListo, setBorradorListo] = useState(false);
 
   useEffect(() => {
@@ -177,21 +186,52 @@ export default function DiarioPage() {
       <Card className="mt-6 p-5">
         <p className="text-[14px] font-semibold text-[var(--text-primary)]">Tu intensidad esta semana</p>
         {hayDatosSemana ? (
-          <div className="mt-4 flex items-end justify-between gap-2" role="img" aria-label="Intensidad de tus últimos 7 días">
-            {semana.map((d, i) => (
-              <div key={i} className="flex flex-1 flex-col items-center gap-1.5">
-                <span className="text-[12px] font-semibold tabular-nums text-[var(--accent-ink)]">{d.valor ?? ''}</span>
-                <div className="flex h-20 w-full items-end justify-center">
-                  {d.valor !== null ? (
-                    <div className="w-full max-w-7 rounded-t-[8px] bg-gradient-to-t from-[var(--logo-rosa-2)] to-[var(--accent)]" style={{ height: `${d.valor * 10}%` }} />
-                  ) : (
-                    <div className="size-1.5 rounded-full bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]" />
-                  )}
-                </div>
-                <span className={`text-[12px] ${d.hoy ? 'font-semibold text-[var(--accent-ink)]' : 'text-[var(--text-tertiary)]'}`}>{d.letra}</span>
-              </div>
-            ))}
-          </div>
+          <>
+            <div className="mt-4 flex items-end justify-between gap-2">
+              {semana.map((d, i) => {
+                const elegido = (diaElegido ?? semana.length - 1) === i && d.valor !== null;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    disabled={d.valor === null}
+                    onClick={() => setDiaElegido(i)}
+                    aria-pressed={elegido}
+                    aria-label={d.valor === null ? `${d.nombre}: sin registro` : `${d.nombre}: ${d.animo}, intensidad ${d.valor} de 10`}
+                    className="flex min-h-11 flex-1 flex-col items-center gap-1.5 rounded-[var(--radius-button)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:cursor-default"
+                  >
+                    <span className="text-[12px] font-semibold tabular-nums text-[var(--accent-ink)]">{d.valor ?? ''}</span>
+                    <span className="flex h-20 w-full items-end justify-center">
+                      {d.valor !== null ? (
+                        <span
+                          className={`block w-full max-w-7 rounded-t-[8px] bg-gradient-to-t from-[var(--logo-rosa-2)] to-[var(--accent)] transition-opacity duration-150 ${elegido ? 'opacity-100 ring-2 ring-[var(--accent-ink)]' : 'opacity-70'}`}
+                          style={{ height: `${d.valor * 10}%` }}
+                        />
+                      ) : (
+                        <span className="block size-1.5 rounded-full bg-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)]" />
+                      )}
+                    </span>
+                    <span className={`text-[12px] ${d.hoy ? 'font-semibold text-[var(--accent-ink)]' : 'text-[var(--text-tertiary)]'}`}>{d.letra}</span>
+                  </button>
+                );
+              })}
+            </div>
+            {(() => {
+              const i = diaElegido ?? semana.length - 1;
+              const d = semana[i];
+              if (!d || d.valor === null || !d.animo) {
+                return <p className="mt-3 text-center text-[13px] text-[var(--text-secondary)]">Toca una barra para ver cómo te sentías ese día.</p>;
+              }
+              return (
+                <p role="status" aria-live="polite" className="mt-3 flex items-center justify-center gap-2 rounded-[var(--radius-button)] bg-[var(--chip-bg)] px-3 py-2 text-[14px] text-[var(--text-primary)]">
+                  <span aria-hidden="true" className="text-[24px] leading-none">{ANIMO_EMOJI[ANIMOS.indexOf(d.animo)]}</span>
+                  <span>
+                    <span className="capitalize">{d.hoy ? 'Hoy' : d.nombre}</span>: <strong>{d.animo}</strong> · Intensidad {d.valor}/10
+                  </span>
+                </p>
+              );
+            })()}
+          </>
         ) : (
           <p className="mt-2 text-[13px] leading-snug text-[var(--text-secondary)]">
             Cuando guardes tu primera entrada, aquí verás cómo cambia la intensidad de tus emociones día a día.
