@@ -146,14 +146,14 @@ protocolo propio, no una app más de meditación — y **el Orbe que Respira** l
   totalAnual "Se cobra $59.88/año" ·
   ahorro "Ahorras 4 meses" (12 − 59.88/7.99 ≈ 4.5, redondeado hacia abajo) · descomposicionDia
   "menos de $0.17 al día" · ctaLabel "Empezar mi prueba de 7 días gratis" · features (la 1ª: "Incluye 7 días de prueba gratis"; el mensual NO lleva prueba):
-  - "Tu Orbe que Respira, siempre disponible"
-  - "Biblioteca completa de audios de autohipnosis"
+  - "Tu Orbe que Respira, incluso sin internet"
+  - "Biblioteca de audios de autohipnosis guiada"
   - "Un audio nuevo cada mes, sin costo extra"
   - "Los 4 módulos de tu proceso PAS"
-  - "Diario y seguimiento de hábitos de calma"
+  - "Hábitos con racha, recordatorio suave y hábitos propios · Diario con tu intensidad y los 4 módulos de tu proceso PAS"
 - `mensual`: precioMes "$7.99" · ctaLabel "Empezar con el plan mensual" · features:
-  - "Tu Orbe que Respira, siempre disponible"
-  - "Biblioteca completa de audios de autohipnosis"
+  - "Tu Orbe que Respira, incluso sin internet"
+  - "Biblioteca de audios de autohipnosis guiada"
   - "Un audio nuevo cada mes, sin costo extra"
   - "Acceso completo desde el primer día"
   - "Cancelas cuando quieras"

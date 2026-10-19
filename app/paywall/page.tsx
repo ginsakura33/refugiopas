@@ -47,7 +47,7 @@ const MOMENTO_LABEL: Record<string, string> = {
 // autorregularte?") se ordena PRIMERO: el paywall responde exactamente lo que pidió
 // (LA ESCALERA de 02B — el paywall muestra la inversión del onboarding en el momento del precio).
 const BENEFICIOS: Record<'sos' | 'nocturno' | 'lecciones', string> = {
-  sos: 'Baja la sobrecarga en 2 minutos, cada vez que la sientas',
+  sos: 'Baja la sobrecarga en 2 minutos, incluso sin internet',
   nocturno: 'Audios guiados para soltar el día y dormir en paz',
   lecciones: 'Lecciones cortas para entender y cuidar tu sensibilidad',
 };
@@ -362,6 +362,12 @@ function PantallaPrecio({ onEmpezar, onAhoraNo }: { onEmpezar: (plan: 'anual' | 
           >
             Ahora no
           </button>
+        </p>
+        <p className="text-center text-[14px] text-[var(--text-secondary)]">
+          ¿Ya compraste?{' '}
+          <a href="/entrar" className="inline-flex min-h-11 items-center font-semibold text-[var(--accent-ink)] underline underline-offset-4 outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]">
+            Entra aquí
+          </a>
         </p>
       </div>
     </>

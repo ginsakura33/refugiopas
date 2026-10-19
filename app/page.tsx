@@ -92,9 +92,10 @@ export default function LandingRefugioPAS() {
         tituloMarked="Tu refugio, [acento]siempre a un toque[/acento]"
         frames={[
           { src: '/app-screens/arquetipo.png', alt: 'Pregunta del test de arquetipos de Refugio PAS', label: 'Descubre tu arquetipo PAS' },
-          { src: '/app-screens/inicio.png', alt: 'Pantalla de inicio de Refugio PAS con el Orbe que Respira', label: 'Tu Orbe que Respira, siempre visible' },
+          { src: '/app-screens/inicio.png', alt: 'Inicio de Refugio PAS con el Orbe S.O.S., tu ánimo del día y la frase del día', label: 'Tu Orbe, a un toque, incluso sin internet' },
+          { src: '/app-screens/habitos.png', alt: 'Hábitos de calma con la racha de 7 días y la semana completa', label: 'Hábitos con racha y los tuyos propios' },
+          { src: '/app-screens/diario.png', alt: 'Diario con el gráfico de intensidad de la semana y las entradas con su ánimo', label: 'Tu diario y tu intensidad, día a día' },
           { src: '/app-screens/biblioteca.png', alt: 'Biblioteca de audios de autohipnosis guiada en español', label: 'Audios de autohipnosis guiada en español' },
-          { src: '/app-screens/habitos.png', alt: 'Lista de hábitos saludables del día en Refugio PAS', label: 'Tus hábitos de calma, día a día' },
         ]}
         ctaLabel={CTA_LABEL}
         ctaHref={CTA_HREF}
@@ -169,11 +170,11 @@ export default function LandingRefugioPAS() {
           ctaHref: `${CTA_HREF}?plan=anual`,
           features: [
             'Incluye 7 días de prueba gratis',
-            'Tu Orbe que Respira, siempre disponible',
-            'Biblioteca completa de audios de autohipnosis',
+            'Tu Orbe que Respira, incluso sin internet',
+            'Biblioteca de audios de autohipnosis guiada',
             'Un audio nuevo cada mes, sin costo extra',
-            'Los 4 módulos de tu proceso PAS',
-            'Diario y seguimiento de hábitos de calma',
+            'Hábitos con racha, recordatorio suave y hábitos propios',
+            'Diario con tu intensidad y los 4 módulos de tu proceso PAS',
           ],
         }}
         mensual={{
@@ -183,9 +184,10 @@ export default function LandingRefugioPAS() {
           ctaHref: `${CTA_HREF}?plan=mensual`,
           features: [
             'Acceso completo desde el primer día',
-            'Tu Orbe que Respira, siempre disponible',
-            'Biblioteca completa de audios de autohipnosis',
+            'Tu Orbe que Respira, incluso sin internet',
+            'Biblioteca de audios de autohipnosis guiada',
             'Un audio nuevo cada mes, sin costo extra',
+            'Hábitos, diario y los 4 módulos de tu proceso PAS',
             'Cancelas cuando quieras',
           ],
         }}
