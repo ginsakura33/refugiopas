@@ -10,18 +10,24 @@ import { PenLine } from 'lucide-react';
 import { ANIMO_EMOJI, AppShell, Card, EmptyState, MoodPicker, ScreenTitle } from '@/components/app-interna/ui';
 import { ANIMOS, DIARIO_SEED, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
 import { fechaLocal } from '@/lib/racha';
+import { guardarAnimo, leerRegistros, type RegistroAnimo } from '@/lib/animo';
+import { useFechaHoy } from '@/lib/useFechaHoy';
 
 const CLAVE_BORRADOR = 'refugio-diario-borrador';
 const LETRAS_DIA = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 const NOMBRES_DIA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
-/** Intensidad y ánimo de cada uno de los últimos 7 días (la última entrada propia de ese día). */
-function intensidadSemana(entradas: EntradaDiario[]) {
+/**
+ * Intensidad y ánimo de cada uno de los últimos 7 días. Sale del ánimo que la persona elige (se refleja
+ * al instante, sin necesidad de escribir) y, para días anteriores a esa función, de las entradas guardadas.
+ */
+function intensidadSemana(entradas: EntradaDiario[], registros: Record<string, RegistroAnimo>) {
   const porDia = new Map<string, { valor: number; animo: Animo }>();
   [...entradas]
     .filter((e) => e.id.startsWith('local-') && typeof e.intensidad === 'number')
     .sort((x, y) => x.fecha.localeCompare(y.fecha))
     .forEach((e) => porDia.set(fechaLocal(new Date(e.fecha)), { valor: e.intensidad as number, animo: e.animo }));
+  Object.entries(registros).forEach(([fecha, r]) => porDia.set(fecha, { valor: r.intensidad, animo: r.animo }));
   return Array.from({ length: 7 }, (_, i) => {
     const d = new Date();
     d.setDate(d.getDate() - (6 - i));
@@ -56,25 +62,44 @@ export default function DiarioPage() {
   const [guardada, setGuardada] = useState(false);
   const [diaElegido, setDiaElegido] = useState<number | null>(null);
   const [borradorListo, setBorradorListo] = useState(false);
+  const [registros, setRegistros] = useState<Record<string, RegistroAnimo>>({});
+  const hoy = useFechaHoy();
 
+  // Al abrir y cada vez que cambia el día: entradas, ánimo de la semana y borrador de HOY
+  // (el borrador y el ánimo de ayer no pasan a hoy).
   useEffect(() => {
+    if (!hoy) return;
     try {
       const raw = localStorage.getItem('refugio-diario');
       if (raw) setEntradas([...(JSON.parse(raw) as EntradaDiario[]), ...DIARIO_SEED]);
     } catch {
       /* sin entradas propias guardadas: se muestran solo las de ejemplo */
     }
+    const registrosHoy = leerRegistros();
+    setRegistros(registrosHoy);
+    setDiaElegido(null);
+
+    let animoInicial: Animo | null = registrosHoy[hoy]?.animo ?? null;
+    let intensidadInicial = registrosHoy[hoy]?.intensidad ?? 5;
+    let textoInicial = '';
     try {
       const b = localStorage.getItem(CLAVE_BORRADOR);
       if (b) {
-        const d = JSON.parse(b) as { animo: Animo | null; intensidad: number; texto: string };
-        if (d.animo) setAnimo(d.animo);
-        if (typeof d.intensidad === 'number') setIntensidad(Math.min(10, Math.max(1, d.intensidad)));
-        if (d.texto) setTexto(d.texto);
+        const d = JSON.parse(b) as { fecha?: string; animo: Animo | null; intensidad: number; texto: string };
+        if (d.fecha === hoy) {
+          if (d.animo) animoInicial = d.animo;
+          if (typeof d.intensidad === 'number') intensidadInicial = Math.min(10, Math.max(1, d.intensidad));
+          if (d.texto) textoInicial = d.texto;
+        } else {
+          localStorage.removeItem(CLAVE_BORRADOR);
+        }
       }
     } catch {
       /* sin borrador guardado */
     }
+    setAnimo(animoInicial);
+    setIntensidad(intensidadInicial);
+    setTexto(textoInicial);
     setBorradorListo(true);
     try {
       const prompt = sessionStorage.getItem('refugio-diario-prompt');
@@ -85,20 +110,36 @@ export default function DiarioPage() {
     } catch {
       /* sin prompt precargado: el diario abre en blanco igual */
     }
-  }, []);
+  }, [hoy]);
 
   // El borrador se guarda solo mientras la persona escribe o mueve la escala.
   useEffect(() => {
     if (!borradorListo) return;
     try {
-      localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ animo, intensidad, texto }));
+      localStorage.setItem(CLAVE_BORRADOR, JSON.stringify({ fecha: fechaLocal(), animo, intensidad, texto }));
     } catch {
       /* modo privado: el borrador queda solo en esta sesión */
     }
   }, [animo, intensidad, texto, borradorListo]);
 
+  // Elegir el ánimo o mover la escala se refleja al instante en el gráfico (no hace falta escribir ni guardar).
+  const elegirAnimo = (v: Animo) => {
+    setAnimo(v);
+    guardarAnimo(v, intensidad);
+    setRegistros(leerRegistros());
+  };
+  const cambiarIntensidad = (n: number) => {
+    setIntensidad(n);
+    if (animo) {
+      guardarAnimo(animo, n);
+      setRegistros(leerRegistros());
+    }
+  };
+
   const guardar = () => {
     if (!animo || texto.trim().length === 0) return;
+    guardarAnimo(animo, intensidad);
+    setRegistros(leerRegistros());
     const nueva: EntradaDiario = { id: `local-${Date.now()}`, fecha: new Date().toISOString(), animo, intensidad, texto: texto.trim() };
     setEntradas((prev) => [nueva, ...prev]);
     try {
@@ -120,7 +161,7 @@ export default function DiarioPage() {
     setTimeout(() => setGuardada(false), 4000);
   };
 
-  const semana = intensidadSemana(entradas);
+  const semana = intensidadSemana(entradas, registros);
   const hayDatosSemana = semana.some((d) => d.valor !== null);
 
   const pctIntensidad = ((intensidad - 1) / 9) * 100;
@@ -132,7 +173,7 @@ export default function DiarioPage() {
       <Card className="p-5">
         <p className="text-[14px] font-semibold text-[var(--text-primary)]">¿Cómo te sientes ahora?</p>
         <div className="mt-3">
-          <MoodPicker opciones={ANIMOS} seleccion={animo} onSelect={(v) => setAnimo(v as Animo)} />
+          <MoodPicker opciones={ANIMOS} seleccion={animo} onSelect={(v) => elegirAnimo(v as Animo)} />
         </div>
 
         <div className="mt-5">
@@ -144,7 +185,7 @@ export default function DiarioPage() {
               min={1}
               max={10}
               value={intensidad}
-              onChange={(e) => setIntensidad(Number(e.target.value))}
+              onChange={(e) => cambiarIntensidad(Number(e.target.value))}
               className="h-2 flex-1 cursor-pointer appearance-none rounded-full"
               style={{
                 background: `linear-gradient(to right, var(--accent) ${pctIntensidad}%, color-mix(in oklab, var(--text-tertiary) 15%, transparent) ${pctIntensidad}%)`,

@@ -10,6 +10,7 @@ import { RachaCard } from '@/components/app-interna/RachaCard';
 import { AppShell, Card, ScreenTitle } from '@/components/app-interna/ui';
 import { Celebracion } from '@/components/app-interna/Celebracion';
 import { HABITOS } from '@/lib/app-demo-data';
+import { useFechaHoy } from '@/lib/useFechaHoy';
 import { MINIMO_RACHA, calcularRacha, claveHabitos, claveHitos, fechaLocal, type ResumenRacha } from '@/lib/racha';
 
 function hoyKey() {
@@ -36,16 +37,25 @@ export default function HabitosPage() {
   const [hitosVistos, setHitosVistos] = useState<number[]>([]);
   const [racha, setRacha] = useState<ResumenRacha>({ actual: 0, mejor: 0, semana: Array(7).fill(false) });
 
+  // Los hábitos de HOY. Se vuelven a leer cada vez que cambia el día (también si la app quedó abierta
+  // en segundo plano toda la noche): los checks de ayer no pasan a hoy.
+  const hoy = useFechaHoy();
   useEffect(() => {
+    if (!hoy) return;
+    let guardados: Record<string, boolean> = {};
+    let vistos: number[] = [];
     try {
-      const raw = localStorage.getItem(hoyKey());
-      if (raw) setHechos(JSON.parse(raw));
-      const vistos = localStorage.getItem(hitosKey());
-      if (vistos) setHitosVistos(JSON.parse(vistos));
+      const raw = localStorage.getItem(claveHabitos(hoy));
+      if (raw) guardados = JSON.parse(raw);
+      const rawVistos = localStorage.getItem(claveHitos(hoy));
+      if (rawVistos) vistos = JSON.parse(rawVistos);
     } catch {
       /* sin datos guardados hoy: arranca en cero */
     }
-  }, []);
+    setHechos(guardados);
+    setHitosVistos(vistos);
+    setAbierto(false);
+  }, [hoy]);
 
   // La celebración se dispara solo en el MOMENTO en que se completa el último hábito del día
   // (no al abrir la pantalla con todo ya hecho): es un hito real, no decoración.
@@ -76,7 +86,7 @@ export default function HabitosPage() {
   // La racha se recalcula con los días reales cada vez que cambian los hábitos de hoy.
   useEffect(() => {
     setRacha(calcularRacha(HABITOS.map((h) => h.id), new Date(), hechos));
-  }, [hechos]);
+  }, [hechos, hoy]);
 
   const completados = HABITOS.filter((h) => hechos[h.id]).length;
   const textoHito = HITOS[hito];

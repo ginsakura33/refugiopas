@@ -4,7 +4,7 @@
 // Los días de la semana vienen de los hábitos realmente completados; el día de hoy se enciende cuando
 // se completan los necesarios. Con prefers-reduced-motion todo queda quieto.
 
-import { useEffect, useState } from 'react';
+import { useFechaHoy } from '@/lib/useFechaHoy';
 import { motion, useReducedMotion } from 'motion/react';
 import { Flame, Trophy } from 'lucide-react';
 import { Hairline } from '@/components/landing/ui';
@@ -15,8 +15,9 @@ const NOMBRES = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'
 export function RachaCard({ racha, mejor, semana, hoyHecho }: { racha: number; mejor: number; semana: boolean[]; hoyHecho: boolean }) {
   const reduce = useReducedMotion() ?? false;
   // Índice del día de hoy (lunes = 0). Se calcula en el cliente para no desfasar la hidratación.
-  const [hoy, setHoy] = useState<number | null>(null);
-  useEffect(() => setHoy((new Date().getDay() + 6) % 7), []);
+  // Día de la semana de HOY (lunes = 0). Se renueva cuando cambia el día, y cada lunes la semana empieza limpia.
+  const fecha = useFechaHoy();
+  const hoy: number | null = fecha ? (new Date(`${fecha}T12:00:00`).getDay() + 6) % 7 : null;
 
   const estado = (i: number): 'hecho' | 'hoy' | 'hoyHecho' | 'pendiente' => {
     if (hoy === null) return 'pendiente';

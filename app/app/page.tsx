@@ -5,7 +5,7 @@
 // Sin backend todavía: arquetipo/racha se leen de sessionStorage (dejado por el onboarding) con
 // fallback a datos de ejemplo — nunca pantalla vacía (32-DEL-MVP-AL-PRODUCTO.md).
 
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
 import { Flame, Compass, Headphones, ArrowRight, BookHeart, Quote } from 'lucide-react';
@@ -16,13 +16,13 @@ import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { CampanaNovedades } from '@/components/app-interna/CampanaNovedades';
 import { ANIMOS, AUDIOS, HABITOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
 import { calcularRacha } from '@/lib/racha';
+import { guardarAnimo, leerAnimoDeHoy } from '@/lib/animo';
+import { useFechaHoy } from '@/lib/useFechaHoy';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
 import { Hairline, useReveal } from '@/components/landing/ui';
 
-const FECHA_RAW = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' }).format(new Date());
-const FECHA_LABEL = FECHA_RAW.charAt(0).toUpperCase() + FECHA_RAW.slice(1);
-const FRASE_HOY = fraseDelDia();
+const FORMATO_FECHA = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' });
 
 export default function InicioPage() {
   const [nombre, setNombre] = useState(PERFIL_DEMO.nombre);
@@ -35,6 +35,14 @@ export default function InicioPage() {
   const animoHoyRef = useRef<Animo | null>(null);
   animoHoyRef.current = animoHoy;
   const { contenedor, item } = useReveal(0.08);
+  // La fecha, la frase, el ánimo y la racha dependen del día de HOY y se renuevan al cambiar de día.
+  const hoy = useFechaHoy();
+  const fechaLabel = useMemo(() => {
+    if (!hoy) return '';
+    const t = FORMATO_FECHA.format(new Date());
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }, [hoy]);
+  const fraseHoy = useMemo(() => fraseDelDia(), [hoy]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Ánimo de ANTES: el que tenía marcado al tocar el Orbe. Al terminar el audio se pregunta el de ahora.
   const alIniciarSesion = useCallback(() => {
@@ -51,9 +59,6 @@ export default function InicioPage() {
         const id = datos?.arquetipo as ArquetipoId | undefined;
         if (id && ARQUETIPOS[id]) setArquetipoNombre(ARQUETIPOS[id].nombre);
       }
-      setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
-      const animoGuardado = localStorage.getItem('refugio-animo-hoy');
-      if (animoGuardado) setAnimoHoy(animoGuardado as Animo);
       const modulosGuardados = localStorage.getItem('refugio-modulos-completados');
       if (modulosGuardados) {
         const hechos = JSON.parse(modulosGuardados) as Record<string, boolean>;
@@ -64,13 +69,17 @@ export default function InicioPage() {
     }
   }, []);
 
+  // Al abrir la app, y cada vez que cambia el día, se leen la racha y el ánimo de HOY (el de ayer no cuenta).
+  useEffect(() => {
+    if (!hoy) return;
+    setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
+    setAnimoHoy(leerAnimoDeHoy(hoy)?.animo ?? null);
+    setSesionTerminada(false);
+  }, [hoy]);
+
   const elegirAnimo = (a: string) => {
     setAnimoHoy(a as Animo);
-    try {
-      localStorage.setItem('refugio-animo-hoy', a);
-    } catch {
-      /* localStorage puede fallar en modo privado — no bloquea la interacción */
-    }
+    guardarAnimo(a as Animo); // queda registrado para el gráfico del Diario
   };
 
   const tipoCorto = arquetipoNombre.replace(/^(el|la) /i, '').replace(/^Alma /i, '');
@@ -80,7 +89,7 @@ export default function InicioPage() {
       <motion.div variants={contenedor} initial="hidden" animate="visible" className="flex flex-1 flex-col">
         <motion.div variants={item} className="mb-6 flex items-start justify-between gap-4">
           <div>
-            <p className="text-[13px] text-[var(--text-tertiary)]">{FECHA_LABEL}</p>
+            <p className="text-[13px] text-[var(--text-tertiary)]">{fechaLabel || ' '}</p>
             <h1 className="mt-1 text-[26px] font-bold leading-tight text-[var(--text-primary)] [font-family:var(--font-display)]">
               Hola, {nombre}
             </h1>
@@ -137,7 +146,7 @@ export default function InicioPage() {
             <div>
               <p className="text-[12px] font-semibold uppercase tracking-[0.04em] text-[var(--accent-ink)]">Frase del día</p>
               <p className="mt-1 text-[18px] italic leading-snug text-[var(--text-primary)] [font-family:var(--font-display)]">
-                {FRASE_HOY}
+                {fraseHoy}
               </p>
             </div>
           </Card>
