@@ -13,7 +13,8 @@ import { AppShell, Card, MoodPicker, StatChip } from '@/components/app-interna/u
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
 import { DespuesDeSesion } from '@/components/app-interna/DespuesDeSesion';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
-import { ANIMOS, AUDIOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
+import { ANIMOS, AUDIOS, HABITOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
+import { calcularRacha } from '@/lib/racha';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
 import { Hairline, useReveal } from '@/components/landing/ui';
@@ -28,6 +29,7 @@ export default function InicioPage() {
   const [animoHoy, setAnimoHoy] = useState<Animo | null>(null);
   const [modulosCompletados, setModulosCompletados] = useState(0);
   const [sesionTerminada, setSesionTerminada] = useState(false);
+  const [rachaActual, setRachaActual] = useState(0);
   const animoAntesRef = useRef<Animo | null>(null);
   const animoHoyRef = useRef<Animo | null>(null);
   animoHoyRef.current = animoHoy;
@@ -48,6 +50,7 @@ export default function InicioPage() {
         const id = datos?.arquetipo as ArquetipoId | undefined;
         if (id && ARQUETIPOS[id]) setArquetipoNombre(ARQUETIPOS[id].nombre);
       }
+      setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
       const animoGuardado = localStorage.getItem('refugio-animo-hoy');
       if (animoGuardado) setAnimoHoy(animoGuardado as Animo);
       const modulosGuardados = localStorage.getItem('refugio-modulos-completados');
@@ -173,7 +176,7 @@ export default function InicioPage() {
 
         <motion.div variants={item} className="mt-auto flex gap-3 pt-5">
           <StatChip label="Tu tipo" valor={tipoCorto} icon={Compass} href="/app/perfil" />
-          <StatChip label="días de racha" valor={String(PERFIL_DEMO.racha)} icon={Flame} href="/app/habitos" />
+          <StatChip label="días de racha" valor={String(rachaActual)} icon={Flame} href="/app/habitos" />
           <StatChip label="audios" valor={String(AUDIOS.length)} icon={Headphones} href="/app/biblioteca" />
         </motion.div>
       </motion.div>

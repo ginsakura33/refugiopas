@@ -9,20 +9,20 @@ import { HabitosPropios } from '@/components/app-interna/HabitosPropios';
 import { RachaCard } from '@/components/app-interna/RachaCard';
 import { AppShell, Card, ScreenTitle } from '@/components/app-interna/ui';
 import { Celebracion } from '@/components/app-interna/Celebracion';
-import { HABITOS, PERFIL_DEMO } from '@/lib/app-demo-data';
+import { HABITOS } from '@/lib/app-demo-data';
+import { MINIMO_RACHA, calcularRacha, claveHabitos, claveHitos, fechaLocal, type ResumenRacha } from '@/lib/racha';
 
 function hoyKey() {
-  return `refugio-habitos-${new Date().toISOString().slice(0, 10)}`;
+  return claveHabitos(fechaLocal());
 }
 
 function hitosKey() {
-  return `refugio-hitos-${new Date().toISOString().slice(0, 10)}`;
+  return claveHitos(fechaLocal());
 }
 
 // Gratificación escalonada (hoy 6 hábitos recomendados): desde el 4.º ya hay felicitación y el día
 // suma a la racha; el 5.º y el 6.º la hacen más grande.
 const TOTAL = HABITOS.length;
-const MINIMO_RACHA = 4;
 const HITOS: Record<number, { etiqueta: string; titulo: string; mensaje: string }> = {
   [MINIMO_RACHA]: { etiqueta: 'Bien hecho', titulo: '¡Tu día ya suma a tu racha!', mensaje: `Con ${MINIMO_RACHA} hábitos te cuidaste hoy. Cada paso cuenta.` },
   [TOTAL - 1]: { etiqueta: 'Excelente', titulo: `¡${TOTAL - 1} de ${TOTAL} hábitos, qué constancia!`, mensaje: 'Estás cuidándote de verdad. Solo te falta uno.' },
@@ -34,6 +34,7 @@ export default function HabitosPage() {
   const [hito, setHito] = useState<number>(5);
   const [abierto, setAbierto] = useState(false);
   const [hitosVistos, setHitosVistos] = useState<number[]>([]);
+  const [racha, setRacha] = useState<ResumenRacha>({ actual: 0, mejor: 0, semana: Array(7).fill(false) });
 
   useEffect(() => {
     try {
@@ -72,6 +73,11 @@ export default function HabitosPage() {
     }
   };
 
+  // La racha se recalcula con los días reales cada vez que cambian los hábitos de hoy.
+  useEffect(() => {
+    setRacha(calcularRacha(HABITOS.map((h) => h.id), new Date(), hechos));
+  }, [hechos]);
+
   const completados = HABITOS.filter((h) => hechos[h.id]).length;
   const textoHito = HITOS[hito];
 
@@ -81,7 +87,7 @@ export default function HabitosPage() {
         Tus Hábitos Saludables
       </ScreenTitle>
 
-      <RachaCard racha={PERFIL_DEMO.racha} mejor={PERFIL_DEMO.mejorRacha} hoyHecho={completados >= MINIMO_RACHA} />
+      <RachaCard racha={racha.actual} mejor={racha.mejor} semana={racha.semana} hoyHecho={completados >= MINIMO_RACHA} />
 
       <div className="flex flex-col gap-3">
         {HABITOS.map((h) => {

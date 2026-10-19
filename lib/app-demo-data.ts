@@ -257,7 +257,5 @@ export const PERFIL_DEMO = {
   nombre: 'Valeria',
   email: 'valeria@ejemplo.com',
   arquetipoNombre: 'el Alma Empática',
-  racha: 4,
-  mejorRacha: 7,
   plan: 'Anual · $4.99/mes',
 };

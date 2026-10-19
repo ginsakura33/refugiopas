@@ -1,8 +1,8 @@
 'use client';
 
 // Tarjeta de racha de Hábitos (referencia del usuario: racha grande + semana L-D con llamitas).
-// Los días anteriores se marcan según la racha; el día de hoy se enciende cuando se completan
-// los hábitos. Con prefers-reduced-motion todo queda quieto.
+// Los días de la semana vienen de los hábitos realmente completados; el día de hoy se enciende cuando
+// se completan los necesarios. Con prefers-reduced-motion todo queda quieto.
 
 import { useEffect, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
@@ -12,26 +12,28 @@ import { Hairline } from '@/components/landing/ui';
 const DIAS = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
 const NOMBRES = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
 
-export function RachaCard({ racha, mejor, hoyHecho }: { racha: number; mejor: number; hoyHecho: boolean }) {
+export function RachaCard({ racha, mejor, semana, hoyHecho }: { racha: number; mejor: number; semana: boolean[]; hoyHecho: boolean }) {
   const reduce = useReducedMotion() ?? false;
   // Índice del día de hoy (lunes = 0). Se calcula en el cliente para no desfasar la hidratación.
   const [hoy, setHoy] = useState<number | null>(null);
   useEffect(() => setHoy((new Date().getDay() + 6) % 7), []);
 
-  // Días anteriores hechos: los de la racha que terminan ayer (hoy cuenta aparte).
-  const previosHechos = Math.max(0, racha - (hoyHecho ? 1 : 0));
   const estado = (i: number): 'hecho' | 'hoy' | 'hoyHecho' | 'pendiente' => {
     if (hoy === null) return 'pendiente';
     if (i === hoy) return hoyHecho ? 'hoyHecho' : 'hoy';
-    if (i < hoy && hoy - i <= previosHechos) return 'hecho';
+    if (i < hoy && semana[i]) return 'hecho';
     return 'pendiente';
   };
 
   const faltan = mejor - racha;
   const mensaje =
-    faltan <= 0
-      ? '¡Esta es tu mejor racha! Sigue cuidándote así.'
-      : `Tu mejor racha es de ${mejor} días — te faltan ${faltan} para superarla.`;
+    mejor === 0
+      ? 'Completa 4 hábitos hoy y empieza tu racha.'
+      : racha === 0
+        ? `Tu mejor racha fue de ${mejor} ${mejor === 1 ? 'día' : 'días'}. Hoy puedes empezar otra.`
+        : faltan <= 0
+          ? '¡Esta es tu mejor racha! Sigue cuidándote así.'
+          : `Tu mejor racha es de ${mejor} días — te faltan ${faltan} para superarla.`;
 
   return (
     <Hairline emphasis surface="surface" className="mb-5 shadow-[var(--shadow-2)]">
