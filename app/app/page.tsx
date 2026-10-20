@@ -8,14 +8,15 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { Flame, Compass, Headphones, ArrowRight, BookHeart, Quote } from 'lucide-react';
+import { Flame, Compass, Headphones, ArrowRight, BookHeart, Quote, Sparkles } from 'lucide-react';
 import { AppShell, Card, MoodPicker, StatChip } from '@/components/app-interna/ui';
 import { SesionTimer } from '@/components/app-interna/SesionTimer';
 import { DespuesDeSesion } from '@/components/app-interna/DespuesDeSesion';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { CampanaNovedades } from '@/components/app-interna/CampanaNovedades';
 import { ANIMOS, AUDIOS, HABITOS, MODULOS, fraseDelDia, type Animo } from '@/lib/app-demo-data';
-import { leerPerfil, primerNombre } from '@/lib/perfil';
+import { leerPerfil, primerNombre, type Dolor, type Momento } from '@/lib/perfil';
+import { recomendarAudio } from '@/lib/recomendacion';
 import { calcularRacha } from '@/lib/racha';
 import { guardarAnimo, leerAnimoDeHoy } from '@/lib/animo';
 import { useFechaHoy } from '@/lib/useFechaHoy';
@@ -29,6 +30,8 @@ const FORMATO_FECHA = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'num
 export default function InicioPage() {
   const [nombre, setNombre] = useState<string | null>(null);
   const [arquetipoNombre, setArquetipoNombre] = useState<string | null>(null);
+  const [dolor, setDolor] = useState<Dolor | null>(null);
+  const [momento, setMomento] = useState<Momento | null>(null);
   const [animoHoy, setAnimoHoy] = useState<Animo | null>(null);
   const [modulosCompletados, setModulosCompletados] = useState(0);
   const [sesionTerminada, setSesionTerminada] = useState(false);
@@ -58,6 +61,8 @@ export default function InicioPage() {
     leerPerfil().then((p) => {
       setNombre(primerNombre(p.nombre));
       setArquetipoNombre(p.arquetipo ? ARQUETIPOS[p.arquetipo].nombre : null);
+      setDolor(p.dolor);
+      setMomento(p.momento);
     });
   }, []);
 
@@ -97,6 +102,9 @@ export default function InicioPage() {
     setAnimoHoy(a as Animo);
     guardarAnimo(a as Animo); // queda registrado para el gráfico del Diario
   };
+
+  // Solo se recomienda un audio que YA se puede escuchar (con archivo); mientras no haya, la tarjeta no aparece.
+  const recomendado = useMemo(() => recomendarAudio(AUDIOS, dolor, momento), [dolor, momento]);
 
   const tipoCorto = arquetipoNombre ? arquetipoNombre.replace(/^(el|la) /i, '').replace(/^Alma /i, '') : 'Por descubrir';
 
@@ -153,6 +161,30 @@ export default function InicioPage() {
             </div>
           </Hairline>
         </motion.div>
+
+        {recomendado && (
+          <motion.div variants={item} className="mt-5">
+            <Link href="/app/biblioteca" className="block rounded-[var(--radius-card)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]">
+              <Card className="flex items-center gap-4 p-5">
+                <span
+                  aria-hidden="true"
+                  className="flex size-11 shrink-0 items-center justify-center rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--accent)_22%,transparent)] bg-[var(--chip-bg)]"
+                >
+                  <Sparkles size={20} strokeWidth={1.8} color="var(--accent-ink)" />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p className="text-[12px] font-semibold uppercase tracking-[0.04em] text-[var(--accent-ink)]">Para ti, hoy</p>
+                  <p className="mt-0.5 text-[15px] font-semibold text-[var(--text-primary)]">{recomendado.audio.titulo}</p>
+                  <p className="text-[13px] text-[var(--text-secondary)]">
+                    {recomendado.motivo ? `${recomendado.motivo} · ` : ''}
+                    {recomendado.audio.duracionMin} min
+                  </p>
+                </div>
+                <ArrowRight size={16} color="var(--text-tertiary)" aria-hidden="true" />
+              </Card>
+            </Link>
+          </motion.div>
+        )}
 
         <InstalarApp />
 

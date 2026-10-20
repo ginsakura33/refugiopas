@@ -3,6 +3,7 @@
 // reales del mercado, valores plausibles del nicho, fechas relativas a hoy — nunca "User 1" ni 0%.
 
 import type { LucideIcon } from 'lucide-react';
+import type { Dolor, Momento } from '@/lib/perfil';
 import { Sunrise, Wind, Anchor, PenLine, MoonStar, Dumbbell } from 'lucide-react';
 
 export interface HabitoDef {
@@ -31,14 +32,20 @@ export interface AudioDef {
   descripcion: string;
   /** Rótulo de la etiqueta de la tarjeta; si no hay, se usa el de la categoría (SOS / Biblioteca). */
   etiqueta?: string;
+  /** Archivo de audio real. Mientras no exista, el audio NO se recomienda (solo se recomienda lo que ya se puede escuchar). */
+  src?: string;
+  /** Dolores del recorrido de inicio a los que responde este audio (para recomendárselo a quien lo eligió). */
+  dolores: Dolor[];
+  /** Momentos del día para los que sirve. */
+  momentos: Momento[];
 }
 
 export const AUDIOS: AudioDef[] = [
-  { id: 'reset-emocional', titulo: 'Regula tu Sistema Nervioso', categoria: 'sos', duracionMin: 3, descripcion: 'Baja la sobrecarga sensorial en minutos, cuando más lo necesitas.' },
-  { id: 'respiracion-3-rondas', titulo: 'Respiración matutina', categoria: 'biblioteca', duracionMin: 2, descripcion: 'Inicia el día con energía y gratitud.', etiqueta: 'Eleva tu energía' },
-  { id: 'jardin-interior', titulo: 'El Jardín Interior', categoria: 'biblioteca', duracionMin: 8, descripcion: 'Visualización guiada para reconectar con tu espacio de calma.', etiqueta: 'Lugar seguro' },
-  { id: 'limpieza-nocturna', titulo: 'Limpieza Energética Nocturna', categoria: 'biblioteca', duracionMin: 10, descripcion: 'Cierra el día soltando lo que absorbiste de los demás.', etiqueta: 'Equilibra' },
-  { id: 'herida-rechazo', titulo: 'Conexión con mi cuerpo', categoria: 'biblioteca', duracionMin: 9, descripcion: 'Reconecta con las señales de tu cuerpo y suelta la tensión acumulada.', etiqueta: 'Armoniza' },
+  { id: 'reset-emocional', titulo: 'Regula tu Sistema Nervioso', categoria: 'sos', duracionMin: 3, descripcion: 'Baja la sobrecarga sensorial en minutos, cuando más lo necesitas.', dolores: ['ruido'], momentos: ['cualquiera', 'trabajo', 'casa'] },
+  { id: 'respiracion-3-rondas', titulo: 'Respiración matutina', categoria: 'biblioteca', duracionMin: 2, descripcion: 'Inicia el día con energía y gratitud.', etiqueta: 'Eleva tu energía', dolores: [], momentos: ['cualquiera'] },
+  { id: 'jardin-interior', titulo: 'El Jardín Interior', categoria: 'biblioteca', duracionMin: 8, descripcion: 'Visualización guiada para reconectar con tu espacio de calma.', etiqueta: 'Lugar seguro', dolores: ['rumiacion'], momentos: ['noche', 'casa'] },
+  { id: 'limpieza-nocturna', titulo: 'Limpieza Energética Nocturna', categoria: 'biblioteca', duracionMin: 10, descripcion: 'Cierra el día soltando lo que absorbiste de los demás.', etiqueta: 'Equilibra', dolores: ['emociones', 'rumiacion'], momentos: ['noche', 'casa'] },
+  { id: 'herida-rechazo', titulo: 'Conexión con mi cuerpo', categoria: 'biblioteca', duracionMin: 9, descripcion: 'Reconecta con las señales de tu cuerpo y suelta la tensión acumulada.', etiqueta: 'Armoniza', dolores: ['ruido', 'emociones'], momentos: ['cualquiera'] },
 ];
 
 // Los 4 módulos didácticos — contenido REAL de los 4 capítulos del ebook "El Refugio de tu
