@@ -6,19 +6,27 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Compass, CreditCard, LogOut, Mail, Megaphone, ShieldCheck } from 'lucide-react';
+import { Check, Compass, CreditCard, LogOut, Mail, Megaphone, Pencil, ShieldCheck, UserRound } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { LogoMarca } from '@/components/Logo';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { RecordatorioSuave } from '@/components/app-interna/RecordatorioSuave';
 import { FotoPerfil } from '@/components/app-interna/FotoPerfil';
-import { PERFIL_DEMO } from '@/lib/app-demo-data';
+import { ARQUETIPOS } from '@/lib/onboarding-content';
+import { describirPlan, guardarNombre, leerPerfil, leerPlan, type PlanReal } from '@/lib/perfil';
 import { createClient } from '@/lib/supabase/client';
 import { limpiarDatosLocales, subirPendientes } from '@/lib/datos-nube';
 
 export default function PerfilPage() {
   const router = useRouter();
-  const [correo, setCorreo] = useState<string>(PERFIL_DEMO.email);
+  const [correo, setCorreo] = useState<string>('');
+  const [nombre, setNombre] = useState<string | null>(null);
+  const [editandoNombre, setEditandoNombre] = useState(false);
+  const [borradorNombre, setBorradorNombre] = useState('');
+  const [errorNombre, setErrorNombre] = useState(false);
+  const [arquetipo, setArquetipo] = useState<string | null>(null);
+  const [plan, setPlan] = useState<PlanReal | null>(null);
+  const [cargado, setCargado] = useState(false);
   const [esAdmin, setEsAdmin] = useState(false);
   const [cierre, setCierre] = useState<'reposo' | 'guardando' | 'aviso'>('reposo');
   const avisoRef = useRef<HTMLDivElement>(null);
@@ -33,6 +41,13 @@ export default function PerfilPage() {
       .then(({ data }) => {
         if (data.user?.email) setCorreo(data.user.email);
       });
+    // Nombre, arquetipo y plan REALES de la cuenta.
+    Promise.all([leerPerfil(), leerPlan()]).then(([p, pl]) => {
+      setNombre(p.nombre);
+      setArquetipo(p.arquetipo ? ARQUETIPOS[p.arquetipo].nombre : null);
+      setPlan(pl);
+      setCargado(true);
+    });
     // Solo los administradores ven el acceso al panel de anuncios (la base de datos decide).
     createClient()
       .from('admins')
@@ -79,10 +94,18 @@ export default function PerfilPage() {
     router.refresh();
   };
 
+  const guardarMiNombre = async () => {
+    setErrorNombre(false);
+    const ok = await guardarNombre(borradorNombre);
+    if (!ok) return setErrorNombre(true);
+    setNombre(borradorNombre.trim().replace(/s+/g, ' ').slice(0, 40) || null);
+    setEditandoNombre(false);
+  };
+
   const filas = [
-    { icon: Mail, label: 'Correo', valor: correo },
-    { icon: Compass, label: 'Tu arquetipo', valor: PERFIL_DEMO.arquetipoNombre },
-    { icon: CreditCard, label: 'Tu plan', valor: PERFIL_DEMO.plan },
+    { icon: Mail, label: 'Correo', valor: correo || '…' },
+    { icon: Compass, label: 'Tu arquetipo', valor: !cargado ? '…' : arquetipo ?? 'Por descubrir' },
+    { icon: CreditCard, label: 'Tu plan', valor: !cargado ? '…' : describirPlan(plan) },
   ];
 
   return (
@@ -97,6 +120,63 @@ export default function PerfilPage() {
       </div>
 
       <Card className="flex flex-col divide-y divide-[color-mix(in_oklab,var(--text-tertiary)_14%,transparent)]">
+        <div className="flex items-center gap-3 p-4">
+          <UserRound size={18} strokeWidth={1.8} color="var(--accent)" aria-hidden="true" />
+          <div className="min-w-0 flex-1">
+            <label htmlFor="mi-nombre" className="text-[12px] text-[var(--text-tertiary)]">
+              Cómo te llamamos
+            </label>
+            {editandoNombre ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  void guardarMiNombre();
+                }}
+                className="mt-1 flex items-center gap-2"
+              >
+                <input
+                  id="mi-nombre"
+                  autoFocus
+                  value={borradorNombre}
+                  onChange={(e) => setBorradorNombre(e.target.value)}
+                  maxLength={40}
+                  autoComplete="given-name"
+                  placeholder="Tu nombre"
+                  className="min-h-11 min-w-0 flex-1 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)] bg-[var(--bg)] px-3 text-[15px] text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                />
+                <button
+                  type="submit"
+                  aria-label="Guardar nombre"
+                  className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--accent-cta)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                >
+                  <Check size={18} color="var(--bg)" aria-hidden="true" />
+                </button>
+              </form>
+            ) : (
+              <p id="mi-nombre" className="text-[14px] font-medium text-[var(--text-primary)]">
+                {!cargado ? '…' : nombre ?? 'Aún no me has dicho tu nombre'}
+              </p>
+            )}
+            {errorNombre && (
+              <p role="alert" className="mt-1 text-[13px] text-[var(--text-secondary)]">
+                No pudimos guardar tu nombre. Revisa tu conexión e inténtalo de nuevo.
+              </p>
+            )}
+          </div>
+          {!editandoNombre && cargado && (
+            <button
+              type="button"
+              onClick={() => {
+                setBorradorNombre(nombre ?? '');
+                setEditandoNombre(true);
+              }}
+              aria-label={nombre ? 'Cambiar mi nombre' : 'Añadir mi nombre'}
+              className="flex size-11 shrink-0 items-center justify-center rounded-full text-[var(--text-secondary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              <Pencil size={16} aria-hidden="true" />
+            </button>
+          )}
+        </div>
         {filas.map((f) => {
           const Icono = f.icon;
           return (

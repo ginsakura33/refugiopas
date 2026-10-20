@@ -97,8 +97,65 @@ export async function subirEntradaDiario(e: EntradaDiario): Promise<void> {
   }
 }
 
+const K_BORRADAS = 'refugio-diario-borradas';
+const K_EDITADAS = 'refugio-diario-editadas';
+
+function quitarDeLista(clave: string, id: string) {
+  escribir(clave, leer<string[]>(clave, []).filter((x) => x !== id));
+}
+function ponerEnLista(clave: string, id: string) {
+  const l = leer<string[]>(clave, []);
+  if (!l.includes(id)) escribir(clave, [...l, id]);
+}
+
+/** Guarda en la cuenta el cambio de una entrada editada (si no hay internet queda pendiente y se reintenta). */
+export async function actualizarEntradaDiario(e: EntradaDiario): Promise<void> {
+  ponerEnLista(K_EDITADAS, e.id);
+  try {
+    const uid = await usuario();
+    if (!uid) return;
+    const { error } = await createClient().from('journal_entries').upsert(aFila(uid, e), { onConflict: 'user_id,local_id' });
+    if (!error) quitarDeLista(K_EDITADAS, e.id);
+  } catch {
+    /* sin conexión: queda pendiente */
+  }
+}
+
+/** Borra una entrada también de la cuenta. Queda anotada como borrada para que no reaparezca al sincronizar. */
+export async function borrarEntradaDiario(id: string): Promise<void> {
+  ponerEnLista(K_BORRADAS, id);
+  quitarDeLista(K_EDITADAS, id);
+  try {
+    const uid = await usuario();
+    if (!uid) return;
+    const { error } = await createClient().from('journal_entries').delete().eq('user_id', uid).eq('local_id', id);
+    if (!error) quitarDeLista(K_BORRADAS, id);
+  } catch {
+    /* sin conexión: queda pendiente */
+  }
+}
+
 async function sincronizarDiario(uid: string): Promise<boolean> {
-  const { data, error } = await createClient()
+  const sb = createClient();
+  // 1) Lo que la persona borró y todavía no se borró en la cuenta.
+  const borradas = leer<string[]>(K_BORRADAS, []);
+  for (const id of borradas) {
+    const { error } = await sb.from('journal_entries').delete().eq('user_id', uid).eq('local_id', id);
+    if (error) throw error;
+    quitarDeLista(K_BORRADAS, id);
+  }
+  // 2) Lo que editó sin conexión.
+  const local0 = leer<EntradaDiario[]>(K_DIARIO, []);
+  for (const id of leer<string[]>(K_EDITADAS, [])) {
+    const e = local0.find((x) => x.id === id);
+    if (e) {
+      const { error } = await sb.from('journal_entries').upsert(aFila(uid, e), { onConflict: 'user_id,local_id' });
+      if (error) throw error;
+    }
+    quitarDeLista(K_EDITADAS, id);
+  }
+  // 3) La cuenta rellena lo que falte en el celular; el celular sube lo que falte en la cuenta.
+  const { data, error } = await sb
     .from('journal_entries')
     .select('local_id, animo, intensidad, texto, created_at')
     .not('local_id', 'is', null)
@@ -122,7 +179,7 @@ async function sincronizarDiario(uid: string): Promise<boolean> {
   }
   const subir = local.filter((e) => !idsNube.has(e.id) && e.id.startsWith('local-')).map((e) => aFila(uid, e));
   for (let i = 0; i < subir.length; i += 100) {
-    const { error: e } = await createClient().from('journal_entries').upsert(subir.slice(i, i + 100), { onConflict: 'user_id,local_id', ignoreDuplicates: true });
+    const { error: e } = await sb.from('journal_entries').upsert(subir.slice(i, i + 100), { onConflict: 'user_id,local_id', ignoreDuplicates: true });
     if (e) throw e;
   }
   return nuevas.length > 0;
@@ -206,16 +263,20 @@ async function sincronizarModulos(uid: string): Promise<boolean> {
 
 const K_DUENO = 'refugio-dueno';
 
-/** Borra del celular todo lo personal (diario, ánimo, hábitos, módulos…). No toca preferencias del aparato. */
-export function limpiarDatosLocales(): void {
+/**
+ * Borra del celular todo lo personal (diario, ánimo, hábitos, módulos…). No toca preferencias del aparato.
+ * `conservarRecorrido`: las respuestas del recorrido de inicio se hicieron ANTES de tener cuenta, así que
+ * pertenecen a quien está entrando ahora y no se borran al detectar datos de otra cuenta.
+ */
+export function limpiarDatosLocales(conservarRecorrido = false): void {
   try {
     const claves: string[] = [];
     for (let i = 0; i < localStorage.length; i++) {
       const k = localStorage.key(i);
-      if (k && k.startsWith('refugio-') && k !== 'refugio-instalar-descartado') claves.push(k);
+      if (k && k.startsWith('refugio-') && k !== 'refugio-instalar-descartado' && !(conservarRecorrido && k === 'refugio-onboarding')) claves.push(k);
     }
     claves.forEach((k) => localStorage.removeItem(k));
-    ['refugio-onboarding', 'refugio-plan', 'refugio-diario-prompt'].forEach((k) => sessionStorage.removeItem(k));
+    ['refugio-plan', 'refugio-diario-prompt'].forEach((k) => sessionStorage.removeItem(k));
   } catch {
     /* sin acceso al almacenamiento del navegador: nada que borrar */
   }
@@ -227,7 +288,7 @@ function asegurarDueno(uid: string): boolean {
     const dueno = localStorage.getItem(K_DUENO);
     let limpio = false;
     if (dueno && dueno !== uid) {
-      limpiarDatosLocales();
+      limpiarDatosLocales(true);
       limpio = true;
     }
     localStorage.setItem(K_DUENO, uid);

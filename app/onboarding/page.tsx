@@ -114,9 +114,9 @@ export default function OnboardingPage() {
       totalRespuestas: 10 + 5,
     };
     try {
-      sessionStorage.setItem('refugio-onboarding', JSON.stringify(datos));
+      localStorage.setItem('refugio-onboarding', JSON.stringify(datos));
     } catch {
-      /* sessionStorage puede fallar en modo privado — el paywall usa un plan genérico si no hay datos */
+      /* el almacenamiento puede fallar en modo privado — el paywall usa un plan genérico si no hay datos */
     }
     router.push('/paywall');
   };

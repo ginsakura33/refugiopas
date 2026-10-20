@@ -225,37 +225,3 @@ export interface EntradaDiario {
   intensidad?: number; // 1-10
   texto: string;
 }
-
-function haceDias(n: number): string {
-  const d = new Date();
-  d.setDate(d.getDate() - n);
-  return d.toISOString();
-}
-
-export const DIARIO_SEED: EntradaDiario[] = [
-  {
-    id: 'seed-1',
-    fecha: haceDias(0),
-    animo: 'Tranquilo/a',
-    texto: 'Hoy sentí que llegaba a casa con la energía de otros encima. El Orbe me ayudó a soltarla antes de seguir con la noche.',
-  },
-  {
-    id: 'seed-2',
-    fecha: haceDias(2),
-    animo: 'Agotado/a',
-    texto: 'Día largo, muchas voces a la vez. Escribí esto en vez de rumiar en la cama, y ya pude respirar distinto.',
-  },
-  {
-    id: 'seed-3',
-    fecha: haceDias(5),
-    animo: 'En calma',
-    texto: 'Puse un límite sin sentir culpa por primera vez en semanas. Pequeño, pero lo anoto para recordarlo.',
-  },
-];
-
-export const PERFIL_DEMO = {
-  nombre: 'Valeria',
-  email: 'valeria@ejemplo.com',
-  arquetipoNombre: 'el Alma Empática',
-  plan: 'Anual · $4.99/mes',
-};

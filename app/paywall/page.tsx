@@ -13,6 +13,10 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AnimatePresence, motion } from 'motion/react';
 import { X, ShieldCheck } from 'lucide-react';
+import { createClient } from '@/lib/supabase/client';
+import { limpiarDatosLocales, subirPendientes } from '@/lib/datos-nube';
+import { leerPlan, type PlanReal } from '@/lib/perfil';
+import { PantallaAccesoPendiente } from '@/components/paywall/AccesoPendiente';
 
 // Páginas de pago de Hotmart (públicas). Sin ellas configuradas, el botón lleva al acceso por correo.
 const CHECKOUT = {
@@ -68,10 +72,30 @@ export default function PaywallPage() {
   };
   const [pantalla, setPantalla] = useState(0);
   const [datos, setDatos] = useState<DatosOnboarding | null>(null);
+  // Si la persona llegó aquí porque su acceso no está activo (plan vencido, cancelado, sin compra…).
+  const [pendiente, setPendiente] = useState<{ correo: string | null; plan: PlanReal | null } | null>(null);
+  const [saliendo, setSaliendo] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('acceso') !== 'pendiente') return;
+    Promise.all([createClient().auth.getSession(), leerPlan()]).then(([{ data }, plan]) =>
+      setPendiente({ correo: data.session?.user.email ?? null, plan })
+    );
+  }, []);
+
+  const cerrarSesion = async () => {
+    setSaliendo(true);
+    // Lo escrito sin conexión se sube antes de limpiar el celular; si no se pudo, se conserva (y no se mezcla con otra cuenta).
+    const quedoGuardado = await Promise.race([subirPendientes(), new Promise<boolean>((r) => setTimeout(() => r(false), 6000))]);
+    await createClient().auth.signOut();
+    if (quedoGuardado) limpiarDatosLocales();
+    router.push('/entrar');
+    router.refresh();
+  };
 
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem('refugio-onboarding');
+      const raw = localStorage.getItem('refugio-onboarding');
       if (raw) setDatos(JSON.parse(raw));
     } catch {
       /* sin datos: se usa el plan genérico de abajo */
@@ -80,7 +104,7 @@ export default function PaywallPage() {
 
   const arquetipo = datos?.arquetipo ? ARQUETIPOS[datos.arquetipo] : null;
   const momentoLabel = datos?.momento ? MOMENTO_LABEL[datos.momento] ?? 'cuando lo necesites' : 'cuando lo necesites';
-  const totalRespuestas = datos?.totalRespuestas ?? 15;
+  const totalRespuestas = datos?.totalRespuestas ?? 0;
 
   return (
     <div className="relative isolate flex min-h-dvh flex-col overflow-hidden bg-[var(--bg)] text-[var(--text-primary)] [font-family:var(--font-body)]">
@@ -95,6 +119,7 @@ export default function PaywallPage() {
       />
 
       <div className="flex h-16 items-center px-4">
+        {!pendiente && (
         <button
           type="button"
           onClick={() => (pantalla === 1 ? setPantalla(0) : router.push('/onboarding'))}
@@ -103,6 +128,7 @@ export default function PaywallPage() {
         >
           <X size={20} aria-hidden="true" />
         </button>
+        )}
       </div>
 
       <div className="mx-auto flex w-full max-w-[480px] flex-1 flex-col px-4 pb-6">
@@ -115,7 +141,18 @@ export default function PaywallPage() {
             transition={{ duration: 0.25 }}
             className="flex flex-1 flex-col"
           >
-            {pantalla === 0 ? (
+            {pendiente ? (
+              <PantallaAccesoPendiente
+                correo={pendiente.correo}
+                plan={pendiente.plan}
+                saliendo={saliendo}
+                onElegirPlan={() => {
+                  setPendiente(null);
+                  setPantalla(1);
+                }}
+                onSalir={cerrarSesion}
+              />
+            ) : pantalla === 0 ? (
               <PantallaRecap
                 arquetipoNombre={arquetipo?.nombre ?? 'tu Refugio'}
                 momentoLabel={momentoLabel}
@@ -162,7 +199,9 @@ function PantallaRecap({
           Tu Refugio para calmarte en <span className="text-[var(--accent)]">2 minutos</span> está listo
         </motion.h1>
         <motion.p variants={item} className="mt-2 text-[14px] text-[var(--text-secondary)]">
-          Hecho con tus {totalRespuestas} respuestas, para {arquetipoNombre} — con tu ritual pensado para {momentoLabel}.
+          {totalRespuestas > 0
+            ? `Hecho con tus ${totalRespuestas} respuestas, para ${arquetipoNombre} — con tu ritual pensado para ${momentoLabel}.`
+            : 'Pensado para personas altamente sensibles: audios, hábitos y un espacio solo tuyo.'}
         </motion.p>
 
         <motion.div variants={item}>

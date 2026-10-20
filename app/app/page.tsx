@@ -14,20 +14,21 @@ import { SesionTimer } from '@/components/app-interna/SesionTimer';
 import { DespuesDeSesion } from '@/components/app-interna/DespuesDeSesion';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { CampanaNovedades } from '@/components/app-interna/CampanaNovedades';
-import { ANIMOS, AUDIOS, HABITOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo } from '@/lib/app-demo-data';
+import { ANIMOS, AUDIOS, HABITOS, MODULOS, fraseDelDia, type Animo } from '@/lib/app-demo-data';
+import { leerPerfil, primerNombre } from '@/lib/perfil';
 import { calcularRacha } from '@/lib/racha';
 import { guardarAnimo, leerAnimoDeHoy } from '@/lib/animo';
 import { useFechaHoy } from '@/lib/useFechaHoy';
 import { sincronizarTodo } from '@/lib/datos-nube';
-import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
+import { ARQUETIPOS } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
 import { Hairline, useReveal } from '@/components/landing/ui';
 
 const FORMATO_FECHA = new Intl.DateTimeFormat('es', { weekday: 'long', day: 'numeric', month: 'long' });
 
 export default function InicioPage() {
-  const [nombre, setNombre] = useState(PERFIL_DEMO.nombre);
-  const [arquetipoNombre, setArquetipoNombre] = useState(PERFIL_DEMO.arquetipoNombre);
+  const [nombre, setNombre] = useState<string | null>(null);
+  const [arquetipoNombre, setArquetipoNombre] = useState<string | null>(null);
   const [animoHoy, setAnimoHoy] = useState<Animo | null>(null);
   const [modulosCompletados, setModulosCompletados] = useState(0);
   const [sesionTerminada, setSesionTerminada] = useState(false);
@@ -52,14 +53,16 @@ export default function InicioPage() {
   }, []);
   const alCompletarSesion = useCallback(() => setSesionTerminada(true), []);
 
+  // Nombre y arquetipo REALES de la cuenta (nunca datos de ejemplo).
+  useEffect(() => {
+    leerPerfil().then((p) => {
+      setNombre(primerNombre(p.nombre));
+      setArquetipoNombre(p.arquetipo ? ARQUETIPOS[p.arquetipo].nombre : null);
+    });
+  }, []);
+
   useEffect(() => {
     try {
-      const raw = sessionStorage.getItem('refugio-onboarding');
-      if (raw) {
-        const datos = JSON.parse(raw);
-        const id = datos?.arquetipo as ArquetipoId | undefined;
-        if (id && ARQUETIPOS[id]) setArquetipoNombre(ARQUETIPOS[id].nombre);
-      }
       const modulosGuardados = localStorage.getItem('refugio-modulos-completados');
       if (modulosGuardados) {
         const hechos = JSON.parse(modulosGuardados) as Record<string, boolean>;
@@ -95,7 +98,7 @@ export default function InicioPage() {
     guardarAnimo(a as Animo); // queda registrado para el gráfico del Diario
   };
 
-  const tipoCorto = arquetipoNombre.replace(/^(el|la) /i, '').replace(/^Alma /i, '');
+  const tipoCorto = arquetipoNombre ? arquetipoNombre.replace(/^(el|la) /i, '').replace(/^Alma /i, '') : 'Por descubrir';
 
   return (
     <AppShell>
@@ -104,7 +107,7 @@ export default function InicioPage() {
           <div>
             <p className="text-[13px] text-[var(--text-tertiary)]">{fechaLabel || ' '}</p>
             <h1 className="mt-1 text-[26px] font-bold leading-tight text-[var(--text-primary)] [font-family:var(--font-display)]">
-              Hola, {nombre}
+              {nombre ? `Hola, ${nombre}` : 'Hola'}
             </h1>
           </div>
           <div className="flex items-center gap-2">

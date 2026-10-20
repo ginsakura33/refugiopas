@@ -1,20 +1,21 @@
 'use client';
 
 // Diario — registro de journaling + historial de ánimo e intensidad. Persistencia local (localStorage),
-// arranca con 3 entradas de ejemplo (32: "la app nunca se enseña vacía") + lo que el usuario
-// escriba se guarda encima, más reciente primero. La intensidad de cada entrada SE VE en el historial
+// arranca en blanco con un mensaje de bienvenida (nunca con entradas de ejemplo: es el diario PERSONAL de
+// cada persona) y lo que escriba se guarda aquí y en su cuenta, más reciente primero; se puede editar o borrar. La intensidad de cada entrada SE VE en el historial
 // y en el gráfico de la semana; el borrador (ánimo, intensidad y texto) no se pierde al salir.
 
 import { useEffect, useState } from 'react';
-import { PenLine } from 'lucide-react';
+import { Check, PenLine, Pencil, Trash2, X } from 'lucide-react';
 import { ANIMO_EMOJI, AppShell, Card, EmptyState, MoodPicker, ScreenTitle } from '@/components/app-interna/ui';
-import { ANIMOS, DIARIO_SEED, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
+import { ANIMOS, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
 import { fechaLocal } from '@/lib/racha';
 import { guardarAnimo, leerRegistros, type RegistroAnimo } from '@/lib/animo';
 import { useFechaHoy } from '@/lib/useFechaHoy';
-import { sincronizarTodo, subirEntradaDiario } from '@/lib/datos-nube';
+import { actualizarEntradaDiario, borrarEntradaDiario, sincronizarTodo, subirEntradaDiario } from '@/lib/datos-nube';
 
 const CLAVE_BORRADOR = 'refugio-diario-borrador';
+const MAX_TEXTO = 5000;
 const LETRAS_DIA = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
 const NOMBRES_DIA = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado'];
 
@@ -56,7 +57,7 @@ function formatearFecha(iso: string) {
 }
 
 export default function DiarioPage() {
-  const [entradas, setEntradas] = useState<EntradaDiario[]>(DIARIO_SEED);
+  const [entradas, setEntradas] = useState<EntradaDiario[]>([]);
   const [animo, setAnimo] = useState<Animo | null>(null);
   const [intensidad, setIntensidad] = useState(5);
   const [texto, setTexto] = useState('');
@@ -81,9 +82,10 @@ export default function DiarioPage() {
     if (!hoy) return;
     try {
       const raw = localStorage.getItem('refugio-diario');
-      if (raw) setEntradas([...(JSON.parse(raw) as EntradaDiario[]), ...DIARIO_SEED]);
+      const propias = raw ? (JSON.parse(raw) as EntradaDiario[]) : [];
+      setEntradas([...propias].sort((a, b) => b.fecha.localeCompare(a.fecha)));
     } catch {
-      /* sin entradas propias guardadas: se muestran solo las de ejemplo */
+      /* sin entradas propias guardadas: el diario empieza en blanco */
     }
     const registrosHoy = leerRegistros();
     setRegistros(registrosHoy);
@@ -172,6 +174,25 @@ export default function DiarioPage() {
     setTimeout(() => setGuardada(false), 4000);
   };
 
+  const guardarLista = (lista: EntradaDiario[]) => {
+    setEntradas(lista);
+    try {
+      localStorage.setItem('refugio-diario', JSON.stringify(lista));
+    } catch {
+      /* modo privado: el cambio queda solo en esta sesión */
+    }
+  };
+  const editarEntrada = (id: string, nuevoTexto: string) => {
+    const lista = entradas.map((e) => (e.id === id ? { ...e, texto: nuevoTexto } : e));
+    guardarLista(lista);
+    const cambiada = lista.find((e) => e.id === id);
+    if (cambiada) void actualizarEntradaDiario(cambiada);
+  };
+  const borrarEntrada = (id: string) => {
+    guardarLista(entradas.filter((e) => e.id !== id));
+    void borrarEntradaDiario(id);
+  };
+
   const semana = intensidadSemana(entradas, registros);
   const hayDatosSemana = semana.some((d) => d.valor !== null);
 
@@ -212,9 +233,16 @@ export default function DiarioPage() {
           value={texto}
           onChange={(e) => setTexto(e.target.value)}
           placeholder="Escribe lo que viviste hoy, sin juzgarlo…"
+          aria-label="Escribe lo que viviste hoy"
+          maxLength={MAX_TEXTO}
           rows={3}
           className="mt-4 w-full resize-none rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_22%,transparent)] bg-[var(--bg)] p-3 text-[14px] text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
         />
+        {texto.length >= MAX_TEXTO - 500 && (
+          <p className="mt-1 text-right text-[12px] text-[var(--text-tertiary)]" aria-live="polite">
+            {texto.length} de {MAX_TEXTO} caracteres
+          </p>
+        )}
         <button
           type="button"
           onClick={guardar}
@@ -293,22 +321,116 @@ export default function DiarioPage() {
 
       <div className="mt-6 flex flex-col gap-3">
         {entradas.length === 0 ? (
-          <EmptyState icon={PenLine} titulo="Todavía no escribiste nada. Cuando lo hagas, aparecerá aquí." />
+          <EmptyState icon={PenLine} titulo="Tu diario está listo para tu primera entrada. Escribe arriba lo que sientes, sin juzgarte." />
         ) : (
-          entradas.map((e) => (
-            <Card key={e.id} className="p-4">
-              <div className="flex items-center justify-between">
-                <span className="text-[12px] font-semibold uppercase tracking-[0.04em] text-[var(--accent-ink)]">
-                  {e.animo}
-                  {typeof e.intensidad === 'number' && <span className="ml-2 normal-case tracking-normal text-[var(--text-secondary)]">· Intensidad {e.intensidad}/10</span>}
-                </span>
-                <span className="text-[12px] text-[var(--text-tertiary)]">{formatearFecha(e.fecha)}</span>
-              </div>
-              <p className="mt-2 text-[14px] leading-relaxed text-[var(--text-primary)]">{e.texto}</p>
-            </Card>
-          ))
+          entradas.map((e) => <EntradaItem key={e.id} entrada={e} onGuardar={editarEntrada} onBorrar={borrarEntrada} />)
         )}
       </div>
     </AppShell>
+  );
+}
+
+// Una entrada del diario: se puede editar su texto o borrar (con confirmación, porque no se puede deshacer).
+function EntradaItem({ entrada: e, onGuardar, onBorrar }: { entrada: EntradaDiario; onGuardar: (id: string, texto: string) => void; onBorrar: (id: string) => void }) {
+  const [editando, setEditando] = useState(false);
+  const [borrador, setBorrador] = useState(e.texto);
+  const [confirmando, setConfirmando] = useState(false);
+  const guardarCambio = () => {
+    const limpio = borrador.trim();
+    if (!limpio) return;
+    onGuardar(e.id, limpio);
+    setEditando(false);
+  };
+  return (
+    <Card className="p-4">
+      <div className="flex items-center justify-between">
+        <span className="text-[12px] font-semibold uppercase tracking-[0.04em] text-[var(--accent-ink)]">
+          {e.animo}
+          {typeof e.intensidad === 'number' && <span className="ml-2 normal-case tracking-normal text-[var(--text-secondary)]">· Intensidad {e.intensidad}/10</span>}
+        </span>
+        <span className="text-[12px] text-[var(--text-tertiary)]">{formatearFecha(e.fecha)}</span>
+      </div>
+
+      {editando ? (
+        <div className="mt-2">
+          <textarea
+            value={borrador}
+            onChange={(ev) => setBorrador(ev.target.value)}
+            aria-label="Editar tu entrada"
+            maxLength={MAX_TEXTO}
+            rows={4}
+            autoFocus
+            className="w-full resize-none rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_22%,transparent)] bg-[var(--bg)] p-3 text-[14px] text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+          />
+          <div className="mt-2 flex gap-2">
+            <button
+              type="button"
+              onClick={guardarCambio}
+              disabled={!borrador.trim()}
+              className="flex min-h-11 flex-1 items-center justify-center gap-1.5 rounded-[var(--radius-button)] bg-[var(--accent-cta)] text-[14px] font-semibold text-[var(--bg)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:opacity-50"
+            >
+              <Check size={16} aria-hidden="true" /> Guardar cambios
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setBorrador(e.texto);
+                setEditando(false);
+              }}
+              className="flex min-h-11 items-center justify-center gap-1.5 rounded-[var(--radius-button)] px-4 text-[14px] font-semibold text-[var(--text-secondary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              <X size={16} aria-hidden="true" /> Cancelar
+            </button>
+          </div>
+        </div>
+      ) : (
+        <>
+          <p className="mt-2 whitespace-pre-line break-words text-[14px] leading-relaxed text-[var(--text-primary)]">{e.texto}</p>
+          {confirmando ? (
+            <div role="alert" className="mt-3 rounded-[var(--radius-button)] bg-[var(--chip-bg)] p-3">
+              <p className="text-[14px] text-[var(--text-primary)]">¿Borrar esta entrada? No se puede deshacer.</p>
+              <div className="mt-2 flex gap-2">
+                <button
+                  type="button"
+                  onClick={() => onBorrar(e.id)}
+                  className="min-h-11 flex-1 rounded-[var(--radius-button)] bg-[var(--accent-cta)] text-[14px] font-semibold text-[var(--bg)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                >
+                  Sí, borrar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmando(false)}
+                  className="min-h-11 rounded-[var(--radius-button)] px-4 text-[14px] font-semibold text-[var(--text-secondary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+                >
+                  No, conservar
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="mt-2 flex justify-end gap-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setBorrador(e.texto);
+                  setEditando(true);
+                }}
+                aria-label="Editar esta entrada"
+                className="flex size-11 items-center justify-center rounded-full text-[var(--text-secondary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              >
+                <Pencil size={16} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setConfirmando(true)}
+                aria-label="Borrar esta entrada"
+                className="flex size-11 items-center justify-center rounded-full text-[var(--text-secondary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+              >
+                <Trash2 size={16} aria-hidden="true" />
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </Card>
   );
 }

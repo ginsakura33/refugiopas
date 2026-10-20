@@ -55,6 +55,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'no se pudo crear la cuenta' }, { status: 500 });
   }
 
+  // El nombre real de quien compra (Hotmart lo envía); solo se completa si la persona aún no tiene uno.
+  const nombreComprador = payload.data?.buyer?.name?.trim().replace(/s+/g, ' ').slice(0, 40);
+  if (nombreComprador) await db.from('profiles').update({ nombre: nombreComprador }).eq('id', userId).is('nombre', null);
+
   // 4. SUSCRIPCIÓN
   const valor = payload.data?.purchase?.price?.value;
   const proximoCobro = payload.data?.purchase?.date_next_charge;
