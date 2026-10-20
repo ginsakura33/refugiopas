@@ -57,17 +57,18 @@ export async function leerPerfil(): Promise<PerfilReal> {
   }
 }
 
-export async function guardarNombre(nombre: string): Promise<boolean> {
+/** Guarda el nombre y devuelve el nombre ya limpio (o null si lo dejó vacío); `ok:false` si no se pudo guardar. */
+export async function guardarNombre(nombre: string): Promise<{ ok: boolean; nombre: string | null }> {
   try {
     const sb = createClient();
     const { data: sesion } = await sb.auth.getSession();
     const uid = sesion.session?.user.id;
-    if (!uid) return false;
+    if (!uid) return { ok: false, nombre: null };
     const limpio = nombre.trim().replace(/\s+/g, ' ').slice(0, 40);
     const { error } = await sb.from('profiles').update({ nombre: limpio || null }).eq('id', uid);
-    return !error;
+    return { ok: !error, nombre: limpio || null };
   } catch {
-    return false;
+    return { ok: false, nombre: null };
   }
 }
 

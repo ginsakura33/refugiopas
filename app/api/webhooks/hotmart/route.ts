@@ -56,7 +56,7 @@ export async function POST(request: Request) {
   }
 
   // El nombre real de quien compra (Hotmart lo envía); solo se completa si la persona aún no tiene uno.
-  const nombreComprador = payload.data?.buyer?.name?.trim().replace(/s+/g, ' ').slice(0, 40);
+  const nombreComprador = payload.data?.buyer?.name?.trim().replace(/\s+/g, ' ').slice(0, 40);
   if (nombreComprador) await db.from('profiles').update({ nombre: nombreComprador }).eq('id', userId).is('nombre', null);
 
   // 4. SUSCRIPCIÓN
