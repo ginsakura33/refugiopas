@@ -11,6 +11,7 @@ import { AppShell, Card } from '@/components/app-interna/ui';
 import { LogoMarca } from '@/components/Logo';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { RecordatorioSuave } from '@/components/app-interna/RecordatorioSuave';
+import { FotoPerfil } from '@/components/app-interna/FotoPerfil';
 import { PERFIL_DEMO } from '@/lib/app-demo-data';
 import { createClient } from '@/lib/supabase/client';
 
@@ -73,6 +74,10 @@ export default function PerfilPage() {
       <div className="mb-6 flex items-start justify-between gap-4">
         <h1 className="text-[24px] font-bold leading-tight text-[var(--text-primary)] [font-family:var(--font-display)]">Tu cuenta</h1>
         <LogoMarca size={72} />
+      </div>
+
+      <div className="mb-6">
+        <FotoPerfil />
       </div>
 
       <Card className="flex flex-col divide-y divide-[color-mix(in_oklab,var(--text-tertiary)_14%,transparent)]">
