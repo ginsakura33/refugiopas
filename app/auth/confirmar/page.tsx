@@ -57,7 +57,7 @@ export default function ConfirmarPage() {
       </button>
       {estado === 'error' && (
         <p role="alert" className="max-w-[320px] text-[14px] text-[var(--text-secondary)]">
-          Ese enlace ya se usó o venció. Pide uno nuevo. <span className="block text-[12px] text-[var(--text-tertiary)]">Detalle: {detalle} · llave {datos?.tokenHash.slice(0, 8)}…{datos?.tokenHash.length}</span>
+          Ese enlace ya se usó o venció. Pide uno nuevo. <span className="block text-[12px] text-[var(--text-tertiary)]">Detalle: {detalle}</span>
         </p>
       )}
     </main>
