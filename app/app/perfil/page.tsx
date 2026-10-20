@@ -368,15 +368,15 @@ export default function PerfilPage() {
           <InstalarApp siempre />
           <FilaAjuste
             icono={Download}
-            texto="Descargar mis datos"
+            texto="Descargar mi diario y mis datos"
             detalle={
               descarga === 'preparando'
                 ? 'Preparando tu archivo…'
                 : descarga === 'lista'
-                  ? 'Listo: revisa tus descargas'
+                  ? 'Listo: ábrelo desde tus descargas'
                   : descarga === 'error'
                     ? 'No pudimos prepararlo. Toca para reintentar'
-                    : 'Un archivo con tu diario, hábitos y ánimo'
+                    : 'Un documento para leer, guardar o imprimir'
             }
             onClick={bajarDatos}
             cargando={descarga === 'preparando'}
