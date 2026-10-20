@@ -52,7 +52,7 @@ export async function subirAnimoDia(fecha: string, reg: RegistroAnimo): Promise<
 
 async function sincronizarAnimo(uid: string): Promise<boolean> {
   const { data, error } = await createClient().from('animo_dias').select('fecha, animo, intensidad').order('fecha', { ascending: false }).limit(400);
-  if (error || !data) return false;
+  if (error || !data) throw error ?? new Error('sin datos');
   const local = leer<Record<string, RegistroAnimo>>(K_ANIMO, {});
   const nube = new Map(data.map((f) => [f.fecha as string, f]));
   let cambio = false;
@@ -67,7 +67,10 @@ async function sincronizarAnimo(uid: string): Promise<boolean> {
   const subir = Object.entries(local)
     .filter(([fecha, r]) => esAnimo(r.animo) && (nube.get(fecha)?.animo !== r.animo || nube.get(fecha)?.intensidad !== intensidadValida(r.intensidad)))
     .map(([fecha, r]) => ({ user_id: uid, fecha, animo: r.animo, intensidad: intensidadValida(r.intensidad) }));
-  if (subir.length) await createClient().from('animo_dias').upsert(subir, { onConflict: 'user_id,fecha' });
+  if (subir.length) {
+    const { error: e } = await createClient().from('animo_dias').upsert(subir, { onConflict: 'user_id,fecha' });
+    if (e) throw e;
+  }
   return cambio;
 }
 
@@ -101,7 +104,7 @@ async function sincronizarDiario(uid: string): Promise<boolean> {
     .not('local_id', 'is', null)
     .order('created_at', { ascending: false })
     .limit(500);
-  if (error || !data) return false;
+  if (error || !data) throw error ?? new Error('sin datos');
   const local = leer<EntradaDiario[]>(K_DIARIO, []);
   const idsLocal = new Set(local.map((e) => e.id));
   const idsNube = new Set(data.map((f) => f.local_id as string));
@@ -119,7 +122,8 @@ async function sincronizarDiario(uid: string): Promise<boolean> {
   }
   const subir = local.filter((e) => !idsNube.has(e.id) && e.id.startsWith('local-')).map((e) => aFila(uid, e));
   for (let i = 0; i < subir.length; i += 100) {
-    await createClient().from('journal_entries').upsert(subir.slice(i, i + 100), { onConflict: 'user_id,local_id', ignoreDuplicates: true });
+    const { error: e } = await createClient().from('journal_entries').upsert(subir.slice(i, i + 100), { onConflict: 'user_id,local_id', ignoreDuplicates: true });
+    if (e) throw e;
   }
   return nuevas.length > 0;
 }
@@ -148,7 +152,7 @@ export async function subirHabitosPropios(lista: HabitoPropio[]): Promise<void> 
 
 async function sincronizarPropios(uid: string): Promise<boolean> {
   const { data, error } = await createClient().from('habitos_propios').select('id, nombre').order('created_at', { ascending: true }).limit(MAX_PROPIOS);
-  if (error || !data) return false;
+  if (error || !data) throw error ?? new Error('sin datos');
   const local = leer<HabitoPropio[]>(K_PROPIOS, []);
   const faltan = data.filter((f) => !local.some((h) => h.id === f.id)).map((f) => ({ id: f.id as string, nombre: f.nombre as string }));
   let cambio = false;
@@ -157,7 +161,10 @@ async function sincronizarPropios(uid: string): Promise<boolean> {
     cambio = true;
   }
   const subir = local.filter((h) => !data.some((f) => f.id === h.id)).map((h) => ({ user_id: uid, id: h.id, nombre: h.nombre }));
-  if (subir.length) await createClient().from('habitos_propios').upsert(subir, { onConflict: 'user_id,id' });
+  if (subir.length) {
+    const { error: e } = await createClient().from('habitos_propios').upsert(subir, { onConflict: 'user_id,id' });
+    if (e) throw e;
+  }
   return cambio;
 }
 
@@ -175,7 +182,7 @@ export async function subirModulo(id: string): Promise<void> {
 
 async function sincronizarModulos(uid: string): Promise<boolean> {
   const { data, error } = await createClient().from('module_progress').select('modulo_id');
-  if (error || !data) return false;
+  if (error || !data) throw error ?? new Error('sin datos');
   const local = leer<Record<string, boolean>>(K_MODULOS, {});
   const nube = new Set(data.map((f) => f.modulo_id as string));
   let cambio = false;
@@ -188,34 +195,88 @@ async function sincronizarModulos(uid: string): Promise<boolean> {
   }
   if (cambio) escribir(K_MODULOS, unido);
   const subir = Object.keys(local).filter((id) => local[id] && !nube.has(id)).map((id) => ({ user_id: uid, modulo_id: id }));
-  if (subir.length) await createClient().from('module_progress').upsert(subir, { onConflict: 'user_id,modulo_id', ignoreDuplicates: true });
+  if (subir.length) {
+    const { error: e } = await createClient().from('module_progress').upsert(subir, { onConflict: 'user_id,modulo_id', ignoreDuplicates: true });
+    if (e) throw e;
+  }
   return cambio;
+}
+
+/* ───────────── Datos de esta cuenta en este celular ───────────── */
+
+const K_DUENO = 'refugio-dueno';
+
+/** Borra del celular todo lo personal (diario, ánimo, hábitos, módulos…). No toca preferencias del aparato. */
+export function limpiarDatosLocales(): void {
+  try {
+    const claves: string[] = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith('refugio-') && k !== 'refugio-instalar-descartado') claves.push(k);
+    }
+    claves.forEach((k) => localStorage.removeItem(k));
+    ['refugio-onboarding', 'refugio-plan', 'refugio-diario-prompt'].forEach((k) => sessionStorage.removeItem(k));
+  } catch {
+    /* sin acceso al almacenamiento del navegador: nada que borrar */
+  }
+}
+
+/** Si lo guardado en este celular era de OTRA cuenta, se borra antes de sincronizar (jamás se sube a la cuenta nueva). */
+function asegurarDueno(uid: string): boolean {
+  try {
+    const dueno = localStorage.getItem(K_DUENO);
+    let limpio = false;
+    if (dueno && dueno !== uid) {
+      limpiarDatosLocales();
+      limpio = true;
+    }
+    localStorage.setItem(K_DUENO, uid);
+    return limpio;
+  } catch {
+    return false;
+  }
 }
 
 /* ───────────── Todo junto ───────────── */
 
-let enCurso: Promise<boolean> | null = null;
+let enCurso: Promise<{ cambio: boolean; ok: boolean }> | null = null;
 
-/** Sincroniza hábitos, ánimo, diario, hábitos propios y módulos. true = el celular recibió algo nuevo. */
-export function sincronizarTodo(): Promise<boolean> {
+function ejecutar(): Promise<{ cambio: boolean; ok: boolean }> {
   if (enCurso) return enCurso;
   enCurso = (async () => {
     try {
       const uid = await usuario();
-      if (!uid) return false;
+      if (!uid) return { cambio: false, ok: false };
+      const limpio = asegurarDueno(uid);
+      let ok = true;
+      const sinFallar = (p: Promise<boolean>) =>
+        p.catch(() => {
+          ok = false;
+          return false;
+        });
       const partes = await Promise.all([
-        sincronizarHabitos(),
-        sincronizarAnimo(uid).catch(() => false),
-        sincronizarDiario(uid).catch(() => false),
-        sincronizarPropios(uid).catch(() => false),
-        sincronizarModulos(uid).catch(() => false),
+        sinFallar(sincronizarHabitos()),
+        sinFallar(sincronizarAnimo(uid)),
+        sinFallar(sincronizarDiario(uid)),
+        sinFallar(sincronizarPropios(uid)),
+        sinFallar(sincronizarModulos(uid)),
       ]);
-      return partes.some(Boolean);
+      return { cambio: limpio || partes.some(Boolean), ok };
     } catch {
-      return false;
+      return { cambio: false, ok: false };
     } finally {
       enCurso = null;
     }
   })();
   return enCurso;
+}
+
+/** Sincroniza hábitos, ánimo, diario, hábitos propios y módulos. true = el celular recibió algo nuevo. */
+export async function sincronizarTodo(): Promise<boolean> {
+  return (await ejecutar()).cambio;
+}
+
+/** true solo si TODO lo guardado en el celular quedó también en la cuenta (se usa antes de cerrar sesión). */
+export async function subirPendientes(): Promise<boolean> {
+  return (await ejecutar()).ok;
 }

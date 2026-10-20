@@ -9,13 +9,11 @@ import { claveHabitos, fechaLocal } from '@/lib/racha';
 
 const DIAS = 400;
 const PREFIJO = 'refugio-habitos-';
-let uidEnMemoria: string | null = null;
 
+/** Id de la cuenta con la sesión abierta AHORA (se lee cada vez: nunca se recuerda el de una sesión anterior). */
 export async function usuario(): Promise<string | null> {
-  if (uidEnMemoria) return uidEnMemoria;
-  const { data } = await createClient().auth.getUser();
-  uidEnMemoria = data.user?.id ?? null;
-  return uidEnMemoria;
+  const { data } = await createClient().auth.getSession();
+  return data.session?.user.id ?? null;
 }
 
 function esFecha(f: string) {
@@ -46,9 +44,10 @@ export async function guardarDiaEnNube(fecha: string, hechos: Record<string, boo
 /**
  * Sincroniza todo el historial: trae lo que falta en el celular y sube lo que falta en la cuenta.
  * Devuelve true si cambió algo en el celular (para recalcular la racha en pantalla).
+ * Si algo falla (por ejemplo, sin internet) lanza el error: quien llama decide qué hacer.
  */
 export async function sincronizarHabitos(): Promise<boolean> {
-  try {
+  {
     const uid = await usuario();
     if (!uid) return false;
     const desde = new Date();
@@ -58,7 +57,7 @@ export async function sincronizarHabitos(): Promise<boolean> {
       .select('fecha, habito_id, hecho')
       .gte('fecha', fechaLocal(desde))
       .limit(10000);
-    if (error || !data) return false;
+    if (error || !data) throw error ?? new Error('sin datos');
 
     const nube: Record<string, Record<string, boolean>> = {};
     for (const f of data) (nube[f.fecha] ??= {})[f.habito_id] = f.hecho;
@@ -95,10 +94,9 @@ export async function sincronizarHabitos(): Promise<boolean> {
       }
     }
     for (let i = 0; i < subir.length; i += 500) {
-      await createClient().from('habit_logs').upsert(subir.slice(i, i + 500), { onConflict: 'user_id,fecha,habito_id' });
+      const { error: errSubida } = await createClient().from('habit_logs').upsert(subir.slice(i, i + 500), { onConflict: 'user_id,fecha,habito_id' });
+      if (errSubida) throw errSubida;
     }
     return cambioLocal;
-  } catch {
-    return false;
   }
 }

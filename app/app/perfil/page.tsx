@@ -3,7 +3,7 @@
 // Perfil — cuenta y plan. Sin backend real todavía: "Cerrar sesión" es un mockup honesto que
 // vuelve a la landing (Sesión 6 conecta Supabase Auth de verdad, ver ESTADO.md).
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Compass, CreditCard, LogOut, Mail, Megaphone, ShieldCheck } from 'lucide-react';
@@ -14,11 +14,17 @@ import { RecordatorioSuave } from '@/components/app-interna/RecordatorioSuave';
 import { FotoPerfil } from '@/components/app-interna/FotoPerfil';
 import { PERFIL_DEMO } from '@/lib/app-demo-data';
 import { createClient } from '@/lib/supabase/client';
+import { limpiarDatosLocales, subirPendientes } from '@/lib/datos-nube';
 
 export default function PerfilPage() {
   const router = useRouter();
   const [correo, setCorreo] = useState<string>(PERFIL_DEMO.email);
   const [esAdmin, setEsAdmin] = useState(false);
+  const [cierre, setCierre] = useState<'reposo' | 'guardando' | 'aviso'>('reposo');
+  const avisoRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (cierre === 'aviso') avisoRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [cierre]);
 
   // Correo real de la sesión (si no se puede leer, queda el de ejemplo).
   useEffect(() => {
@@ -35,7 +41,16 @@ export default function PerfilPage() {
       .then(({ data }) => setEsAdmin(!!data));
   }, []);
 
-  const cerrarSesion = async () => {
+  const cerrarSesion = async (forzar = false) => {
+    // Antes de borrar lo del celular se comprueba que todo lo que escribiste ya está en tu cuenta.
+    if (!forzar) {
+      setCierre('guardando');
+      const quedoGuardado = await Promise.race([subirPendientes(), new Promise<boolean>((r) => setTimeout(() => r(false), 8000))]);
+      if (!quedoGuardado) {
+        setCierre('aviso');
+        return;
+      }
+    }
     // El recordatorio se apaga en este celular antes de cerrar la sesión (privacidad en celulares compartidos).
     try {
       const reg = await navigator.serviceWorker?.getRegistration();
@@ -52,6 +67,7 @@ export default function PerfilPage() {
       /* sin recordatorio activo: nada que apagar */
     }
     await createClient().auth.signOut();
+    limpiarDatosLocales(); // tu diario, ánimo y hábitos siguen en tu cuenta; en este celular ya no queda nada tuyo
     // Se borran las pantallas guardadas de esta cuenta (el audio del Orbe se queda).
     try {
       const claves = await caches.keys();
@@ -112,13 +128,41 @@ export default function PerfilPage() {
 
       <InstalarApp siempre />
 
-      <button
-        type="button"
-        onClick={cerrarSesion}
-        className="mt-8 flex h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] text-[14px] font-semibold text-[var(--text-secondary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-      >
-        <LogOut size={16} aria-hidden="true" /> Cerrar sesión
-      </button>
+      {cierre === 'aviso' && (
+        <div ref={avisoRef} role="alert" className="mt-8 rounded-[var(--radius-card)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
+          <p className="text-[15px] font-semibold text-[var(--text-primary)]">No pudimos guardar lo último en tu cuenta</p>
+          <p className="mt-1 text-[14px] text-[var(--text-secondary)]">
+            Puede que no tengas internet. Si cierras ahora, lo que escribiste hace poco podría no recuperarse. Si no escribiste nada nuevo, puedes cerrar sin problema.
+          </p>
+          <div className="mt-4 flex flex-col gap-2">
+            <button
+              type="button"
+              onClick={() => cerrarSesion()}
+              className="min-h-12 rounded-[var(--radius-button)] bg-[var(--accent-cta)] text-[14px] font-semibold text-[var(--bg)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              Reintentar guardar
+            </button>
+            <button
+              type="button"
+              onClick={() => cerrarSesion(true)}
+              className="min-h-12 rounded-[var(--radius-button)] text-[14px] font-semibold text-[var(--text-secondary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              Cerrar sesión igual
+            </button>
+          </div>
+        </div>
+      )}
+
+      {cierre !== 'aviso' && (
+        <button
+          type="button"
+          onClick={() => cerrarSesion()}
+          disabled={cierre === 'guardando'}
+          className="mt-8 flex h-12 w-full items-center justify-center gap-2 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_25%,transparent)] text-[14px] font-semibold text-[var(--text-secondary)] outline-none hover:bg-[var(--surface-2)] focus-visible:ring-2 focus-visible:ring-[var(--accent)] disabled:opacity-60"
+        >
+          <LogOut size={16} aria-hidden="true" /> {cierre === 'guardando' ? 'Guardando lo tuyo…' : 'Cerrar sesión'}
+        </button>
+      )}
     </AppShell>
   );
 }
