@@ -18,6 +18,7 @@ import { ANIMOS, AUDIOS, HABITOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo 
 import { calcularRacha } from '@/lib/racha';
 import { guardarAnimo, leerAnimoDeHoy } from '@/lib/animo';
 import { useFechaHoy } from '@/lib/useFechaHoy';
+import { sincronizarHabitos } from '@/lib/habitos-nube';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
 import { Hairline, useReveal } from '@/components/landing/ui';
@@ -75,6 +76,10 @@ export default function InicioPage() {
     setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
     setAnimoHoy(leerAnimoDeHoy(hoy)?.animo ?? null);
     setSesionTerminada(false);
+    // Recupera el historial de hábitos de la cuenta (si se reinstaló la app) y vuelve a contar la racha.
+    sincronizarHabitos().then((cambio) => {
+      if (cambio) setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
+    });
   }, [hoy]);
 
   const elegirAnimo = (a: string) => {

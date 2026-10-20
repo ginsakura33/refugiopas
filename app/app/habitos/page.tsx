@@ -11,6 +11,7 @@ import { AppShell, Card, ScreenTitle } from '@/components/app-interna/ui';
 import { Celebracion } from '@/components/app-interna/Celebracion';
 import { HABITOS } from '@/lib/app-demo-data';
 import { useFechaHoy } from '@/lib/useFechaHoy';
+import { guardarDiaEnNube, sincronizarHabitos } from '@/lib/habitos-nube';
 import { MINIMO_RACHA, calcularRacha, claveHabitos, claveHitos, fechaLocal, type ResumenRacha } from '@/lib/racha';
 
 function hoyKey() {
@@ -36,10 +37,20 @@ export default function HabitosPage() {
   const [abierto, setAbierto] = useState(false);
   const [hitosVistos, setHitosVistos] = useState<number[]>([]);
   const [racha, setRacha] = useState<ResumenRacha>({ actual: 0, mejor: 0, semana: Array(7).fill(false) });
+  const [version, setVersion] = useState(0);
 
   // Los hábitos de HOY. Se vuelven a leer cada vez que cambia el día (también si la app quedó abierta
   // en segundo plano toda la noche): los checks de ayer no pasan a hoy.
   const hoy = useFechaHoy();
+
+  // Al abrir (y al cambiar de día) se sincroniza con la cuenta: recupera el historial si se reinstaló la app.
+  useEffect(() => {
+    if (!hoy) return;
+    sincronizarHabitos().then((cambio) => {
+      if (cambio) setVersion((v) => v + 1);
+    });
+  }, [hoy]);
+
   useEffect(() => {
     if (!hoy) return;
     let guardados: Record<string, boolean> = {};
@@ -55,7 +66,7 @@ export default function HabitosPage() {
     setHechos(guardados);
     setHitosVistos(vistos);
     setAbierto(false);
-  }, [hoy]);
+  }, [hoy, version]);
 
   // La celebración se dispara solo en el MOMENTO en que se completa el último hábito del día
   // (no al abrir la pantalla con todo ya hecho): es un hito real, no decoración.
@@ -67,6 +78,7 @@ export default function HabitosPage() {
     } catch {
       /* localStorage puede fallar en modo privado — no bloquea la interacción */
     }
+    void guardarDiaEnNube(fechaLocal(), next); // copia en la cuenta (si no hay internet, sube después)
     // Gratificación escalonada: al llegar al 4.º, 5.º y 6.º hábito (cada hito una sola vez por día).
     const antes = HABITOS.filter((h) => hechos[h.id]).length;
     const ahora = HABITOS.filter((h) => next[h.id]).length;
@@ -86,7 +98,7 @@ export default function HabitosPage() {
   // La racha se recalcula con los días reales cada vez que cambian los hábitos de hoy.
   useEffect(() => {
     setRacha(calcularRacha(HABITOS.map((h) => h.id), new Date(), hechos));
-  }, [hechos, hoy]);
+  }, [hechos, hoy, version]);
 
   const completados = HABITOS.filter((h) => hechos[h.id]).length;
   const textoHito = HITOS[hito];
