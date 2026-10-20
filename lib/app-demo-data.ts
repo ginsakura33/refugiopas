@@ -32,8 +32,10 @@ export interface AudioDef {
   descripcion: string;
   /** Rótulo de la etiqueta de la tarjeta; si no hay, se usa el de la categoría (SOS / Biblioteca). */
   etiqueta?: string;
-  /** Archivo de audio real. Mientras no exista, el audio NO se recomienda (solo se recomienda lo que ya se puede escuchar). */
+  /** Ruta del archivo en el espacio PRIVADO de audios (bucket "audios"). Mientras no exista, el audio aparece como "Próximamente" y NO se recomienda. */
   src?: string;
+  /** Cuándo conviene escucharlo, en una frase; se muestra dentro del audio. */
+  momentoTexto?: string;
   /** Dolores del recorrido de inicio a los que responde este audio (para recomendárselo a quien lo eligió). */
   dolores: Dolor[];
   /** Momentos del día para los que sirve. */
@@ -41,6 +43,18 @@ export interface AudioDef {
 }
 
 export const AUDIOS: AudioDef[] = [
+  {
+    id: 'suelta-lo-que-no-es-tuyo',
+    titulo: 'Suelta lo que no es tuyo',
+    categoria: 'biblioteca',
+    duracionMin: 11,
+    descripcion: 'Devuelve lo que absorbiste de otras personas y recupera tu espacio interior.',
+    etiqueta: 'Autohipnosis',
+    src: 'suelta-lo-que-no-es-tuyo.mp3',
+    momentoTexto: 'Mejor de noche, al terminar tu día y antes de dormir. Busca un lugar tranquilo, ponte audífonos y no lo escuches mientras conduces.',
+    dolores: ['emociones'],
+    momentos: ['noche'],
+  },
   { id: 'reset-emocional', titulo: 'Regula tu Sistema Nervioso', categoria: 'sos', duracionMin: 3, descripcion: 'Baja la sobrecarga sensorial en minutos, cuando más lo necesitas.', dolores: ['ruido'], momentos: ['cualquiera', 'trabajo', 'casa'] },
   { id: 'respiracion-3-rondas', titulo: 'Respiración matutina', categoria: 'biblioteca', duracionMin: 2, descripcion: 'Inicia el día con energía y gratitud.', etiqueta: 'Eleva tu energía', dolores: [], momentos: ['cualquiera'] },
   { id: 'jardin-interior', titulo: 'El Jardín Interior', categoria: 'biblioteca', duracionMin: 8, descripcion: 'Visualización guiada para reconectar con tu espacio de calma.', etiqueta: 'Lugar seguro', dolores: ['rumiacion'], momentos: ['noche', 'casa'] },

@@ -238,7 +238,7 @@ export default function InicioPage() {
         <motion.div variants={item} className="mt-auto flex gap-3 pt-5">
           <StatChip label="Tu tipo" valor={tipoCorto} icon={Compass} href="/app/perfil" />
           <StatChip label="días de racha" valor={String(rachaActual)} icon={Flame} href="/app/habitos" />
-          <StatChip label="audios" valor={String(AUDIOS.length)} icon={Headphones} href="/app/biblioteca" />
+          <StatChip label="audios" valor={String(AUDIOS.filter((a) => a.src).length + 1)} icon={Headphones} href="/app/biblioteca" />
         </motion.div>
       </motion.div>
     </AppShell>

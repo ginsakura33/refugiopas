@@ -9,6 +9,7 @@ import { createClient } from '@/lib/supabase/client';
 import { sincronizarHabitos, usuario } from '@/lib/habitos-nube';
 import { ANIMOS, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
 import type { RegistroAnimo } from '@/lib/animo';
+import { sincronizarSesiones } from '@/lib/sesiones-audio';
 
 const K_ANIMO = 'refugio-animo-dias';
 const K_DIARIO = 'refugio-diario';
@@ -321,6 +322,7 @@ function ejecutar(): Promise<{ cambio: boolean; ok: boolean }> {
         sinFallar(sincronizarDiario(uid)),
         sinFallar(sincronizarPropios(uid)),
         sinFallar(sincronizarModulos(uid)),
+        sinFallar(sincronizarSesiones(uid)),
       ]);
       return { cambio: limpio || partes.some(Boolean), ok };
     } catch {

@@ -7,7 +7,7 @@
 
 import { createClient } from '@/lib/supabase/client';
 import { ANIMO_EMOJI } from '@/components/app-interna/ui';
-import { ANIMOS, HABITOS, MODULOS } from '@/lib/app-demo-data';
+import { ANIMOS, AUDIOS, HABITOS, MODULOS } from '@/lib/app-demo-data';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { MINIMO_RACHA } from '@/lib/racha';
 import { describirPlan } from '@/lib/perfil';
@@ -54,7 +54,7 @@ export async function descargarMisDatos(): Promise<boolean> {
     const usuario = sesion.session?.user;
     if (!usuario) return false;
 
-    const [perfil, plan, habitos, animo, diario, propios, modulos] = await Promise.all([
+    const [perfil, plan, habitos, animo, diario, propios, modulos, sesiones] = await Promise.all([
       sb.from('profiles').select('nombre, arquetipo, created_at').maybeSingle(),
       sb.from('subscriptions').select('plan, estado, vigente_hasta').maybeSingle(),
       sb.from('habit_logs').select('fecha, habito_id, hecho').eq('hecho', true).order('fecha', { ascending: false }).limit(20000),
@@ -62,8 +62,9 @@ export async function descargarMisDatos(): Promise<boolean> {
       sb.from('journal_entries').select('created_at, animo, intensidad, texto').order('created_at', { ascending: false }).limit(5000),
       sb.from('habitos_propios').select('id, nombre'),
       sb.from('module_progress').select('modulo_id, completado_at'),
+      sb.from('sesiones_audio').select('audio_id, antes, despues, created_at').order('created_at', { ascending: false }).limit(5000),
     ]);
-    if ([perfil, plan, habitos, animo, diario, propios, modulos].some((r) => r.error)) return false;
+    if ([perfil, plan, habitos, animo, diario, propios, modulos, sesiones].some((r) => r.error)) return false;
 
     const nombrePropio = new Map((propios.data ?? []).map((p) => [p.id as string, p.nombre as string]));
     const nombreHabito = (id: string) => HABITOS.find((h) => h.id === id)?.nombre ?? nombrePropio.get(id) ?? 'Hábito propio';
@@ -81,6 +82,12 @@ export async function descargarMisDatos(): Promise<boolean> {
       .join('');
     const filasAnimo = (animo.data ?? []).map((a) => `<tr><td>${esc(dia(a.fecha as string))}</td><td>${emojiDe(String(a.animo))} ${esc(a.animo)}</td><td>${esc(a.intensidad)} de 10</td></tr>`).join('');
     const filasHabitos = [...porDia.entries()].map(([f, ids]) => `<li><strong>${esc(dia(f))}:</strong> ${ids.map((i) => esc(nombreHabito(i))).join(' · ')}</li>`).join('');
+    const filasCalma = (sesiones.data ?? [])
+      .map((s) => {
+        const cambio = s.despues === null ? null : (s.despues as number) - (s.antes as number);
+        return `<tr><td>${esc(FECHA_LARGA.format(new Date(s.created_at as string)))}</td><td>${esc(AUDIOS.find((a) => a.id === s.audio_id)?.titulo ?? 'Audio')}</td><td>${esc(s.antes)} → ${s.despues === null ? '—' : esc(s.despues)}</td><td>${cambio === null ? '' : cambio > 0 ? `+${cambio}` : esc(cambio)}</td></tr>`;
+      })
+      .join('');
     const filasModulos = (modulos.data ?? [])
       .map((m) => {
         const def = MODULOS.find((x) => x.id === m.modulo_id);
@@ -118,6 +125,8 @@ button{font:inherit;font-size:15px;padding:10px 18px;border:0;border-radius:12px
 <h2>Cómo me he sentido, día a día</h2>${filasAnimo ? `<table><thead><tr><th>Día</th><th>Ánimo</th><th>Intensidad</th></tr></thead><tbody>${filasAnimo}</tbody></table>` : '<p class="vacio">Todavía no hay ánimos registrados.</p>'}
 
 <h2>Mis hábitos</h2>${porDia.size ? `<p>Días en que cuidé mis hábitos: <strong>${porDia.size}</strong> · Días que sumaron a mi racha (${MINIMO_RACHA} hábitos o más): <strong>${dias}</strong> · Mi mejor racha: <strong>${racha}</strong> ${racha === 1 ? 'día' : 'días'}</p><ul>${filasHabitos}</ul>` : '<p class="vacio">Todavía no hay hábitos marcados.</p>'}
+
+<h2>Mi calma con los audios</h2>${filasCalma ? `<p>Cómo me sentía de 1 a 10 antes y después de cada audio.</p><table><thead><tr><th>Día</th><th>Audio</th><th>Antes → después</th><th>Cambio</th></tr></thead><tbody>${filasCalma}</tbody></table>` : '<p class="vacio">Todavía no hay registros de audios.</p>'}
 
 <h2>Mi proceso PAS</h2>${filasModulos ? `<ul>${filasModulos}</ul>` : '<p class="vacio">Todavía no hay módulos completados.</p>'}
 </main></body></html>`;
