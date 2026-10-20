@@ -32,6 +32,15 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(destino);
   }
 
+  // Si el enlace del correo se abrió dos veces a la vez (navegador + app instalada), una de las dos
+  // visitas falla por "enlace ya usado" aunque la otra SÍ inició la sesión. Si ya hay sesión, se entra.
+  if (user && request.nextUrl.pathname === '/entrar' && request.nextUrl.searchParams.get('error') === 'enlace') {
+    const destino = request.nextUrl.clone();
+    destino.pathname = '/app';
+    destino.search = '';
+    return NextResponse.redirect(destino);
+  }
+
   // Candado de pago: solo entra a /app quien tiene suscripción vigente (la lee con SU sesión; RLS).
   if (user && request.nextUrl.pathname.startsWith('/app')) {
     const { data: sub } = await supabase
