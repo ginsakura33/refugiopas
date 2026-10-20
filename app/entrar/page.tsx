@@ -14,7 +14,7 @@ import { KeyRound } from 'lucide-react';
 import { Mail, Lock } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 
-type Estado = 'idle' | 'enviando' | 'enviado' | 'error';
+type Estado = 'idle' | 'enviando' | 'enviado' | 'error' | 'comprobando';
 const GOOGLE_ACTIVO = process.env.NEXT_PUBLIC_AUTH_GOOGLE === '1';
 // El campo del código solo se muestra cuando el correo de acceso ya trae el código ({{ .Token }}).
 // Eso exige correo propio (SMTP/Resend + dominio): con el correo por defecto de Supabase no se puede
@@ -30,11 +30,30 @@ export default function EntrarPage() {
   const [verificando, setVerificando] = useState(false);
   const [errorCodigo, setErrorCodigo] = useState('');
 
+  // Si el enlace del correo se abre dos veces a la vez, una visita falla ("ya se usó") aunque la otra
+  // SÍ inició la sesión, y la sesión llega unos instantes después. Antes de mostrar el error se vuelve a
+  // comprobar la sesión varias veces; si ya existe, se entra directo a la app.
   useEffect(() => {
-    if (new URLSearchParams(window.location.search).get('error') === 'enlace') {
+    if (new URLSearchParams(window.location.search).get('error') !== 'enlace') return;
+    let activo = true;
+    setEstado('comprobando');
+    (async () => {
+      const supabase = createClient();
+      for (let intento = 0; intento < 8 && activo; intento++) {
+        const { data } = await supabase.auth.getUser();
+        if (data.user) {
+          window.location.replace('/app');
+          return;
+        }
+        await new Promise((r) => setTimeout(r, 800));
+      }
+      if (!activo) return;
       setEstado('error');
       setMensajeError('Ese enlace ya se usó o venció. Pide uno nuevo y ábrelo desde el mismo dispositivo.');
-    }
+    })();
+    return () => {
+      activo = false;
+    };
   }, []);
 
   const enviar = async (e: FormEvent) => {
@@ -103,6 +122,12 @@ export default function EntrarPage() {
             <p className="mt-2 text-[14px] leading-snug text-[var(--text-secondary)]">
               Para guardarlo y verlo en cualquier dispositivo
             </p>
+
+            {estado === 'comprobando' && (
+              <p role="status" className="mt-6 rounded-[var(--radius-button)] bg-[var(--chip-bg)] px-4 py-3 text-[14px] leading-snug text-[var(--text-primary)]">
+                Comprobando tu sesión…
+              </p>
+            )}
 
             {estado === 'error' && (
               <p role="alert" className="mt-6 rounded-[var(--radius-button)] bg-[color-mix(in_oklab,var(--accent-2)_45%,transparent)] px-4 py-3 text-[14px] leading-snug text-[var(--text-primary)]">
