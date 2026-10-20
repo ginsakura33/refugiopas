@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { ArrowLeft, ArrowRight, Check, Lock } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { MODULOS } from '@/lib/app-demo-data';
+import { sincronizarTodo } from '@/lib/datos-nube';
 
 const CLAVE = 'refugio-modulos-completados';
 
@@ -18,12 +19,19 @@ export default function ModulosPage() {
   const [completados, setCompletados] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem(CLAVE);
-      if (raw) setCompletados(JSON.parse(raw));
-    } catch {
-      /* sin progreso guardado: arranca en cero */
-    }
+    const leer = () => {
+      try {
+        const raw = localStorage.getItem(CLAVE);
+        if (raw) setCompletados(JSON.parse(raw));
+      } catch {
+        /* sin progreso guardado: arranca en cero */
+      }
+    };
+    leer();
+    // Recupera el avance de la cuenta (si se reinstaló la app).
+    sincronizarTodo().then((cambio) => {
+      if (cambio) leer();
+    });
   }, []);
 
   return (

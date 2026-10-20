@@ -11,7 +11,7 @@ const DIAS = 400;
 const PREFIJO = 'refugio-habitos-';
 let uidEnMemoria: string | null = null;
 
-async function usuario(): Promise<string | null> {
+export async function usuario(): Promise<string | null> {
   if (uidEnMemoria) return uidEnMemoria;
   const { data } = await createClient().auth.getUser();
   uidEnMemoria = data.user?.id ?? null;

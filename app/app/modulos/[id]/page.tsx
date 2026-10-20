@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { ArrowLeft, BookHeart, Check, PenLine } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { MODULOS } from '@/lib/app-demo-data';
+import { subirModulo } from '@/lib/datos-nube';
 
 const CLAVE = 'refugio-modulos-completados';
 
@@ -57,6 +58,7 @@ export default function ModuloDetallePage() {
     } catch {
       /* localStorage puede fallar en modo privado — no bloquea la interacción */
     }
+    void subirModulo(modulo.id); // copia en la cuenta (si no hay internet, sube después)
   };
 
   const irADiarioConPrompt = (prompt: string) => {

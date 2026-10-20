@@ -4,6 +4,7 @@
 
 import { fechaLocal } from '@/lib/racha';
 import type { Animo } from '@/lib/app-demo-data';
+import { subirAnimoDia } from '@/lib/datos-nube';
 
 const CLAVE = 'refugio-animo-dias';
 const MAXIMO_DIAS = 90;
@@ -39,5 +40,6 @@ export function guardarAnimo(animo: Animo, intensidad?: number, fecha: string = 
   } catch {
     /* modo privado: queda solo en esta sesión */
   }
+  void subirAnimoDia(fecha, nuevo); // copia en la cuenta (si no hay internet, sube después)
   return nuevo;
 }

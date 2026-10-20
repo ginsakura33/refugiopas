@@ -12,6 +12,7 @@ import { ANIMOS, DIARIO_SEED, type Animo, type EntradaDiario } from '@/lib/app-d
 import { fechaLocal } from '@/lib/racha';
 import { guardarAnimo, leerRegistros, type RegistroAnimo } from '@/lib/animo';
 import { useFechaHoy } from '@/lib/useFechaHoy';
+import { sincronizarTodo, subirEntradaDiario } from '@/lib/datos-nube';
 
 const CLAVE_BORRADOR = 'refugio-diario-borrador';
 const LETRAS_DIA = ['D', 'L', 'M', 'M', 'J', 'V', 'S'];
@@ -64,6 +65,15 @@ export default function DiarioPage() {
   const [borradorListo, setBorradorListo] = useState(false);
   const [registros, setRegistros] = useState<Record<string, RegistroAnimo>>({});
   const hoy = useFechaHoy();
+  const [version, setVersion] = useState(0);
+
+  // Recupera de la cuenta las entradas y el ánimo que falten en este celular (por ejemplo, tras reinstalar).
+  useEffect(() => {
+    if (!hoy) return;
+    sincronizarTodo().then((cambio) => {
+      if (cambio) setVersion((v) => v + 1);
+    });
+  }, [hoy]);
 
   // Al abrir y cada vez que cambia el día: entradas, ánimo de la semana y borrador de HOY
   // (el borrador y el ánimo de ayer no pasan a hoy).
@@ -110,7 +120,7 @@ export default function DiarioPage() {
     } catch {
       /* sin prompt precargado: el diario abre en blanco igual */
     }
-  }, [hoy]);
+  }, [hoy, version]);
 
   // El borrador se guarda solo mientras la persona escribe o mueve la escala.
   useEffect(() => {
@@ -149,6 +159,7 @@ export default function DiarioPage() {
     } catch {
       /* localStorage puede fallar en modo privado — la entrada queda igual en esta sesión */
     }
+    void subirEntradaDiario(nueva); // copia en la cuenta (si no hay internet, sube después)
     setAnimo(null);
     setIntensidad(5);
     setTexto('');

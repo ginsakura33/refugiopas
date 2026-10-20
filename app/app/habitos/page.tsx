@@ -11,7 +11,8 @@ import { AppShell, Card, ScreenTitle } from '@/components/app-interna/ui';
 import { Celebracion } from '@/components/app-interna/Celebracion';
 import { HABITOS } from '@/lib/app-demo-data';
 import { useFechaHoy } from '@/lib/useFechaHoy';
-import { guardarDiaEnNube, sincronizarHabitos } from '@/lib/habitos-nube';
+import { guardarDiaEnNube } from '@/lib/habitos-nube';
+import { sincronizarTodo } from '@/lib/datos-nube';
 import { MINIMO_RACHA, calcularRacha, claveHabitos, claveHitos, fechaLocal, type ResumenRacha } from '@/lib/racha';
 
 function hoyKey() {
@@ -46,7 +47,7 @@ export default function HabitosPage() {
   // Al abrir (y al cambiar de día) se sincroniza con la cuenta: recupera el historial si se reinstaló la app.
   useEffect(() => {
     if (!hoy) return;
-    sincronizarHabitos().then((cambio) => {
+    sincronizarTodo().then((cambio) => {
       if (cambio) setVersion((v) => v + 1);
     });
   }, [hoy]);
@@ -159,7 +160,7 @@ export default function HabitosPage() {
         })}
       </div>
 
-      <HabitosPropios hechos={hechos} onToggle={toggle} nombresRecomendados={HABITOS.map((h) => h.nombre)} />
+      <HabitosPropios version={version} hechos={hechos} onToggle={toggle} nombresRecomendados={HABITOS.map((h) => h.nombre)} />
 
       <Celebracion
         abierta={abierto}

@@ -18,7 +18,7 @@ import { ANIMOS, AUDIOS, HABITOS, MODULOS, PERFIL_DEMO, fraseDelDia, type Animo 
 import { calcularRacha } from '@/lib/racha';
 import { guardarAnimo, leerAnimoDeHoy } from '@/lib/animo';
 import { useFechaHoy } from '@/lib/useFechaHoy';
-import { sincronizarHabitos } from '@/lib/habitos-nube';
+import { sincronizarTodo } from '@/lib/datos-nube';
 import { ARQUETIPOS, type ArquetipoId } from '@/lib/onboarding-content';
 import { LogoMarca } from '@/components/Logo';
 import { Hairline, useReveal } from '@/components/landing/ui';
@@ -77,8 +77,16 @@ export default function InicioPage() {
     setAnimoHoy(leerAnimoDeHoy(hoy)?.animo ?? null);
     setSesionTerminada(false);
     // Recupera el historial de hábitos de la cuenta (si se reinstaló la app) y vuelve a contar la racha.
-    sincronizarHabitos().then((cambio) => {
-      if (cambio) setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
+    sincronizarTodo().then((cambio) => {
+      if (!cambio) return;
+      setRachaActual(calcularRacha(HABITOS.map((h) => h.id)).actual);
+      setAnimoHoy(leerAnimoDeHoy(hoy)?.animo ?? null);
+      try {
+        const hechos = JSON.parse(localStorage.getItem('refugio-modulos-completados') ?? '{}') as Record<string, boolean>;
+        setModulosCompletados(MODULOS.filter((m) => hechos[m.id]).length);
+      } catch {
+        /* sin avance guardado */
+      }
     });
   }, [hoy]);
 

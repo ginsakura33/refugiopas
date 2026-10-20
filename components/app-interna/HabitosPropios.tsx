@@ -8,6 +8,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { Check, Plus, Sparkles, Trash2 } from 'lucide-react';
 import { Card } from '@/components/app-interna/ui';
+import { subirHabitosPropios } from '@/lib/datos-nube';
 
 interface HabitoPropio {
   id: string;
@@ -22,10 +23,13 @@ export function HabitosPropios({
   hechos,
   onToggle,
   nombresRecomendados,
+  version = 0,
 }: {
   hechos: Record<string, boolean>;
   onToggle: (id: string) => void;
   nombresRecomendados: string[];
+  /** Cambia cuando la sincronización con la cuenta trajo hábitos propios nuevos. */
+  version?: number;
 }) {
   const reduce = useReducedMotion() ?? false;
   const [lista, setLista] = useState<HabitoPropio[]>([]);
@@ -44,7 +48,7 @@ export function HabitosPropios({
       /* sin hábitos propios guardados */
     }
     setCargado(true);
-  }, []);
+  }, [version]);
 
   useEffect(() => {
     if (agregando) campo.current?.focus();
@@ -57,6 +61,7 @@ export function HabitosPropios({
     } catch {
       /* modo privado: queda en esta sesión */
     }
+    void subirHabitosPropios(siguiente); // copia en la cuenta (si no hay internet, sube después)
   };
 
   const agregar = (e: FormEvent) => {
