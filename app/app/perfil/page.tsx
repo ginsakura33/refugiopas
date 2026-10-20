@@ -9,14 +9,14 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { motion, useReducedMotion } from 'motion/react';
-import { Bell, Check, ChevronRight, CreditCard, Download, Flame, Lock, LogOut, Mail, Megaphone, Pencil, ShieldCheck, Trophy, UserRound } from 'lucide-react';
+import { Bell, ChevronRight, CreditCard, Download, Flame, Lock, LogOut, Mail, Megaphone, Pencil, ShieldCheck, Trophy } from 'lucide-react';
 import { AppShell, Card } from '@/components/app-interna/ui';
 import { InstalarApp } from '@/components/app-interna/PwaApp';
 import { RecordatorioSuave } from '@/components/app-interna/RecordatorioSuave';
-import { FotoPerfil } from '@/components/app-interna/FotoPerfil';
+import { AvatarPerfil, useFotoPerfil } from '@/components/app-interna/FotoPerfil';
 import { Hairline, useReveal } from '@/components/landing/ui';
 import { ARQUETIPOS } from '@/lib/onboarding-content';
-import { describirPlan, guardarNombre, leerPerfil, leerPlan, type PlanReal } from '@/lib/perfil';
+import { describirPlan, leerPerfil, leerPlan, type PlanReal } from '@/lib/perfil';
 import { calcularResumenPerfil, type ResumenPerfil } from '@/lib/logros';
 import { descargarMisDatos } from '@/lib/exportar';
 import { createClient } from '@/lib/supabase/client';
@@ -99,9 +99,7 @@ export default function PerfilPage() {
   const { contenedor, item } = useReveal(0.06);
   const [correo, setCorreo] = useState<string>('');
   const [nombre, setNombre] = useState<string | null>(null);
-  const [editandoNombre, setEditandoNombre] = useState(false);
-  const [borradorNombre, setBorradorNombre] = useState('');
-  const [errorNombre, setErrorNombre] = useState(false);
+  const foto = useFotoPerfil();
   const [arquetipo, setArquetipo] = useState<string | null>(null);
   const [plan, setPlan] = useState<PlanReal | null>(null);
   const [cargado, setCargado] = useState(false);
@@ -179,14 +177,6 @@ export default function PerfilPage() {
     router.refresh();
   };
 
-  const guardarMiNombre = async () => {
-    setErrorNombre(false);
-    const r = await guardarNombre(borradorNombre);
-    if (!r.ok) return setErrorNombre(true);
-    setNombre(r.nombre);
-    setEditandoNombre(false);
-  };
-
   const bajarDatos = async () => {
     setDescarga('preparando');
     const ok = await descargarMisDatos();
@@ -201,12 +191,23 @@ export default function PerfilPage() {
       <motion.div variants={contenedor} initial="hidden" animate="visible" className="flex flex-col">
         {/* Cabecera: foto + nombre + tipo */}
         <motion.div variants={item} className="mb-6">
-          <FotoPerfil>
-            <h1 className="truncate text-[24px] font-bold leading-tight text-[var(--text-primary)] [font-family:var(--font-display)]">
-              {!cargado ? '…' : nombre ?? 'Tu cuenta'}
-            </h1>
-            <p className="mt-0.5 text-[15px] text-[var(--text-secondary)]">{!cargado ? ' ' : tipo ? `Alma ${tipo.replace(/^Alma /, '')}` : 'Tu tipo de alma sensible, por descubrir'}</p>
-          </FotoPerfil>
+          <div className="flex items-center gap-4">
+            <Link
+              href="/app/perfil/editar"
+              aria-label="Editar perfil: cambiar tu foto o tu nombre"
+              className="rounded-full outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
+            >
+              <AvatarPerfil url={foto.url} subiendo={foto.subiendo} camarita />
+            </Link>
+            <div className="min-w-0 flex-1">
+              <h1 className="truncate text-[24px] font-bold leading-tight text-[var(--text-primary)] [font-family:var(--font-display)]">
+                {!cargado ? '…' : nombre ?? 'Tu cuenta'}
+              </h1>
+              <p className="mt-0.5 text-[15px] text-[var(--text-secondary)]">
+                {!cargado ? ' ' : tipo ? `Alma ${tipo.replace(/^Alma /, '')}` : 'Tu tipo de alma sensible, por descubrir'}
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* Resumen: constancia + proceso PAS */}
@@ -315,53 +316,7 @@ export default function PerfilPage() {
             Ajustes
           </h2>
 
-          {editandoNombre ? (
-            <div className="rounded-[var(--radius-card)] bg-[var(--surface)] p-4 shadow-[var(--shadow-1)]">
-              <label htmlFor="mi-nombre" className="text-[13px] text-[var(--text-secondary)]">
-                ¿Cómo quieres que te llamemos?
-              </label>
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  void guardarMiNombre();
-                }}
-                className="mt-2 flex items-center gap-2"
-              >
-                <input
-                  id="mi-nombre"
-                  autoFocus
-                  value={borradorNombre}
-                  onChange={(e) => setBorradorNombre(e.target.value)}
-                  maxLength={40}
-                  autoComplete="given-name"
-                  placeholder="Tu nombre"
-                  className="min-h-11 min-w-0 flex-1 rounded-[var(--radius-button)] border border-[color-mix(in_oklab,var(--text-tertiary)_30%,transparent)] bg-[var(--bg)] px-3 text-[15px] text-[var(--text-primary)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                />
-                <button
-                  type="submit"
-                  aria-label="Guardar nombre"
-                  className="flex size-11 shrink-0 items-center justify-center rounded-full bg-[var(--accent-cta)] outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]"
-                >
-                  <Check size={18} color="var(--bg)" aria-hidden="true" />
-                </button>
-              </form>
-              {errorNombre && (
-                <p role="alert" className="mt-2 text-[13px] text-[var(--text-secondary)]">
-                  No pudimos guardar tu nombre. Revisa tu conexión e inténtalo de nuevo.
-                </p>
-              )}
-            </div>
-          ) : (
-            <FilaAjuste
-              icono={nombre ? Pencil : UserRound}
-              texto={nombre ? 'Editar mi nombre' : 'Añadir mi nombre'}
-              detalle={nombre ?? 'Así te saludamos en Inicio'}
-              onClick={() => {
-                setBorradorNombre(nombre ?? '');
-                setEditandoNombre(true);
-              }}
-            />
-          )}
+          <FilaAjuste icono={Pencil} texto="Editar perfil" detalle="Tu foto y tu nombre" href="/app/perfil/editar" />
 
           <RecordatorioSuave />
           <FilaAjuste icono={Bell} texto="Novedades" detalle="Clases, talleres y audios nuevos" href="/app/novedades" />
