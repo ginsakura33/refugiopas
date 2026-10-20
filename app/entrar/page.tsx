@@ -16,6 +16,10 @@ import { createClient } from '@/lib/supabase/client';
 
 type Estado = 'idle' | 'enviando' | 'enviado' | 'error';
 const GOOGLE_ACTIVO = process.env.NEXT_PUBLIC_AUTH_GOOGLE === '1';
+// El campo del código solo se muestra cuando el correo de acceso ya trae el código ({{ .Token }}).
+// Eso exige correo propio (SMTP/Resend + dominio): con el correo por defecto de Supabase no se puede
+// editar la plantilla. Cuando esté listo: NEXT_PUBLIC_AUTH_CODIGO=1 en Vercel y volver a publicar.
+const CODIGO_ACTIVO = process.env.NEXT_PUBLIC_AUTH_CODIGO === '1';
 
 export default function EntrarPage() {
   const [email, setEmail] = useState('');
@@ -159,6 +163,7 @@ export default function EntrarPage() {
               Si {email} tiene una compra activa, el enlace llega en unos minutos. Revisa también spam y promociones.
             </p>
 
+            {CODIGO_ACTIVO && (
             <form onSubmit={entrarConCodigo} className="mt-8 flex w-full flex-col gap-3 text-left">
               <label htmlFor="codigo" className="flex items-center gap-2 text-[14px] font-semibold text-[var(--text-primary)]">
                 <KeyRound size={16} strokeWidth={1.8} color="var(--accent-ink)" aria-hidden="true" /> ¿Prefieres escribir el código?
@@ -192,6 +197,7 @@ export default function EntrarPage() {
                 {verificando ? 'Entrando…' : 'Entrar con el código'}
               </button>
             </form>
+            )}
           </div>
         )}
       </div>
