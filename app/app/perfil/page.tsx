@@ -284,6 +284,11 @@ export default function PerfilPage() {
           </ul>
         </motion.section>
 
+        {/* Recordatorio suave: justo debajo de los logros */}
+        <motion.div variants={item} className="mt-8">
+          <RecordatorioSuave />
+        </motion.div>
+
         {/* Mi cuenta */}
         <motion.section variants={item} aria-labelledby="cuenta" className="mt-8">
           <h2 id="cuenta" className="text-[20px] font-semibold text-[var(--text-primary)] [font-family:var(--font-display)]">
@@ -317,8 +322,6 @@ export default function PerfilPage() {
           </h2>
 
           <FilaAjuste icono={Pencil} texto="Editar perfil" detalle="Tu foto y tu nombre" href="/app/perfil/editar" />
-
-          <RecordatorioSuave />
           <FilaAjuste icono={Bell} texto="Novedades" detalle="Clases, talleres y audios nuevos" href="/app/novedades" />
           <InstalarApp siempre />
           <FilaAjuste
