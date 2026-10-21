@@ -8,10 +8,10 @@
 import { createClient } from '@/lib/supabase/client';
 import { sincronizarHabitos, usuario } from '@/lib/habitos-nube';
 import { ANIMOS, type Animo, type EntradaDiario } from '@/lib/app-demo-data';
-import type { RegistroAnimo } from '@/lib/animo';
+import { escribirRegistros, leerRegistros, type RegistroAnimo } from '@/lib/animo';
+import { fusionarAnimo, mismoRegistro } from '@/lib/fusion-animo';
 import { sincronizarSesiones } from '@/lib/sesiones-audio';
 
-const K_ANIMO = 'refugio-animo-dias';
 const K_DIARIO = 'refugio-diario';
 const K_PROPIOS = 'refugio-habitos-propios';
 const K_MODULOS = 'refugio-modulos-completados';
@@ -39,37 +39,60 @@ const intensidadValida = (n: unknown) => Math.min(10, Math.max(1, Math.round(Num
 
 /* ───────────── Ánimo por día ───────────── */
 
+type RegAnimoNube = { fecha: string; animo: string; intensidad: number; manual: boolean; updated_at: string };
+const aRegistro = (f: Pick<RegAnimoNube, 'animo' | 'intensidad' | 'manual' | 'updated_at'>): RegistroAnimo | undefined =>
+  esAnimo(f.animo) ? { animo: f.animo, intensidad: intensidadValida(f.intensidad), manual: f.manual, actualizado: f.updated_at } : undefined;
+const aFilaAnimo = (uid: string, fecha: string, r: RegistroAnimo) => ({
+  user_id: uid,
+  fecha,
+  animo: r.animo,
+  intensidad: intensidadValida(r.intensidad),
+  manual: r.manual !== false,
+  updated_at: r.actualizado ?? new Date().toISOString(),
+});
+
+/**
+ * Copia el ánimo de un día a la cuenta, COMBINÁNDOLO antes con lo que la cuenta ya tenga de ese día (puede venir de
+ * otro dispositivo): una intensidad puesta por defecto nunca pisa una elegida. Si la combinación cambia algo,
+ * también se actualiza el celular. Sin internet queda en el celular y se combina en la próxima sincronización.
+ */
 export async function subirAnimoDia(fecha: string, reg: RegistroAnimo): Promise<void> {
   try {
     const uid = await usuario();
     if (!uid) return;
-    await createClient()
-      .from('animo_dias')
-      .upsert({ user_id: uid, fecha, animo: reg.animo, intensidad: intensidadValida(reg.intensidad), updated_at: new Date().toISOString() }, { onConflict: 'user_id,fecha' });
+    const sb = createClient();
+    const { data } = await sb.from('animo_dias').select('animo, intensidad, manual, updated_at').eq('fecha', fecha).maybeSingle();
+    const unido = fusionarAnimo(reg, data ? aRegistro(data as RegAnimoNube) : undefined) ?? reg;
+    await sb.from('animo_dias').upsert(aFilaAnimo(uid, fecha, unido), { onConflict: 'user_id,fecha' });
+    if (!mismoRegistro(unido, reg)) escribirRegistros({ ...leerRegistros(), [fecha]: unido });
   } catch {
     /* sin conexión: sube en la próxima sincronización */
   }
 }
 
 async function sincronizarAnimo(uid: string): Promise<boolean> {
-  const { data, error } = await createClient().from('animo_dias').select('fecha, animo, intensidad').order('fecha', { ascending: false }).limit(400);
+  const sb = createClient();
+  const { data, error } = await sb.from('animo_dias').select('fecha, animo, intensidad, manual, updated_at').order('fecha', { ascending: false }).limit(400);
   if (error || !data) throw error ?? new Error('sin datos');
-  const local = leer<Record<string, RegistroAnimo>>(K_ANIMO, {});
-  const nube = new Map(data.map((f) => [f.fecha as string, f]));
+  const local = leerRegistros();
+  const nube = new Map(data.map((f) => [f.fecha as string, aRegistro(f as RegAnimoNube)]));
+  const unido: Record<string, RegistroAnimo> = { ...local };
+  const subir: ReturnType<typeof aFilaAnimo>[] = [];
   let cambio = false;
-  const unido = { ...local };
-  for (const [fecha, f] of nube) {
-    if (!unido[fecha] && esAnimo(f.animo)) {
-      unido[fecha] = { animo: f.animo, intensidad: intensidadValida(f.intensidad) };
+  for (const fecha of new Set([...Object.keys(local), ...nube.keys()])) {
+    const l = local[fecha];
+    const n = nube.get(fecha);
+    const f = fusionarAnimo(l, n);
+    if (!f) continue;
+    if (!mismoRegistro(f, l)) {
+      unido[fecha] = f;
       cambio = true;
     }
+    if (!mismoRegistro(f, n)) subir.push(aFilaAnimo(uid, fecha, f));
   }
-  if (cambio) escribir(K_ANIMO, unido);
-  const subir = Object.entries(local)
-    .filter(([fecha, r]) => esAnimo(r.animo) && (nube.get(fecha)?.animo !== r.animo || nube.get(fecha)?.intensidad !== intensidadValida(r.intensidad)))
-    .map(([fecha, r]) => ({ user_id: uid, fecha, animo: r.animo, intensidad: intensidadValida(r.intensidad) }));
+  if (cambio) escribirRegistros(unido);
   if (subir.length) {
-    const { error: e } = await createClient().from('animo_dias').upsert(subir, { onConflict: 'user_id,fecha' });
+    const { error: e } = await sb.from('animo_dias').upsert(subir, { onConflict: 'user_id,fecha' });
     if (e) throw e;
   }
   return cambio;
